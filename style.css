@@ -1,0 +1,285 @@
+:root {
+    --bg: #05080c;
+    --panel: rgba(7,11,16,.88);
+    --text: #f4f6f8;
+    --muted: #aeb8c4;
+    --gold: #e5ad50;
+    --cyan: #35d5ef;
+    --green: #52dc91;
+    --red: #ff5263;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #05080c;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #05080c;
+    color: var(--text);
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+#scene {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#scroll {
+    height: 900vh;
+}
+
+#progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    z-index: 100;
+
+    background: linear-gradient(
+        90deg,
+        var(--gold),
+        var(--cyan)
+    );
+
+    box-shadow: 0 0 20px rgba(53,213,239,.6);
+}
+
+header {
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    padding: 22px 5vw;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: linear-gradient(
+        rgba(3,6,9,.85),
+        transparent
+    );
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: .08em;
+}
+
+.logo span {
+    color: var(--gold);
+}
+
+.header-right {
+    color: #9ca8b4;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.scene-text {
+    position: fixed;
+    z-index: 20;
+
+    left: 5vw;
+    bottom: 8vh;
+
+    width: min(590px,88vw);
+
+    padding: 25px 28px;
+
+    border-left: 3px solid var(--gold);
+
+    background: linear-gradient(
+        90deg,
+        rgba(4,8,12,.94),
+        rgba(4,8,12,.72),
+        transparent
+    );
+
+    backdrop-filter: blur(10px);
+
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+}
+
+.scene-text.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scene-text.center {
+    left: 50%;
+    bottom: auto;
+    top: 50%;
+
+    transform:
+        translate(-50%, calc(-50% + 30px));
+
+    text-align: center;
+
+    border-left: 0;
+    background: none;
+
+    width: min(900px,90vw);
+}
+
+.scene-text.center.active {
+    transform:
+        translate(-50%,-50%);
+}
+
+.kicker {
+    color: var(--cyan);
+    font-size: 10px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: clamp(4rem,12vw,9rem);
+    letter-spacing: .08em;
+    line-height: .9;
+
+    background: linear-gradient(
+        180deg,
+        #ffffff 10%,
+        #e7b45b 85%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+h2 {
+    font-size: clamp(1.7rem,3.5vw,3rem);
+    line-height: 1.05;
+    margin-bottom: 12px;
+}
+
+p {
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 15px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.tag {
+    border: 1px solid rgba(255,255,255,.13);
+
+    background: rgba(10,16,23,.85);
+
+    border-radius: 6px;
+
+    padding: 8px 12px;
+
+    color: #dbe2e8;
+
+    font-size: 11px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 18px;
+
+    color: #c5ced7;
+
+    font-size: 10px;
+
+    letter-spacing: .16em;
+
+    text-transform: uppercase;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow: 0 0 12px var(--green);
+}
+
+.scroll-hint {
+    margin-top: 35px;
+
+    color: var(--cyan);
+
+    font-size: 10px;
+
+    letter-spacing: .28em;
+
+    animation:
+        floating 1.7s ease-in-out infinite;
+}
+
+@keyframes floating {
+
+    0%,100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(6px);
+        opacity: .45;
+    }
+
+}
+
+@media(max-width:700px) {
+
+    .header-right {
+        display: none;
+    }
+
+    .scene-text {
+        left: 4vw;
+        width: 92vw;
+        bottom: 5vh;
+        padding: 18px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    p {
+        font-size: 13px;
+    }
+
+}
