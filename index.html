@@ -4,167 +4,854 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>S.R.TRACK — Sécuriser · Géolocaliser · Connecter</title>
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=UL84rUO3uQGZieVsotwlk6zSGn41-kYgplLC34pILOPj9Se7y3139UzZu3i2RXFWJn41QYUQQnCHLr0Ddetp_GgVtllvPvlza3Pxe4NK-tuQWRaWw-K36o2WOs22TVXNk4_6QjJ-xbOY0aopRp_IAF7et7VUds_0gRJoBknuv8PIZX-aiHm2p67-eMOuNqGj8eJhqwv9YgWnUrl4e0l3Njd_mXeduXUvbwAipV9gCp1speY_7JZFhf6kQiR6tBPgZRYB49r_mzlsiGNf22t1vg" charset="UTF-8"></script><style>
+<style>
 :root{--bg:#05070a;--panel:#0b1017e8;--text:#f2f5f8;--mut:#aab5c2;--gold:#e7b45b;--cyan:#38d5f0;--red:#ff5364;--green:#65e39a}
-*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;background:#05070a}body{background:#05070a;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}
-#scene{position:fixed;inset:0;width:100%;height:100%;display:block}#scroll{height:1150vh}#progress{position:fixed;z-index:30;left:0;top:0;width:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--cyan));box-shadow:0 0 18px #38d5f088}
-nav{position:fixed;z-index:40;top:0;left:0;right:0;padding:20px 5vw;display:flex;justify-content:space-between;align-items:center;letter-spacing:.16em;font-size:12px;text-transform:uppercase;background:linear-gradient(#05070acc,transparent);pointer-events:none}nav strong{font-size:15px;letter-spacing:.12em}nav strong span{color:var(--gold)}nav em{font-style:normal;color:#8995a4;letter-spacing:.18em}
-.caption{position:fixed;z-index:20;left:5vw;bottom:8vh;width:min(570px,90vw);opacity:0;transform:translateY(30px);pointer-events:none;padding:22px 25px;border-left:3px solid var(--gold);background:linear-gradient(90deg,#05070ae8,#05070a88,transparent);backdrop-filter:blur(8px)}.caption.center{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);text-align:center;width:min(820px,90vw);border:0;background:none;padding:0}.caption.center h1{font-size:clamp(3.8rem,13vw,10rem);letter-spacing:.08em;line-height:.9}.caption.center h1 span{display:inline-block;background:linear-gradient(180deg,#fff 15%,#e7b45b 85%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(60px) rotateX(65deg);animation:heroIn .9s forwards}.caption small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:7px}.caption h2{font-size:clamp(1.7rem,3.5vw,3rem);line-height:1.06;margin-bottom:9px}.caption p{color:var(--mut);line-height:1.55;max-width:650px}.caption.center p{max-width:none;margin-top:18px}.hint{margin-top:35px;color:var(--cyan);font-size:11px;letter-spacing:.28em;animation:pulse 1.8s infinite}.caption.visible{opacity:1;transform:translateY(0)}
-.stats{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.stat{border:1px solid #ffffff16;background:#0b1017c9;border-radius:999px;padding:8px 12px;font-size:11px;color:#d9e0e7}.stat b{color:#fff}.status{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:#b8c4d0;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
-#fallback{display:none;position:fixed;inset:0;z-index:100;background:#05070a;color:#fff;place-items:center;text-align:center;padding:30px}#fallback.show{display:grid}
-@keyframes heroIn{to{opacity:1;transform:none}}@keyframes pulse{50%{opacity:.45;transform:translateY(5px)}}
-@media(max-width:700px){nav em{display:none}.caption{left:4vw;width:92vw;bottom:5vh;padding:17px}.caption h2{font-size:1.55rem}.caption p{font-size:.9rem}.stats{gap:6px}.stat{font-size:10px}}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;background:#05070a}
+body{background:#05070a;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
+#scroll{height:1150vh}
+#progress{position:fixed;z-index:30;left:0;top:0;width:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--cyan));box-shadow:0 0 18px #38d5f088}
+nav{position:fixed;z-index:40;top:0;left:0;right:0;padding:20px 5vw;display:flex;justify-content:space-between;align-items:center;letter-spacing:.16em;font-size:12px;text-transform:uppercase;background:linear-gradient(#05070acc,transparent);pointer-events:none}
+nav strong{font-size:15px;letter-spacing:.12em}
+nav strong span{color:var(--gold)}
+nav em{font-style:normal;color:#8995a4;letter-spacing:.18em}
+.caption{position:fixed;z-index:20;left:5vw;bottom:8vh;width:min(570px,90vw);opacity:0;transform:translateY(30px);pointer-events:none;padding:22px 25px;border-left:3px solid var(--gold);background:linear-gradient(90deg,#05070ae8,#05070a88,transparent);backdrop-filter:blur(8px)}
+.caption.center{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);text-align:center;width:min(820px,90vw);border:0;background:none;padding:0}
+.caption.center h1{font-size:clamp(3.8rem,13vw,10rem);letter-spacing:.08em;line-height:.9}
+.caption.center h1 span{display:inline-block;background:linear-gradient(180deg,#fff 15%,#e7b45b 85%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(60px) rotateX(65deg);animation:heroIn .9s forwards}
+.caption small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:7px}
+.caption h2{font-size:clamp(1.7rem,3.5vw,3rem);line-height:1.06;margin-bottom:9px}
+.caption p{color:var(--mut);line-height:1.55;max-width:650px}
+.caption.center p{max-width:none;margin-top:18px}
+.hint{margin-top:35px;color:var(--cyan);font-size:11px;letter-spacing:.28em;animation:pulse 1.8s infinite}
+.stats{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.stat{border:1px solid #ffffff16;background:#0b1017c9;border-radius:999px;padding:8px 12px;font-size:11px;color:#d9e0e7}
+.stat b{color:#fff}
+.status{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:#b8c4d0;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+#fallback{display:none;position:fixed;inset:0;z-index:100;background:#05070a;color:#fff;place-items:center;text-align:center;padding:30px}
+#fallback.show{display:grid}
+@keyframes heroIn{to{opacity:1;transform:none}}
+@keyframes pulse{50%{opacity:.45;transform:translateY(5px)}}
+@media(max-width:700px){
+nav em{display:none}
+.caption{left:4vw;width:92vw;bottom:5vh;padding:17px}
+.caption h2{font-size:1.55rem}
+.caption p{font-size:.9rem}
+.stats{gap:6px}
+.stat{font-size:10px}
+}
 </style>
-</head>
-<body>
-<canvas id="scene"></canvas><div id="progress"></div>
-<nav><strong>S.R.<span>TRACK</span></strong><em>Sécuriser · Géolocaliser · Connecter</em></nav>
-<div id="fallback"><div><h2>Votre navigateur ne permet pas l'expérience 3D.</h2><p>Activez WebGL puis rechargez la page.</p></div></div>
 
-<section class="caption center" data-a="0" data-b=".075"><h1 id="brand"></h1><p>Technologies connectées pour le transport sécurisé, la géolocalisation et les logiciels métiers.</p><div class="hint">FAITES DÉFILER ↓</div></section>
-<section class="caption" data-a=".08" data-b=".20"><small>01 · L'entreprise</small><h2>Une entreprise qui relie le terrain au numérique.</h2><p>S.R.TRACK est présenté comme le pôle logiciel et réseau d'un écosystème IoT : cloud, logiciels métiers, interfaces et infrastructures de communication.</p><div class="stats"><span class="stat">Orly · France</span><span class="stat">IoT &amp; cloud</span><span class="stat">Logiciels métiers</span></div></section>
-<section class="caption" data-a=".20" data-b=".37"><small>02 · Flotte sécurisée</small><h2>Des fourgons réels. Des trajets suivis.</h2><p>Les véhicules quittent l'atelier, leurs positions remontent en temps réel et les équipes peuvent surveiller les périmètres définis autour des opérations.</p><div class="status"><i class="dot"></i>CONVOI CONNECTÉ · GPS ACTIF</div></section>
-<section class="caption" data-a=".37" data-b=".52"><small>03 · Atelier technique</small><h2>Le véhicule s'ouvre jusqu'à ses systèmes.</h2><p>Le fourgon se désassemble progressivement : habillage, panneaux, équipements et électronique deviennent visibles. Les techniciens installent et testent les balises de géolocalisation.</p><div class="status"><i class="dot"></i>INSTALLATION · DIAGNOSTIC · TEST</div></section>
-<section class="caption" data-a=".52" data-b=".69"><small>04 · Logiciels &amp; cloud</small><h2>Des équipes développent les outils qui pilotent le terrain.</h2><p>Interfaces de suivi, applications métiers, données de flotte et services cloud sont réunis dans une salle de supervision animée.</p><div class="stats"><span class="stat">API</span><span class="stat">Cloud</span><span class="stat">Interfaces</span><span class="stat">IoT</span></div></section>
-<section class="caption" data-a=".69" data-b=".86"><small>05 · Sécurité numérique</small><h2>La protection ne s'arrête pas au véhicule.</h2><p>Une cellule dédiée visualise les flux, les accès et les alertes autour de l'infrastructure numérique. L'animation représente une supervision cybersécurité, sans prétendre décrire une architecture interne publique.</p><div class="status"><i class="dot"></i>SUPERVISION · ALERTES · RÉSEAU</div></section>
-<section class="caption center" data-a=".90" data-b="1"><small>SR.TRACK · ORLY</small><h2>Du véhicule connecté au logiciel métier.</h2><p>Un même fil conducteur : sécuriser, géolocaliser et connecter les opérations.</p><div class="stats" style="justify-content:center"><span class="stat">39 rue de l'Aviation · 94310 Orly</span><span class="stat">01 46 86 48 81</span></div></section>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body>
+
+<canvas id="scene"></canvas>
+<div id="progress"></div>
+
+<nav>
+<strong>S.R.<span>TRACK</span></strong>
+<em>Sécuriser · Géolocaliser · Connecter</em>
+</nav>
+
+<div id="fallback">
+<div>
+<h2>Votre navigateur ne permet pas l'expérience 3D.</h2>
+<p id="fallback-msg">Activez WebGL puis rechargez la page.</p>
+</div>
+</div>
+
+<section class="caption center" data-a="0" data-b=".075">
+<h1 id="brand"></h1>
+<p>Technologies connectées pour le transport sécurisé, la géolocalisation et les logiciels métiers.</p>
+<div class="hint">FAITES DÉFILER ↓</div>
+</section>
+
+<section class="caption" data-a=".08" data-b=".20">
+<small>01 · L'entreprise</small>
+<h2>Une entreprise qui relie le terrain au numérique.</h2>
+<p>S.R.TRACK est présenté comme le pôle logiciel et réseau d'un écosystème IoT : cloud, logiciels métiers, interfaces et infrastructures de communication.</p>
+<div class="stats">
+<span class="stat">Orly · France</span>
+<span class="stat">IoT &amp; cloud</span>
+<span class="stat">Logiciels métiers</span>
+</div>
+</section>
+
+<section class="caption" data-a=".20" data-b=".37">
+<small>02 · Flotte sécurisée</small>
+<h2>Des fourgons réels. Des trajets suivis.</h2>
+<p>Les véhicules quittent l'atelier, leurs positions remontent en temps réel et les équipes peuvent surveiller les périmètres définis autour des opérations.</p>
+<div class="status">
+<i class="dot"></i>
+CONVOI CONNECTÉ · GPS ACTIF
+</div>
+</section>
+
+<section class="caption" data-a=".37" data-b=".52">
+<small>03 · Atelier technique</small>
+<h2>Le véhicule s'ouvre jusqu'à ses systèmes.</h2>
+<p>Le fourgon se désassemble progressivement : habillage, panneaux, équipements et électronique deviennent visibles. Les techniciens installent et testent les balises de géolocalisation.</p>
+<div class="status">
+<i class="dot"></i>
+INSTALLATION · DIAGNOSTIC · TEST
+</div>
+</section>
+
+<section class="caption" data-a=".52" data-b=".69">
+<small>04 · Logiciels &amp; cloud</small>
+<h2>Des équipes développent les outils qui pilotent le terrain.</h2>
+<p>Interfaces de suivi, applications métiers, données de flotte et services cloud sont réunis dans une salle de supervision animée.</p>
+<div class="stats">
+<span class="stat">API</span>
+<span class="stat">Cloud</span>
+<span class="stat">Interfaces</span>
+<span class="stat">IoT</span>
+</div>
+</section>
+
+<section class="caption" data-a=".69" data-b=".86">
+<small>05 · Sécurité numérique</small>
+<h2>La protection ne s'arrête pas au véhicule.</h2>
+<p>Une cellule dédiée visualise les flux, les accès et les alertes autour de l'infrastructure numérique. L'animation représente une supervision cybersécurité, sans prétendre décrire une architecture interne publique.</p>
+<div class="status">
+<i class="dot"></i>
+SUPERVISION · ALERTES · RÉSEAU
+</div>
+</section>
+
+<section class="caption center" data-a=".90" data-b="1">
+<small>SR.TRACK · ORLY</small>
+<h2>Du véhicule connecté au logiciel métier.</h2>
+<p>Un même fil conducteur : sécuriser, géolocaliser et connecter les opérations.</p>
+<div class="stats" style="justify-content:center">
+<span class="stat">39 rue de l'Aviation · 94310 Orly</span>
+<span class="stat">01 46 86 48 81</span>
+</div>
+</section>
+
 <div id="scroll"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.164.1/examples/js/loaders/GLTFLoader.js"></script>
-<script>
-(() => {
-'use strict';
-const canvas=document.getElementById('scene');
-if(!window.THREE){document.getElementById('fallback').classList.add('show');return;}
-const THREE=window.THREE;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x05070a);scene.fog=new THREE.Fog(0x05070a,30,180);
-const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,400);
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
-scene.add(new THREE.HemisphereLight(0xbfd7ff,0x10141b,1.65));
-const key=new THREE.DirectionalLight(0xffffff,2.4);key.position.set(18,28,22);scene.add(key);
-const goldLight=new THREE.PointLight(0xe7b45b,35,55);goldLight.position.set(0,9,-20);scene.add(goldLight);
-const cyanLight=new THREE.PointLight(0x38d5f0,25,70);cyanLight.position.set(0,7,-110);scene.add(cyanLight);
-const redLight=new THREE.PointLight(0xff3048,18,45);redLight.position.set(0,8,-220);scene.add(redLight);
-const mat=(color,rough=.48,metal=.15,extra={})=>new THREE.MeshPhysicalMaterial(Object.assign({color,roughness:rough,metalness:metal,clearcoat:.25,clearcoatRoughness:.18},extra));
-const basic=(color,extra={})=>new THREE.MeshBasicMaterial(Object.assign({color},extra));
-const box=(w,h,d,m,x=0,y=0,z=0,parent=scene)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);parent.add(o);return o};
-const cyl=(r,h,m,x=0,y=0,z=0,parent=scene)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,32),m);o.position.set(x,y,z);parent.add(o);return o};
-const textSprite=(text,color='#e7b45b',size=44)=>{const c=document.createElement('canvas');c.width=1024;c.height=180;const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);x.font='700 '+size+'px Arial';x.textAlign='center';x.textBaseline='middle';x.fillStyle=color;x.shadowColor=color;x.shadowBlur=14;x.fillText(text,512,92);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false}));s.scale.set(8,1.4,1);return s};
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// Ground / industrial site
-const ground=box(240,.3,520,mat(0x11151a,.82,.05),0,-.25,-160);
-const road=box(28,.04,480,mat(0x171b20,.9,.02),0,-.07,-160);
-for(let z=30;z>-410;z-=10){const line=box(.12,.025,5,basic(0xe7b45b),0,.02,z);line.material.opacity=.55;line.material.transparent=true}
-for(let i=0;i<1800;i++){const g=new THREE.BufferGeometry();const p=new Float32Array([ (Math.random()-.5)*220,Math.random()*25,30-Math.random()*470 ]);g.setAttribute('position',new THREE.BufferAttribute(p,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0x9db8d0,size:.035,transparent:true,opacity:.38})))}
+const canvas = document.getElementById('scene');
 
-// Headquarters: realistic industrial building with glass frontage and structural elements
-const HQ=new THREE.Group();HQ.position.set(0,0,-12);scene.add(HQ);
-box(54,.35,42,mat(0x151a20,.8,.08),0,.15,0,HQ);box(54,12,1.1,mat(0x303840,.55,.35),0,6,-20,HQ);box(1.2,12,40,mat(0x252b31,.58,.3),-26,6,0,HQ);box(1.2,12,40,mat(0x252b31,.58,.3),26,6,0,HQ);
-const glass=mat(0x173044,.15,.42,{transmission:.12,transparent:true,opacity:.72});for(let x=-20;x<=20;x+=8)box(6.9,10,.18,glass,x,6,-19.3,HQ);
-for(let x=-25;x<=25;x+=8.3)box(.28,12,.4,mat(0x4a5158,.35,.7),x,6,-19,HQ);for(let y=2;y<=10;y+=4)box(54,.22,.4,mat(0x4a5158,.35,.7),0,y,-19,HQ);
-const logo=textSprite('S.R.TRACK','#e7b45b',58);logo.position.set(0,9.1,-19);HQ.add(logo);
-
-// Detailed secure van factory function
-function makeVan(){
- const g=new THREE.Group();const parts=[];const white=mat(0xe4e7e9,.28,.38),dark=mat(0x11161b,.3,.72),rub=mat(0x080a0d,.88,.05),glassM=mat(0x101a22,.12,.55,{transmission:.18,transparent:true,opacity:.86});
- const body=box(5.2,2.45,9.5,white,0,2.05,0,g);parts.push({o:body,b:body.position.clone(),dir:new THREE.Vector3(0,0,1),amt:0});
- box(5.05,.85,3.2,white,0,3.55,-2.4,g);box(4.95,.85,3.2,white,0,3.55,2.4,g);
- // windshield and side windows
- box(4.4,1.25,.08,glassM,0,3.15,-4.78,g);box(4.15,1.1,.08,glassM,-2.61,3.15,-1.5,g);box(4.15,1.1,.08,glassM,2.61,3.15,-1.5,g);
- box(4.15,1.1,.08,glassM,-2.61,3.15,1.5,g);box(4.15,1.1,.08,glassM,2.61,3.15,1.5,g);
- // bumpers, grille, mirrors
- box(5.25,.28,.3,dark,0,1.05,-4.86,g);box(5.25,.28,.3,dark,0,1.05,4.86,g);box(2.2,.7,.12,dark,0,2.0,-4.95,g);
- [-2.9,2.9].forEach(x=>box(.25,.55,.7,dark,x,3.1,-4.9,g));
- // wheels
- [[-2.75,-3.0],[2.75,-3.0],[-2.75,3.0],[2.75,3.0]].forEach(([x,z])=>{const w=cyl(.82,.42,rub,x,1.0,z,g);w.rotation.z=Math.PI/2;const hub=cyl(.34,.45,mat(0x59636c,.3,.85),x,1,z,g);hub.rotation.z=Math.PI/2});
- // lights
- [-1.55,1.55].forEach(x=>{const l=box(.75,.38,.08,basic(0xfff1bf),x,2.25,-5.03,g);l.userData.light=true});
- // GPS roof pod + antenna
- const pod=cyl(.32,.16,mat(0x20272d,.25,.7),0,4.05,0,g);const antenna=cyl(.035,.65,mat(0x9da8b1,.3,.7),0,4.45,0,g);g.userData={parts,antenna,pod};
- // SRTRACK markings
- const side=textSprite('S.R.TRACK','#e7b45b',46);side.scale.set(4.2,.75,1);side.position.set(2.67,2.15,0);side.rotation.y=Math.PI/2;g.add(side);
- return g;
+function showFallback(msg){
+  if(msg) document.getElementById('fallback-msg').textContent = msg;
+  document.getElementById('fallback').classList.add('show');
 }
-const vans=[];for(let i=0;i<3;i++){const v=makeVan();v.position.set([-8,0,8][i],0,[4,0,-5][i]);scene.add(v);vans.push(v)}
 
-// Disassembly parts around the central workshop van
-const workshop=new THREE.Group();workshop.position.set(0,0,-72);scene.add(workshop);const wv=makeVan();workshop.add(wv);wv.scale.setScalar(1.05);
-const dis=[];function detachable(o,base,dir,amt){dis.push({o,b:base.clone(),d:dir.clone(),a:amt});}
-// extra panels / equipment representing a real vehicle being opened
-const p1=box(5.0,2.2,.12,mat(0x20262c,.45,.35),-3.0,2.2,0,workshop);const p2=box(5.0,2.2,.12,mat(0x20262c,.45,.35),3.0,2.2,0,workshop);detachable(p1,p1.position,new THREE.Vector3(-1,0,.2),4);detachable(p2,p2.position,new THREE.Vector3(1,0,.2),4);
-const rack=box(1.4,1.0,2.5,mat(0x252c32,.55,.5),-6,1.2,0,workshop);detachable(rack,rack.position,new THREE.Vector3(-1,0,0),5);
-const gpsUnit=box(.8,.35,.8,mat(0x182127,.32,.6),0,4.0,0,workshop);detachable(gpsUnit,gpsUnit.position,new THREE.Vector3(0,2.2,0),3);
+let renderer;
+try{
+  renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    powerPreference: 'high-performance'
+  });
+}catch(e){
+  console.error(e);
+  showFallback('WebGL est désactivé ou indisponible. Activez l\'accélération matérielle dans les paramètres du navigateur, puis rechargez la page.');
+  throw e;
+}
 
-// Technical workshop structure, lifts and tools
-for(let x=-12;x<=12;x+=8){box(.28,7,.28,mat(0x394047,.35,.75),x,3,-4,workshop);box(7,.18,.18,mat(0x394047,.35,.75),x,6.6,-4,workshop)}
-const workLight=basic(0xd8f3ff);for(let x=-10;x<=10;x+=5){const l=box(3.2,.05,.16,workLight,x,6.4,-4,workshop);l.material.opacity=.85;l.material.transparent=true}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
 
-// People: stylised human proportions with skin, clothing, hair, safety gear; animated work cycles
-function worker(color=0x2d6da3,vest=true){const g=new THREE.Group();const skin=mat(0xc98f73,.72,.02),shirt=mat(color,.6,.05),pants=mat(0x202833,.68,.08),boot=mat(0x111418,.72,.15),hair=mat(0x211812,.8,.02);
- const torso=box(.9,1.35,.5,shirt,0,2.25,0,g);const head=new THREE.Mesh(new THREE.SphereGeometry(.34,24,18),skin);head.position.y=3.2;g.add(head);const h=new THREE.Mesh(new THREE.SphereGeometry(.35,24,12,0,Math.PI*2,0,Math.PI*.55),hair);h.position.y=3.34;g.add(h);
- for(const s of [-1,1]){box(.32,1.1,.34,pants,s*.22,1.0,0,g);box(.34,.55,.55,boot,s*.22,.25,-.04,g);const arm=new THREE.Group();arm.position.set(s*.56,2.65,0);box(.28,1.1,.28,shirt,0,-.45,0,arm);g.add(arm);g.userData.arms=g.userData.arms||[];g.userData.arms.push(arm)}
- if(vest){const vm=mat(0xe7b84f,.52,.05);box(1.0,.9,.53,vm,0,2.3,-.02,g)}
- g.userData.phase=Math.random()*6.28;return g}
-const mechanics=[];for(let i=0;i<4;i++){const p=worker(i%2?0x2c6f9f:0x34495e,true);p.position.set([-7,7,-4,4][i],0,-70+[-2,1,2,-1][i]);p.rotation.y=[.5,-.6,1.3,-1.2][i];workshop.add(p);mechanics.push(p)}
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05070a);
+scene.fog = new THREE.Fog(0x05070a, 30, 180);
 
-// Animated GPS signal
-const gpsRings=[];for(let i=0;i<5;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(.6+i*.7,.025,10,64),basic(0x38d5f0,{transparent:true,opacity:.0}));r.rotation.x=Math.PI/2;r.position.set(0,4.3,-72);scene.add(r);gpsRings.push(r)}
-const signalLines=[];for(let i=0;i<20;i++){const g=new THREE.BufferGeometry();const arr=new Float32Array(6);g.setAttribute('position',new THREE.BufferAttribute(arr,3));const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:0x38d5f0,transparent:true,opacity:.3}));scene.add(l);signalLines.push(l)}
+const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, .1, 400);
 
-// Software / operations floor
-const office=new THREE.Group();office.position.set(0,0,-142);scene.add(office);box(48,.25,34,mat(0x11161c,.75,.08),0,.12,0,office);box(48,12,.3,mat(0x222a32,.45,.45),0,6,-15,office);
-for(let x=-18;x<=18;x+=9){box(7.8,6.5,.12,mat(0x142633,.18,.5,{transmission:.1,transparent:true,opacity:.65}),x,5.5,-14.8,office)}
-// desks and developers
-const developers=[];for(let i=0;i<6;i++){const x=-15+(i%3)*15,z=-6+Math.floor(i/3)*10;box(7,.18,2.2,mat(0x2a3138,.6,.25),x,1.15,z,office);box(.18,1.3,1.7,mat(0x161b21,.55,.3),x-3.2,.65,z,office);box(.18,1.3,1.7,mat(0x161b21,.55,.3),x+3.2,.65,z,office);const screen=box(2.9,1.7,.08,mat(0x071015,.18,.5,{emissive:0x03242e,emissiveIntensity:1.1}),x,2.45,z-.7,office);screen.userData.screen=true;const p=worker([0x314e7a,0x6a4935,0x315d50][i%3],false);p.position.set(x,0,z+1.5);p.rotation.y=Math.PI;office.add(p);developers.push(p)}
-const screenCanvas=document.createElement('canvas');screenCanvas.width=512;screenCanvas.height=256;const sc=screenCanvas.getContext('2d');const screenTex=new THREE.CanvasTexture(screenCanvas);screenTex.colorSpace=THREE.SRGBColorSpace;
-function drawDashboard(t){sc.fillStyle='#061016';sc.fillRect(0,0,512,256);sc.fillStyle='#38d5f0';sc.font='bold 18px Arial';sc.fillText('SRTRACK / FLEET CONTROL',22,28);sc.fillStyle='#a9b7c5';sc.font='12px Arial';sc.fillText('GPS  •  CLOUD  •  IOT  •  ALERTS',22,48);for(let i=0;i<5;i++){const y=76+i*30;sc.fillStyle=i===3?'#ff5364':'#1a3641';sc.fillRect(20,y,470,17);sc.fillStyle=i===3?'#ff5364':'#65e39a';sc.fillRect(26,y+5,80+((t*40+i*33)%330),7)}sc.strokeStyle='#e7b45b';sc.beginPath();for(let x=0;x<450;x+=10){const y=220+Math.sin(x*.035+t*2)*16; x===0?sc.moveTo(25+x,y):sc.lineTo(25+x,y)}sc.stroke();screenTex.needsUpdate=true}
-for(let i=0;i<8;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(2.9,1.7),new THREE.MeshBasicMaterial({map:screenTex,transparent:true}));s.position.set(-15+(i%3)*15,2.45,-6+Math.floor(i/3)*10-.72);office.add(s)}
+scene.add(new THREE.HemisphereLight(0xbfd7ff, 0x10141b, 1.65));
 
-// Cybersecurity room
-const cyber=new THREE.Group();cyber.position.set(0,0,-218);scene.add(cyber);box(52,.25,38,mat(0x0c1117,.85,.1),0,.12,0,cyber);for(let x=-20;x<=20;x+=10){box(9,.12,9,mat(0x141c24,.7,.1),x,.2,-2,cyber)}
-const analysts=[];for(let i=0;i<4;i++){const p=worker(i%2?0x202b4a:0x4a2b36,false);p.position.set([-15,-5,5,15][i],0,5);p.rotation.y=Math.PI;cyber.add(p);analysts.push(p)}
-const shield=new THREE.Mesh(new THREE.ShapeGeometry(new THREE.Shape()),basic(0x38d5f0));
-const ring=new THREE.Mesh(new THREE.TorusGeometry(9,.08,10,80),basic(0x38d5f0,{transparent:true,opacity:.4}));ring.rotation.x=Math.PI/2;ring.position.y=7;cyber.add(ring);
-const threatDots=[];for(let i=0;i<30;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),basic(i%5===0?0xff5364:0x38d5f0));d.userData={a:Math.random()*Math.PI*2,r:4+Math.random()*10,s:0.4+Math.random()};cyber.add(d);threatDots.push(d)}
-const cyberText=textSprite('SECURITY OPERATIONS','#38d5f0',42);cyberText.scale.set(8,1.2,1);cyberText.position.set(0,10,-2);cyber.add(cyberText);
+const key = new THREE.DirectionalLight(0xffffff, 2.4);
+key.position.set(18, 28, 22);
+scene.add(key);
 
-// Real 3D sample assets from Khronos; used as additional human/truck references. Procedural models remain as fallback.
-const mixers=[];const loader=new THREE.GLTFLoader();
-const assetBase='https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/';
-function loadGLB(url,scale,pos,rot,callback){loader.load(url,g=>{const o=g.scene;o.scale.setScalar(scale);o.position.set(...pos);o.rotation.y=rot||0;scene.add(o);if(g.animations?.length){const m=new THREE.AnimationMixer(o);g.animations.forEach(a=>m.clipAction(a).play());mixers.push(m)}if(callback)callback(o);},undefined,()=>{});}
-loadGLB(assetBase+'CesiumMilkTruck/GLB/CesiumMilkTruck.glb',1.7,[16,.2,-100],Math.PI*.5);
-loadGLB(assetBase+'CesiumMan/GLB/CesiumMan.glb',2.1,[11,0,-75],Math.PI*.75);
-loadGLB(assetBase+'CesiumMan/GLB/CesiumMan.glb',2.1,[-11,0,-75],-Math.PI*.75);
+const goldLight = new THREE.PointLight(0xe7b45b, 35, 55);
+goldLight.position.set(0, 9, -20);
+scene.add(goldLight);
 
-// Exploded animation: HQ panels separate, van opens, workshop equipment floats into diagnostic view
-const explode=[];HQ.traverse(o=>{if(o.isMesh && o!==ground){const b=o.position.clone();explode.push({o,b,d:new THREE.Vector3((o.position.x>=0?1:-1)*.4,Math.random()*.6,(o.position.z>=0?1:-1)*.5),a:Math.random()*3})}});
-function smooth(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
-const KF=[[0,[0,4,27],[0,3,-4]],[.07,[0,5,22],[0,4,-10]],[.16,[8,6,11],[0,2,-18]],[.25,[12,6,-46],[0,2,-70]],[.34,[8,5,-64],[0,2,-72]],[.46,[-10,4,-74],[0,2,-72]],[.58,[8,6,-130],[0,3,-142]],[.7,[-8,5,-145],[0,2,-142]],[.82,[10,6,-206],[0,3,-218]],[1,[0,7,-230],[0,4,-218]]];
-const cp=new THREE.Vector3(),cl=new THREE.Vector3();
-function cameraAt(p){let i=0;while(i<KF.length-2&&p>KF[i+1][0])i++;const A=KF[i],B=KF[i+1],u=smooth((p-A[0])/(B[0]-A[0]));cp.fromArray(A[1]).lerp(cl.fromArray(B[1]),u);cl.fromArray(A[2]).lerp(new THREE.Vector3().fromArray(B[2]),u)}
-let scrollP=0,targetP=0;addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;targetP=h>0?scrollY/h:0},{passive:true});
-const captions=[...document.querySelectorAll('.caption')];const progress=document.getElementById('progress');const brand=document.getElementById('brand');'SRTRACK'.split('').forEach((c,i)=>{const s=document.createElement('span');s.textContent=c;s.style.animationDelay=(.12+i*.08)+'s';brand.appendChild(s)});
-function updateCaption(p){captions.forEach(c=>{const a=parseFloat(c.dataset.a),b=parseFloat(c.dataset.b);let v=smooth((p-a)/.035)* (1-smooth((p-(b-.035))/.035));if(c.classList.contains('center')){c.style.opacity=v}else{c.style.opacity=v;c.style.transform='translateY('+(30*(1-v))+'px)';}c.style.pointerEvents=v>.5?'auto':'none'})}
-const clock=new THREE.Clock();
-function loop(){const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;scrollP+=(targetP-scrollP)*(1-Math.pow(.0008,dt));const p=scrollP;
- // HQ explodes early
- const he=smooth((p-.08)/.12);explode.forEach(q=>{q.o.position.copy(q.b).addScaledVector(q.d,he*q.a*3.2);});
- // vans travel along the road
- vans.forEach((v,i)=>{const d=smooth((p-.15-i*.025)/.22);v.position.z=[4,0,-5][i]-d*65;v.position.x=[-8,0,8][i]+Math.sin(t*.7+i)*.4;v.rotation.y=.01*Math.sin(t+i)});
- // workshop disassembly
- const de=smooth((p-.31)/.14);dis.forEach(q=>q.o.position.copy(q.b).addScaledVector(q.d,de*q.a));
- wv.rotation.y=Math.sin(t*.18)*.035;
- mechanics.forEach((m,i)=>{m.userData.arms?.forEach((a,j)=>a.rotation.x=-.65+Math.sin(t*3+i+j)*.35);m.position.x+=Math.sin(t*.4+i)*.001});
- // GPS waves
- gpsRings.forEach((r,i)=>{const q=(t*.42+i*.2)%1;r.scale.setScalar(.2+q*2.5);r.material.opacity=(1-q)*.65;r.position.y=4.3+q*2.2});
- signalLines.forEach((l,i)=>{const ang=i/20*Math.PI*2+t*.22;const a=new THREE.Vector3(0,5,-72);const b=new THREE.Vector3(Math.cos(ang)*18,9+Math.sin(t+i)*2,-72+Math.sin(ang)*18);l.geometry.attributes.position.setXYZ(0,a.x,a.y,a.z);l.geometry.attributes.position.setXYZ(1,b.x,b.y,b.z);l.geometry.attributes.position.needsUpdate=true;l.material.opacity=.08+.12*Math.abs(Math.sin(t*2+i))});
- drawDashboard(t);developers.forEach((p,i)=>p.userData.arms?.forEach((a,j)=>a.rotation.x=-.5+Math.sin(t*5+i+j)*.15));analysts.forEach((p,i)=>p.userData.arms?.forEach((a,j)=>a.rotation.x=-.7+Math.sin(t*2+i+j)*.12));
- ring.rotation.z=t*.06;threatDots.forEach((d,i)=>{const u=d.userData;const a=u.a+t*u.s;d.position.set(Math.cos(a)*u.r,7+Math.sin(a*1.7)*3,-218+Math.sin(a)*u.r*.7);d.material.opacity=.35+.65*Math.abs(Math.sin(t*3+i))});
- mixers.forEach(m=>m.update(dt));
- cameraAt(p);camera.position.lerp(cp,.08);camera.lookAt(cl);camera.position.x+=Math.sin(t*.25)*.12;camera.position.y+=Math.cos(t*.21)*.06;progress.style.width=(p*100)+'%';updateCaption(p);renderer.render(scene,camera);requestAnimationFrame(loop)}
-function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}addEventListener('resize',resize);resize();loop();
-})();
+const cyanLight = new THREE.PointLight(0x38d5f0, 25, 70);
+cyanLight.position.set(0, 7, -110);
+scene.add(cyanLight);
+
+const redLight = new THREE.PointLight(0xff3048, 18, 45);
+redLight.position.set(0, 8, -220);
+scene.add(redLight);
+
+const mat = (color, rough = .48, metal = .15, extra = {}) =>
+  new THREE.MeshPhysicalMaterial(Object.assign({
+    color,
+    roughness: rough,
+    metalness: metal,
+    clearcoat: .25,
+    clearcoatRoughness: .18
+  }, extra));
+
+const basic = (color, extra = {}) =>
+  new THREE.MeshBasicMaterial(Object.assign({ color }, extra));
+
+const box = (w, h, d, m, x = 0, y = 0, z = 0, parent = scene) => {
+  const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  o.position.set(x, y, z);
+  parent.add(o);
+  return o;
+};
+
+const textSprite = (text, color = '#e7b45b', size = 44) => {
+  const c = document.createElement('canvas');
+  c.width = 1024;
+  c.height = 180;
+  const x = c.getContext('2d');
+  x.clearRect(0, 0, c.width, c.height);
+  x.font = '700 ' + size + 'px Arial';
+  x.textAlign = 'center';
+  x.textBaseline = 'middle';
+  x.fillStyle = color;
+  x.shadowColor = color;
+  x.shadowBlur = 14;
+  x.fillText(text, 512, 92);
+
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: t,
+    transparent: true,
+    depthWrite: false
+  }));
+  s.scale.set(8, 1.4, 1);
+  return s;
+};
+
+
+/* ================= SOL INDUSTRIEL ================= */
+
+box(240, .3, 520, mat(0x11151a, .82, .05), 0, -.25, -160);
+box(28, .04, 480, mat(0x171b20, .9, .02), 0, -.07, -160);
+
+for(let z = 30; z > -410; z -= 10){
+  const line = box(.12, .025, 5, basic(0xe7b45b), 0, .02, z);
+  line.material.opacity = .55;
+  line.material.transparent = true;
+}
+
+
+/* ================= PARTICULES ================= */
+
+{
+  const N = 1800;
+  const pos = new Float32Array(N * 3);
+  for(let i = 0; i < N; i++){
+    pos[i * 3]     = (Math.random() - .5) * 220;
+    pos[i * 3 + 1] = Math.random() * 25;
+    pos[i * 3 + 2] = 30 - Math.random() * 470;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  scene.add(new THREE.Points(g, new THREE.PointsMaterial({
+    color: 0x9db8d0,
+    size: .08,
+    transparent: true,
+    opacity: .38
+  })));
+}
+
+
+/* ================= SIÈGE / BÂTIMENT ================= */
+
+const HQ = new THREE.Group();
+HQ.position.set(0, 0, -12);
+scene.add(HQ);
+
+box(54, .35, 42, mat(0x151a20, .8, .08), 0, .15, 0, HQ);
+box(54, 12, 1.1, mat(0x303840, .55, .35), 0, 6, -20, HQ);
+box(1.2, 12, 40, mat(0x252b31, .58, .3), -26, 6, 0, HQ);
+box(1.2, 12, 40, mat(0x252b31, .58, .3), 26, 6, 0, HQ);
+
+const glass = mat(0x173044, .15, .42, {
+  transmission: .12,
+  transparent: true,
+  opacity: .7
+});
+
+for(let x = -21; x <= 21; x += 7){
+  box(5.8, 9, .12, glass, x, 5.5, -19.3, HQ);
+}
+
+const hqLogo = textSprite('S.R.TRACK', '#e7b45b', 52);
+hqLogo.position.set(0, 8, -20);
+HQ.add(hqLogo);
+
+
+/* ================= VÉHICULE ================= */
+
+function createVan(){
+  const g = new THREE.Group();
+
+  const body = mat(0xe4e6e8, .35, .55);
+  const dark = mat(0x11151a, .25, .65);
+  const glassMat = mat(0x08131b, .08, .55, {
+    transmission: .08,
+    transparent: true,
+    opacity: .9
+  });
+
+  box(5.2, 2.1, 10.4, body, 0, 1.55, 0, g);
+  box(5, 1.4, 4.3, body, 0, 3.2, 2.6, g);
+  box(4.7, 1.1, 2.4, glassMat, 0, 3.35, 4.1, g);
+  box(4.7, 1.1, 2.3, glassMat, 0, 3.35, 1.6, g);
+
+  for(const x of [-2.7, 2.7]){
+    for(const z of [-3.3, 3.3]){
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(.72, .72, .45, 32), dark);
+      wheel.rotation.z = Math.PI / 2;
+      wheel.position.set(x, .72, z);
+      g.add(wheel);
+    }
+  }
+
+  for(const x of [-2.0, 2.0]){
+    const head = box(.8, .45, .12, basic(0xf8fbff), x, 2.15, -5.23, g);
+    head.material.opacity = .9;
+  }
+
+  const gps = box(.32, .12, .55, basic(0x38d5f0), 0, 4.02, 0, g);
+  gps.userData.gps = true;
+
+  return g;
+}
+
+
+/* ================= FLOTTES ================= */
+
+const vans = [];
+
+for(let i = 0; i < 3; i++){
+  const v = createVan();
+  v.position.set([-8, 0, 8][i], .1, [4, 0, -5][i]);
+  v.scale.setScalar(.95);
+  scene.add(v);
+  vans.push(v);
+}
+
+
+/* ================= ATELIER ================= */
+
+const workshop = new THREE.Group();
+workshop.position.set(0, 0, -72);
+scene.add(workshop);
+
+box(42, .25, 32, mat(0x12171c, .8, .1), 0, .12, 0, workshop);
+box(42, 9, .3, mat(0x22282e, .45, .45), 0, 4.5, -15, workshop);
+
+for(let x = -12; x <= 12; x += 8){
+  box(.28, 7, .28, mat(0x394047, .35, .75), x, 3, -4, workshop);
+  box(7, .18, .18, mat(0x394047, .35, .75), x, 6.6, -4, workshop);
+}
+
+const workLight = basic(0xd8f3ff);
+
+for(let x = -10; x <= 10; x += 5){
+  const l = box(3.2, .05, .16, workLight, x, 6.4, -4, workshop);
+  l.material.opacity = .85;
+  l.material.transparent = true;
+}
+
+
+/* ================= PERSONNES ================= */
+
+function worker(color = 0x2d6da3, vest = true){
+  const g = new THREE.Group();
+
+  const skin  = mat(0xc98f73, .72, .02);
+  const shirt = mat(color, .6, .05);
+  const pants = mat(0x202833, .68, .08);
+  const boot  = mat(0x111418, .72, .15);
+  const hair  = mat(0x211812, .8, .02);
+
+  box(.9, 1.35, .5, shirt, 0, 2.25, 0, g);
+
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.34, 24, 18), skin);
+  head.position.y = 3.2;
+  g.add(head);
+
+  const h = new THREE.Mesh(
+    new THREE.SphereGeometry(.35, 24, 12, 0, Math.PI * 2, 0, Math.PI * .55),
+    hair
+  );
+  h.position.y = 3.34;
+  g.add(h);
+
+  g.userData.arms = [];
+
+  for(const s of [-1, 1]){
+    box(.32, 1.1, .34, pants, s * .22, 1.0, 0, g);
+    box(.34, .55, .55, boot, s * .22, .25, -.04, g);
+
+    const arm = new THREE.Group();
+    arm.position.set(s * .56, 2.65, 0);
+    box(.28, 1.1, .28, shirt, 0, -.45, 0, arm);
+    g.add(arm);
+    g.userData.arms.push(arm);
+  }
+
+  if(vest){
+    box(1, .9, .53, mat(0xe7b84f, .52, .05), 0, 2.3, -.02, g);
+  }
+
+  g.userData.phase = Math.random() * 6.28;
+  return g;
+}
+
+const mechanics = [];
+
+for(let i = 0; i < 4; i++){
+  const p = worker(i % 2 ? 0x2c6f9f : 0x34495e, true);
+  /* position LOCALE à l'atelier (corrigé) */
+  p.position.set([-7, 7, -4, 4][i], 0, [-2, 1, 2, -1][i]);
+  p.rotation.y = [.5, -.6, 1.3, -1.2][i];
+  workshop.add(p);
+  mechanics.push(p);
+}
+
+
+/* ================= GPS ================= */
+
+const gpsRings = [];
+
+for(let i = 0; i < 5; i++){
+  const r = new THREE.Mesh(
+    new THREE.TorusGeometry(.6 + i * .7, .025, 10, 64),
+    basic(0x38d5f0, { transparent: true, opacity: 0 })
+  );
+  r.rotation.x = Math.PI / 2;
+  r.position.set(0, 4.3, -72);
+  scene.add(r);
+  gpsRings.push(r);
+}
+
+const signalLines = [];
+
+for(let i = 0; i < 20; i++){
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+  const l = new THREE.Line(g, new THREE.LineBasicMaterial({
+    color: 0x38d5f0,
+    transparent: true,
+    opacity: .3
+  }));
+  scene.add(l);
+  signalLines.push(l);
+}
+
+
+/* ================= BUREAUX / DÉVELOPPEURS ================= */
+
+const office = new THREE.Group();
+office.position.set(0, 0, -142);
+scene.add(office);
+
+box(48, .25, 34, mat(0x11161c, .75, .08), 0, .12, 0, office);
+box(48, 12, .3, mat(0x222a32, .45, .45), 0, 6, -15, office);
+
+for(let x = -18; x <= 18; x += 9){
+  box(7.8, 6.5, .12, mat(0x142633, .18, .5, {
+    transmission: .1,
+    transparent: true,
+    opacity: .65
+  }), x, 5.5, -14.8, office);
+}
+
+const developers = [];
+
+for(let i = 0; i < 6; i++){
+  const x = -15 + (i % 3) * 15;
+  const z = -6 + Math.floor(i / 3) * 10;
+
+  box(7, .18, 2.2, mat(0x2a3138, .6, .25), x, 1.15, z, office);
+  box(.18, 1.3, 1.7, mat(0x161b21, .55, .3), x - 3.2, .65, z, office);
+  box(.18, 1.3, 1.7, mat(0x161b21, .55, .3), x + 3.2, .65, z, office);
+
+  box(2.9, 1.7, .08, mat(0x071015, .18, .5, {
+    emissive: 0x03242e,
+    emissiveIntensity: 1.1
+  }), x, 2.45, z - .7, office);
+
+  const p = worker([0x314e7a, 0x6a4935, 0x315d50][i % 3], false);
+  p.position.set(x, 0, z + 1.5);
+  p.rotation.y = Math.PI;
+  office.add(p);
+  developers.push(p);
+}
+
+
+/* ================= DASHBOARD ================= */
+
+const screenCanvas = document.createElement('canvas');
+screenCanvas.width = 512;
+screenCanvas.height = 256;
+const sc = screenCanvas.getContext('2d');
+
+const screenTex = new THREE.CanvasTexture(screenCanvas);
+screenTex.colorSpace = THREE.SRGBColorSpace;
+
+function drawDashboard(t){
+  sc.fillStyle = '#061016';
+  sc.fillRect(0, 0, 512, 256);
+
+  sc.fillStyle = '#38d5f0';
+  sc.font = 'bold 18px Arial';
+  sc.fillText('SRTRACK / FLEET CONTROL', 22, 28);
+
+  sc.fillStyle = '#a9b7c5';
+  sc.font = '12px Arial';
+  sc.fillText('GPS  •  CLOUD  •  IOT  •  ALERTS', 22, 48);
+
+  for(let i = 0; i < 5; i++){
+    const y = 76 + i * 30;
+    sc.fillStyle = i === 3 ? '#ff5364' : '#1a3641';
+    sc.fillRect(20, y, 470, 17);
+    sc.fillStyle = i === 3 ? '#ff5364' : '#65e39a';
+    sc.fillRect(26, y + 5, 80 + ((t * 40 + i * 33) % 330), 7);
+  }
+
+  sc.strokeStyle = '#e7b45b';
+  sc.beginPath();
+  for(let x = 0; x < 450; x += 10){
+    const y = 220 + Math.sin(x * .035 + t * 2) * 16;
+    if(x === 0) sc.moveTo(25 + x, y);
+    else sc.lineTo(25 + x, y);
+  }
+  sc.stroke();
+
+  screenTex.needsUpdate = true;
+}
+
+for(let i = 0; i < 6; i++){
+  const s = new THREE.Mesh(
+    new THREE.PlaneGeometry(2.9, 1.7),
+    new THREE.MeshBasicMaterial({ map: screenTex, transparent: true })
+  );
+  s.position.set(-15 + (i % 3) * 15, 2.45, -6 + Math.floor(i / 3) * 10 - .75);
+  office.add(s);
+}
+
+
+/* ================= CYBERSÉCURITÉ ================= */
+
+const cyber = new THREE.Group();
+cyber.position.set(0, 0, -218);
+scene.add(cyber);
+
+box(52, .25, 38, mat(0x0c1117, .85, .1), 0, .12, 0, cyber);
+
+for(let x = -20; x <= 20; x += 10){
+  box(9, .12, 9, mat(0x141c24, .7, .1), x, .2, -2, cyber);
+}
+
+const analysts = [];
+
+for(let i = 0; i < 4; i++){
+  const p = worker(i % 2 ? 0x202b4a : 0x4a2b36, false);
+  p.position.set([-15, -5, 5, 15][i], 0, 5);
+  p.rotation.y = Math.PI;
+  cyber.add(p);
+  analysts.push(p);
+}
+
+const ring = new THREE.Mesh(
+  new THREE.TorusGeometry(9, .08, 10, 80),
+  basic(0x38d5f0, { transparent: true, opacity: .4 })
+);
+ring.rotation.x = Math.PI / 2;
+ring.position.y = 7;
+cyber.add(ring);
+
+const threatDots = [];
+
+for(let i = 0; i < 30; i++){
+  const d = new THREE.Mesh(
+    new THREE.SphereGeometry(.09, 8, 8),
+    basic(i % 5 === 0 ? 0xff5364 : 0x38d5f0, { transparent: true })
+  );
+  d.userData = {
+    a: Math.random() * Math.PI * 2,
+    r: 4 + Math.random() * 10,
+    s: .4 + Math.random()
+  };
+  cyber.add(d);
+  threatDots.push(d);
+}
+
+const cyberText = textSprite('SECURITY OPERATIONS', '#38d5f0', 42);
+cyberText.scale.set(8, 1.2, 1);
+cyberText.position.set(0, 10, -2);
+cyber.add(cyberText);
+
+
+/* ================= MODÈLES GLTF EXTERNES ================= */
+
+const mixers = [];
+const loader = new GLTFLoader();
+
+const assetBase = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/';
+
+function loadGLB(url, scale, pos, rot){
+  loader.load(
+    url,
+    g => {
+      const o = g.scene;
+      o.scale.setScalar(scale);
+      o.position.set(...pos);
+      o.rotation.y = rot || 0;
+      scene.add(o);
+
+      if(g.animations && g.animations.length){
+        const m = new THREE.AnimationMixer(o);
+        g.animations.forEach(a => m.clipAction(a).play());
+        mixers.push(m);
+      }
+    },
+    undefined,
+    err => console.warn('Modèle GLB non chargé (optionnel) :', url)
+  );
+}
+
+loadGLB(assetBase + 'CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb', 1.7, [16, .2, -100], Math.PI * .5);
+loadGLB(assetBase + 'CesiumMan/glTF-Binary/CesiumMan.glb', 2.1, [11, 0, -75], Math.PI * .75);
+loadGLB(assetBase + 'CesiumMan/glTF-Binary/CesiumMan.glb', 2.1, [-11, 0, -75], -Math.PI * .75);
+
+
+/* ================= DÉSASSEMBLAGE ================= */
+
+const explode = [];
+
+HQ.traverse(o => {
+  if(o.isMesh){
+    explode.push({
+      o,
+      b: o.position.clone(),
+      d: new THREE.Vector3(
+        (o.position.x >= 0 ? 1 : -1) * .4,
+        Math.random() * .6,
+        (o.position.z >= 0 ? 1 : -1) * .5
+      ),
+      a: Math.random() * 3
+    });
+  }
+});
+
+function smooth(x){
+  x = Math.max(0, Math.min(1, x));
+  return x * x * (3 - 2 * x);
+}
+
+
+/* ================= CAMÉRA ================= */
+
+const KF = [
+  [0,   [0, 4, 27],     [0, 3, -4]],
+  [.07, [0, 5, 22],     [0, 4, -10]],
+  [.16, [8, 6, 11],     [0, 2, -18]],
+  [.25, [12, 6, -46],   [0, 2, -70]],
+  [.34, [8, 5, -64],    [0, 2, -72]],
+  [.46, [-10, 4, -74],  [0, 2, -72]],
+  [.58, [8, 6, -130],   [0, 3, -142]],
+  [.7,  [-8, 5, -145],  [0, 2, -142]],
+  [.82, [10, 6, -206],  [0, 3, -218]],
+  [1,   [0, 7, -230],   [0, 4, -218]]
+];
+
+const cp = new THREE.Vector3();
+const cl = new THREE.Vector3();
+const tmp = new THREE.Vector3();
+
+function cameraAt(p){
+  let i = 0;
+  while(i < KF.length - 2 && p > KF[i + 1][0]) i++;
+
+  const A = KF[i];
+  const B = KF[i + 1];
+  const u = smooth((p - A[0]) / (B[0] - A[0]));
+
+  cp.fromArray(A[1]).lerp(tmp.fromArray(B[1]), u);
+  cl.fromArray(A[2]).lerp(tmp.fromArray(B[2]), u);
+}
+
+
+/* ================= SCROLL ================= */
+
+let scrollP = 0;
+let targetP = 0;
+
+function onScroll(){
+  const h = document.documentElement.scrollHeight - innerHeight;
+  targetP = h > 0 ? scrollY / h : 0;
+}
+addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const captions = [...document.querySelectorAll('.caption')];
+const progress = document.getElementById('progress');
+const brand = document.getElementById('brand');
+
+'S.R.TRACK'.split('').forEach((c, i) => {
+  const s = document.createElement('span');
+  s.textContent = c;
+  s.style.animationDelay = (.12 + i * .08) + 's';
+  brand.appendChild(s);
+});
+
+function updateCaption(p){
+  captions.forEach(c => {
+    const a = parseFloat(c.dataset.a);
+    const b = parseFloat(c.dataset.b);
+
+    const v = smooth((p - a) / .035) * (1 - smooth((p - (b - .035)) / .035));
+
+    c.style.opacity = v;
+
+    if(!c.classList.contains('center')){
+      c.style.transform = 'translateY(' + (30 * (1 - v)) + 'px)';
+    }
+
+    c.style.pointerEvents = v > .5 ? 'auto' : 'none';
+  });
+}
+
+
+/* ================= ANIMATION PRINCIPALE ================= */
+
+const clock = new THREE.Clock();
+
+function loop(){
+  const dt = Math.min(clock.getDelta(), .05);
+  const t = clock.elapsedTime;
+
+  scrollP += (targetP - scrollP) * (1 - Math.pow(.0008, dt));
+  const p = scrollP;
+
+  /* Bâtiment */
+  const he = smooth((p - .08) / .12);
+
+  explode.forEach(q => {
+    q.o.position.copy(q.b).addScaledVector(q.d, he * q.a * 3.2);
+  });
+
+  /* Fourgons */
+  vans.forEach((v, i) => {
+    const d = smooth((p - .15 - i * .025) / .22);
+    v.position.z = [4, 0, -5][i] - d * 65;
+    v.position.x = [-8, 0, 8][i] + Math.sin(t * .7 + i) * .4;
+    v.rotation.y = .01 * Math.sin(t + i);
+  });
+
+  /* Techniciens */
+  mechanics.forEach((m, i) => {
+    m.userData.arms.forEach((a, j) => {
+      a.rotation.x = -.65 + Math.sin(t * 3 + i + j) * .35;
+    });
+  });
+
+  /* GPS */
+  gpsRings.forEach((r, i) => {
+    const q = (t * .42 + i * .2) % 1;
+    r.scale.setScalar(.2 + q * 2.5);
+    r.material.opacity = (1 - q) * .65;
+    r.position.y = 4.3 + q * 2.2;
+  });
+
+  signalLines.forEach((l, i) => {
+    const ang = i / 20 * Math.PI * 2 + t * .22;
+    const pos = l.geometry.attributes.position;
+    pos.setXYZ(0, 0, 5, -72);
+    pos.setXYZ(
+      1,
+      Math.cos(ang) * 18,
+      9 + Math.sin(t + i) * 2,
+      -72 + Math.sin(ang) * 18
+    );
+    pos.needsUpdate = true;
+    l.material.opacity = .08 + .12 * Math.abs(Math.sin(t * 2 + i));
+  });
+
+  /* Développeurs */
+  drawDashboard(t);
+
+  developers.forEach((d, i) => {
+    d.userData.arms.forEach((a, j) => {
+      a.rotation.x = -.5 + Math.sin(t * 5 + i + j) * .15;
+    });
+  });
+
+  /* Cybersécurité */
+  analysts.forEach((d, i) => {
+    d.userData.arms.forEach((a, j) => {
+      a.rotation.x = -.7 + Math.sin(t * 2 + i + j) * .12;
+    });
+  });
+
+  ring.rotation.z = t * .06;
+
+  threatDots.forEach((d, i) => {
+    const u = d.userData;
+    const a = u.a + t * u.s;
+    d.position.set(
+      Math.cos(a) * u.r,
+      7 + Math.sin(a * 1.7) * 3,
+      Math.sin(a) * u.r * .7
+    );
+    d.material.opacity = .35 + .65 * Math.abs(Math.sin(t * 3 + i));
+  });
+
+  /* Modèles animés */
+  mixers.forEach(m => m.update(dt));
+
+  /* Caméra */
+  cameraAt(p);
+  camera.position.lerp(cp, .08);
+  camera.lookAt(cl);
+  camera.position.x += Math.sin(t * .25) * .12;
+  camera.position.y += Math.cos(t * .21) * .06;
+
+  /* Interface */
+  progress.style.width = (p * 100) + '%';
+  updateCaption(p);
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+function resize(){
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+}
+
+addEventListener('resize', resize);
+resize();
+loop();
 </script>
+
 </body>
 </html>
