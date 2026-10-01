@@ -1,343 +1,2863 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S.R.TRACK – Transport sécurisé, géolocalisation et logiciels métiers</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>S.R.TRACK — Solutions connectées pour le transport</title>
+
 <style>
-:root{--ink:#0a0d11;--steel:#9aa7b4;--paper:#eef2f5;--amber:#e8b04a;--cyan:#3cd2ee}
-*{box-sizing:border-box;margin:0}
-html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--paper);font:400 16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
-#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
-h1,h2{font-family:"Barlow Semi Condensed",system-ui,sans-serif;font-weight:600;line-height:1.02}
-header{position:fixed;z-index:40;top:0;left:0;right:0;padding:18px 4vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#0a0d11cc,transparent)}
-header b{font:700 22px "Barlow Semi Condensed",sans-serif;letter-spacing:.06em}
-header b i{font-style:normal;color:var(--amber)}
-header a{color:var(--paper);text-decoration:none;font-size:14px;border:1px solid #ffffff40;padding:8px 16px;border-radius:3px}
-header a:hover,header a:focus-visible{background:var(--amber);color:#111;border-color:var(--amber)}
-.pg{position:fixed;z-index:20;left:4vw;bottom:9vh;width:min(540px,92vw);padding:24px 26px;background:#0a0d11d6;border-left:3px solid var(--amber);backdrop-filter:blur(10px);opacity:0;transform:translateY(30px);pointer-events:none;transition:opacity .9s ease,transform .9s ease}
-.pg.on{opacity:1;transform:none;pointer-events:auto;transition-delay:.9s}
-.pg h2{font-size:clamp(1.9rem,3.4vw,2.9rem);margin-bottom:10px}
-.pg p{color:#c3ccd5;max-width:60ch}
-.pg ul{list-style:none;padding:0;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
-.pg li{font-size:13px;padding:6px 12px;border:1px solid #ffffff2a;border-radius:3px;color:#dfe6ec}
-.pg.hero{left:50%;top:46%;bottom:auto;width:min(880px,92vw);text-align:center;border:0;background:none;backdrop-filter:none;translate:-50% -50%}
-.pg.hero.on{transition-delay:.2s}
-.pg.hero h1{font-size:clamp(3.2rem,11vw,8.5rem);letter-spacing:.04em;text-shadow:0 4px 40px #000}
-.pg.hero p{margin:14px auto 0;font-size:1.15rem;color:#e3e9ee;text-shadow:0 2px 20px #000}
-.pg.hero .hint{margin-top:34px;font-size:13px;color:var(--amber);letter-spacing:.14em}
-.pg.end{left:50%;top:50%;bottom:auto;translate:-50% -50%;text-align:center;border:0;width:min(760px,92vw)}
-.btn{display:inline-block;margin-top:20px;padding:12px 24px;background:var(--amber);color:#111;font-weight:500;text-decoration:none;border-radius:3px}
-.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-#dots{position:fixed;z-index:40;right:2.2vw;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;align-items:flex-end}
-#dots button{display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--steel);font:500 12px "IBM Plex Sans",sans-serif;cursor:pointer}
-#dots button i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--steel);transition:.4s}
-#dots button.on{color:#fff}
-#dots button.on i{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 5px #e8b04a33}
-#dots button:focus-visible{outline:2px solid var(--amber)}
-#wipe{position:fixed;z-index:30;left:0;right:0;top:100%;height:3px;background:var(--amber);box-shadow:0 0 50px 14px #e8b04a77;pointer-events:none;opacity:0}
-#wipe.go{animation:sweep 1.3s ease-in-out}
-@keyframes sweep{0%{top:104%;opacity:1}100%{top:-4%;opacity:1}}
-#load{position:fixed;inset:0;z-index:90;background:var(--ink);display:grid;place-items:center;transition:opacity .9s}
-#load.off{opacity:0;pointer-events:none}
-#load div{width:220px;text-align:center;font:600 20px "Barlow Semi Condensed",sans-serif;letter-spacing:.08em}
-#load i{display:block;height:2px;margin-top:14px;background:linear-gradient(90deg,var(--amber),var(--cyan));width:0;transition:width .3s}
-#err{position:fixed;z-index:95;left:10px;bottom:10px;max-width:70vw;font:12px monospace;color:#ff8a96;background:#000a;padding:6px 10px;display:none}
-#fallback{display:none;position:fixed;inset:0;z-index:100;background:var(--ink);place-items:center;text-align:center;padding:30px}
-#fallback.show{display:grid}
-@media(max-width:700px){#dots button span{display:none}.pg{padding:18px}}
-@media(prefers-reduced-motion:reduce){*{transition-duration:.01s!important;animation-duration:.01s!important}}
+
+:root{
+    --bg:#05080c;
+    --panel:rgba(7,11,16,.88);
+    --text:#f4f6f8;
+    --muted:#aeb8c4;
+    --gold:#e5ad50;
+    --cyan:#35d5ef;
+    --green:#52dc91;
+    --red:#ff5263;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    background:#05080c;
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#05080c;
+    color:var(--text);
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    overflow-x:hidden;
+}
+
+#scene{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+#scroll{
+    height:900vh;
+}
+
+#progress{
+    position:fixed;
+    top:0;
+    left:0;
+    height:3px;
+    width:0;
+    z-index:100;
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            var(--cyan)
+        );
+    box-shadow:
+        0 0 20px rgba(53,213,239,.6);
+}
+
+header{
+    position:fixed;
+    z-index:50;
+    top:0;
+    left:0;
+    right:0;
+
+    padding:
+        22px
+        5vw;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:
+        linear-gradient(
+            rgba(3,6,9,.85),
+            transparent
+        );
+}
+
+.logo{
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:.08em;
+}
+
+.logo span{
+    color:var(--gold);
+}
+
+.header-right{
+    color:#9ca8b4;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+.scene-text{
+    position:fixed;
+    z-index:20;
+
+    left:5vw;
+    bottom:8vh;
+
+    width:min(590px,88vw);
+
+    padding:
+        25px
+        28px;
+
+    border-left:
+        3px solid
+        var(--gold);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(4,8,12,.94),
+            rgba(4,8,12,.72),
+            transparent
+        );
+
+    backdrop-filter:blur(10px);
+
+    opacity:0;
+    transform:translateY(30px);
+
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+}
+
+.scene-text.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.scene-text.center{
+    left:50%;
+    bottom:auto;
+    top:50%;
+
+    transform:
+        translate(-50%,calc(-50% + 30px));
+
+    text-align:center;
+
+    border-left:0;
+    background:none;
+
+    width:min(900px,90vw);
+}
+
+.scene-text.center.active{
+    transform:
+        translate(-50%,-50%);
+}
+
+.kicker{
+    color:var(--cyan);
+    font-size:10px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:
+        clamp(
+            4rem,
+            12vw,
+            9rem
+        );
+
+    letter-spacing:.08em;
+    line-height:.9;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 10%,
+            #e7b45b 85%
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+h2{
+    font-size:
+        clamp(
+            1.7rem,
+            3.5vw,
+            3rem
+        );
+
+    line-height:1.05;
+
+    margin-bottom:12px;
+}
+
+p{
+    color:var(--muted);
+    line-height:1.65;
+    font-size:15px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+
+    margin-top:18px;
+}
+
+.tag{
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        rgba(10,16,23,.85);
+
+    border-radius:6px;
+
+    padding:
+        8px
+        12px;
+
+    color:#dbe2e8;
+
+    font-size:11px;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    margin-top:18px;
+
+    color:#c5ced7;
+
+    font-size:10px;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:
+        0 0 12px
+        var(--green);
+}
+
+.scroll-hint{
+    margin-top:35px;
+
+    color:var(--cyan);
+
+    font-size:10px;
+
+    letter-spacing:.28em;
+
+    animation:
+        floating 1.7s
+        ease-in-out
+        infinite;
+}
+
+@keyframes floating{
+
+    0%,100%{
+        transform:translateY(0);
+        opacity:1;
+    }
+
+    50%{
+        transform:translateY(6px);
+        opacity:.45;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .header-right{
+        display:none;
+    }
+
+    .scene-text{
+        left:4vw;
+        width:92vw;
+        bottom:5vh;
+        padding:18px;
+    }
+
+    h2{
+        font-size:1.6rem;
+    }
+
+    p{
+        font-size:13px;
+    }
+
+}
+
 </style>
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}
-</script>
 </head>
+
 <body>
+
 <canvas id="scene"></canvas>
-<header><b>S.R.<i>TRACK</i></b><a href="tel:+33146864881">01 46 86 48 81</a></header>
-<nav id="dots" aria-label="Pages"></nav>
-<div id="wipe"></div>
-<div id="load"><div>S.R.TRACK<i id="bar"></i></div></div>
-<div id="err"></div>
-<div id="fallback"><div><h2>La 3D n'est pas disponible sur ce navigateur.</h2><p id="fbmsg">Activez WebGL et l'accélération matérielle, puis rechargez la page.</p></div></div>
 
-<section class="pg hero">
-<h1>S.R.TRACK</h1>
-<p>Sécuriser, géolocaliser et connecter vos opérations de transport.</p>
-<div class="hint">Faites défiler pour entrer</div>
+<div id="progress"></div>
+
+<header>
+
+    <div class="logo">
+        S.R.<span>TRACK</span>
+    </div>
+
+    <div class="header-right">
+        Transport · IoT · Logiciels · Sécurité
+    </div>
+
+</header>
+
+
+<!-- INTRODUCTION -->
+
+<section
+    class="scene-text center active"
+    data-start="0"
+    data-end=".09"
+>
+
+    <div class="kicker">
+        Technologie connectée pour le transport
+    </div>
+
+    <h1>S.R.TRACK</h1>
+
+    <p>
+        Sécuriser les véhicules.
+        Géolocaliser les opérations.
+        Connecter le terrain au logiciel.
+    </p>
+
+    <div class="scroll-hint">
+        DÉFILEZ POUR ENTRER
+    </div>
+
 </section>
-<section class="pg">
-<h2>Une entreprise qui relie le terrain au numérique</h2>
-<p>S.R.TRACK est le pôle logiciel et réseau d'un écosystème IoT : cloud, logiciels métiers, interfaces et infrastructures de communication. Derrière la façade, l'atelier, les véhicules et les équipes travaillent ensemble.</p>
-<ul><li>Orly, France</li><li>IoT et cloud</li><li>Logiciels métiers</li></ul>
+
+
+<!-- ENTREPRISE -->
+
+<section
+    class="scene-text"
+    data-start=".09"
+    data-end=".22"
+>
+
+    <div class="kicker">
+        01 · L'entreprise
+    </div>
+
+    <h2>
+        Une entreprise pensée autour du véhicule connecté.
+    </h2>
+
+    <p>
+        S.R.TRACK associe les infrastructures de communication,
+        la géolocalisation, les technologies IoT, les logiciels
+        métiers et les outils de supervision.
+    </p>
+
+    <div class="tags">
+
+        <span class="tag">IoT</span>
+        <span class="tag">Cloud</span>
+        <span class="tag">GPS</span>
+        <span class="tag">Logiciels</span>
+
+    </div>
+
 </section>
-<section class="pg">
-<h2>L'atelier : installation et tests des balises</h2>
-<p>Chaque fourgon est équipé, raccordé et testé avant sa remise : balise de géolocalisation, alimentation, diagnostic et contrôle du signal.</p>
-<ul><li>Installation</li><li>Diagnostic</li><li>Test GPS</li></ul>
+
+
+<!-- FLOTTES -->
+
+<section
+    class="scene-text"
+    data-start=".22"
+    data-end=".37"
+>
+
+    <div class="kicker">
+        02 · Flotte connectée
+    </div>
+
+    <h2>
+        Chaque véhicule devient une source d'information.
+    </h2>
+
+    <p>
+        Les fourgons circulent sur le site et transmettent
+        leur position. Les équipes peuvent visualiser les
+        déplacements et les événements importants.
+    </p>
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        GPS · POSITION · ALERTES
+
+    </div>
+
 </section>
-<section class="pg">
-<h2>Des convois suivis de bout en bout</h2>
-<p>Les véhicules quittent l'atelier, leur position remonte en continu et les équipes surveillent les périmètres définis autour de chaque opération.</p>
-<ul><li>Position en temps réel</li><li>Zones surveillées</li><li>Alertes</li></ul>
+
+
+<!-- ATELIER -->
+
+<section
+    class="scene-text"
+    data-start=".37"
+    data-end=".53"
+>
+
+    <div class="kicker">
+        03 · Atelier technique
+    </div>
+
+    <h2>
+        Installation et maintenance directement sur les véhicules.
+    </h2>
+
+    <p>
+        Les techniciens travaillent sur les fourgons,
+        démontent certains éléments et installent les équipements
+        de géolocalisation avant de réaliser les tests.
+    </p>
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        INSTALLATION · DIAGNOSTIC · TEST
+
+    </div>
+
 </section>
-<section class="pg">
-<h2>Les équipes qui développent les outils du terrain</h2>
-<p>Interfaces de suivi, applications métiers, données de flotte et services cloud sont conçus au même endroit, au plus près des besoins d'exploitation.</p>
-<ul><li>API</li><li>Cloud</li><li>Interfaces</li><li>IoT</li></ul>
+
+
+<!-- LOGICIEL -->
+
+<section
+    class="scene-text"
+    data-start=".53"
+    data-end=".70"
+>
+
+    <div class="kicker">
+        04 · Logiciels & Cloud
+    </div>
+
+    <h2>
+        Le terrain est piloté par des logiciels.
+    </h2>
+
+    <p>
+        Des développeurs travaillent sur les interfaces,
+        les données de flotte, les services cloud et les
+        applications utilisées par les équipes.
+    </p>
+
+    <div class="tags">
+
+        <span class="tag">API</span>
+        <span class="tag">Cloud</span>
+        <span class="tag">Applications</span>
+        <span class="tag">Data</span>
+
+    </div>
+
 </section>
-<section class="pg">
-<h2>La protection ne s'arrête pas au véhicule</h2>
-<p>Une cellule de supervision suit les flux, les accès et les alertes de l'infrastructure numérique. Cette scène illustre le principe, sans décrire l'architecture interne de l'entreprise.</p>
-<ul><li>Supervision</li><li>Alertes</li><li>Réseau</li></ul>
+
+
+<!-- CYBER -->
+
+<section
+    class="scene-text"
+    data-start=".70"
+    data-end=".86"
+>
+
+    <div class="kicker">
+        05 · Sécurité numérique
+    </div>
+
+    <h2>
+        Une supervision permanente des infrastructures.
+    </h2>
+
+    <p>
+        Une salle dédiée surveille les flux, les systèmes,
+        les accès et les événements de sécurité afin de
+        maintenir l'environnement numérique sous contrôle.
+    </p>
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        RÉSEAU · SURVEILLANCE · ALERTES
+
+    </div>
+
 </section>
-<section class="pg end">
-<h2>Du véhicule connecté au logiciel métier</h2>
-<p>S.R.TRACK, 39 rue de l'Aviation, 94310 Orly.</p>
-<a class="btn" href="tel:+33146864881">Appeler le 01 46 86 48 81</a>
+
+
+<!-- FIN -->
+
+<section
+    class="scene-text center"
+    data-start=".88"
+    data-end="1"
+>
+
+    <div class="kicker">
+        S.R.TRACK
+    </div>
+
+    <h2>
+        Du véhicule connecté au logiciel métier.
+    </h2>
+
+    <p>
+        Une technologie pensée pour rapprocher
+        les opérations physiques et le monde numérique.
+    </p>
+
+    <div class="tags" style="justify-content:center">
+
+        <span class="tag">
+            Orly · France
+        </span>
+
+        <span class="tag">
+            Transport connecté
+        </span>
+
+        <span class="tag">
+            IoT
+        </span>
+
+    </div>
+
 </section>
 
-<script type="module">
-import * as THREE from 'three';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {clone as skClone} from 'three/addons/utils/SkeletonUtils.js';
 
-/* ===== VOS PROPRES MODÈLES (optionnel) : mettez l'URL d'un fichier .glb pour remplacer le véhicule généré.
-   Orientation attendue : avant du véhicule vers -Z, taille réelle en mètres. ===== */
-const CUSTOM={van:'',truck:''};
+<div id="scroll"></div>
 
-const $=id=>document.getElementById(id);
-addEventListener('error',e=>{const b=$('err');b.style.display='block';b.textContent='Erreur : '+e.message});
-const fail=m=>{if(m)$('fbmsg').textContent=m;$('fallback').classList.add('show');$('load').classList.add('off')};
-let renderer;
-try{renderer=new THREE.WebGLRenderer({canvas:$('scene'),antialias:true,powerPreference:'high-performance'})}
-catch(e){fail("WebGL est désactivé. Activez l'accélération matérielle du navigateur puis rechargez.");throw e}
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.05;
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x0b0f15);
-scene.fog=new THREE.Fog(0x0b0f15,60,260);
-scene.environment=new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(),.04).texture;
-scene.environmentIntensity=.55;
-const camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,.1,500);
-scene.add(new THREE.HemisphereLight(0xb8ccff,0x1a1d22,.8));
-const sun=new THREE.DirectionalLight(0xdfe8ff,2);
-sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
-Object.assign(sun.shadow.camera,{left:-45,right:45,top:45,bottom:-45,near:1,far:140});
-sun.shadow.bias=-.0004;
-scene.add(sun,sun.target);
+<script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js"></script>
 
-/* ---------- aides ---------- */
-const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
-const M=(c,r=.5,m=.1,x={})=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,...x});
-const emi=(c,i=1.5)=>new THREE.MeshStandardMaterial({color:0x000000,emissive:c,emissiveIntensity:i});
-const mesh=(geo,m,x,y,z,p,shadow=true)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=o.receiveShadow=shadow;(p||scene).add(o);return o};
-const B=(w,h,d,m,x=0,y=0,z=0,p)=>mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z,p);
-const RB=(w,h,d,r,m,x=0,y=0,z=0,p)=>mesh(new RoundedBoxGeometry(w,h,d,4,r),m,x,y,z,p);
-const tex=(w,h,draw)=>{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;t.userData={x,w,h};return t};
-const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
-const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+<script>
 
-const concrete=M(0x3a424b,.85,.05),floorM=M(0x1d2228,.3,.3),white=M(0xf0f2f4,.22,.45,{});
-const dark=M(0x14181d,.5,.5),alu=M(0x2b3138,.38,.75),gold=M(0xe8b04a,.35,.8);
-const glassM=M(0x9ec0d2,.04,.95,{transparent:true,opacity:.3,side:THREE.DoubleSide});
+(() => {
 
-/* ---------- sol, forecourt, route ---------- */
-mesh(new THREE.PlaneGeometry(500,700),M(0x14181d,.55,.2),0,-.02,-180,null,false).rotation.x=-Math.PI/2;
-mesh(new THREE.PlaneGeometry(60,26),M(0x2a3037,.45,.15),0,0,24,null,false).rotation.x=-Math.PI/2;
-const road=mesh(new THREE.PlaneGeometry(16,440),M(0x0d1014,.4,.25),0,.01,-225,null,false);road.rotation.x=-Math.PI/2;
-for(let z=-14;z>-440;z-=9)B(.2,.02,4,emi(0xe8b04a,.5),0,.03,z).castShadow=false;
-for(const x of[-24,24]){B(.25,9,.25,dark,x,4.5,20);B(2.4,.2,.5,emi(0xfff0d8,3),x,9,20).castShadow=false;const l=new THREE.PointLight(0xffe6c0,90,34,1.8);l.position.set(x,8.5,20);scene.add(l)}
+"use strict";
 
-/* ---------- siège : coque + intérieur ---------- */
-const HQ=new THREE.Group();scene.add(HQ);
-B(38,.3,24,floorM,0,.15,-1,HQ);
-B(.6,15,24,concrete,-19,7.5,-1,HQ);B(.6,15,24,concrete,19,7.5,-1,HQ);
-B(38,.6,24,concrete,0,15.3,-1,HQ);
-B(14,15,.6,concrete,-12,7.5,-13,HQ);B(14,15,.6,concrete,12,7.5,-13,HQ);B(10,5,.6,concrete,0,12.5,-13,HQ);
-for(let z=8;z>-12;z-=4)B(30,.1,.5,emi(0xdfeaff,2.4),0,14.9,z,HQ).castShadow=false;
-B(7,.9,1.8,M(0x4a525b,.5,.6),11,.6,-6,HQ);
-for(let i=0;i<4;i++)B(.6,.35,.5,[gold,alu,dark,white][i],8.8+i*1.4,1.25,-6,HQ);
-for(let i=0;i<3;i++){B(.5,3.2,3.4,M(0x2b323a,.5,.6),-17.6,1.8,-8+i*4.2,HQ);B(.4,.12,3.2,gold,-17.3,2.8,-8+i*4.2,HQ)}
-for(const z of[-3.2,-8.8]){B(.35,3.2,.35,M(0xe8b04a,.4,.7),-15.5,1.6,z,HQ)}
-for(let z=6;z>-12;z-=6)B(34,.02,.15,emi(0xe8b04a,.6),0,.32,z,HQ).castShadow=false;
-const hqLight=new THREE.PointLight(0xfff0d8,320,46,1.6);hqLight.position.set(0,11,-3);HQ.add(hqLight);
 
-/* ---------- façade qui se désosse ---------- */
-const facade=[];
-const logo=tex(1024,200,(x,w,h)=>{x.fillStyle='#0d1115';x.fillRect(0,0,w,h);x.font='700 130px "Barlow Semi Condensed",Arial';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#f2f5f8';x.fillText('S.R.',330,104);x.fillStyle='#e8b04a';x.fillText('TRACK',650,104)});
-for(let c=0;c<6;c++)for(let r=0;r<3;r++){
-  const x=-15.5+c*6.2,y=2.5+r*5,g=new THREE.Group();g.position.set(x,y,11.4);HQ.add(g);
-  B(6.1,4.9,.35,alu,0,0,0,g);
-  if(r===0){B(5.6,4.4,.1,glassM,0,0,.22,g);for(let k=-2;k<=2;k++)B(.05,4.4,.14,dark,k*1.1,0,.24,g)}
-  else if((c+r)%2===0){B(4.9,3.4,.1,glassM,0,0,.22,g)}
-  else{B(.12,4.9,.4,gold,2.9,0,.02,g);B(.12,4.9,.4,gold,-2.9,0,.02,g)}
-  facade.push({g,b:g.position.clone(),d:V3(x*.25+(Math.random()-.5)*6,7+Math.random()*12,12+Math.random()*20),r:V3(Math.random()-.5,Math.random()-.5,Math.random()-.5).multiplyScalar(3.4),s:c*.06+r*.05});
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+const canvas =
+    document.getElementById("scene");
+
+const THREE =
+    window.THREE;
+
+if(!THREE){
+
+    return;
+
 }
-const sign=new THREE.Group();sign.position.set(0,17.2,11.8);HQ.add(sign);
-B(17,2.8,.5,dark,0,0,0,sign);
-mesh(new THREE.PlaneGeometry(16.4,2.6),new THREE.MeshBasicMaterial({map:logo}),0,0,.27,sign,false);
-facade.push({g:sign,b:sign.position.clone(),d:V3(0,14,16),r:V3(.6,.2,.4),s:.1});
-B(38.4,.5,.6,alu,0,15.9,11.4,HQ);B(10,.3,6,alu,0,4.9,14.4,HQ);   // auvent d'entrée
 
-/* ---------- véhicules (profil extrudé, pas de blocs empilés) ---------- */
-const sideLogo=tex(1024,300,(x,w,h)=>{x.clearRect(0,0,w,h);x.font='700 150px "Barlow Semi Condensed",Arial';x.textBaseline='middle';x.fillStyle='#14181d';x.fillText('S.R.',40,115);x.fillStyle='#c98f22';x.fillText('TRACK',330,115);x.font='500 48px "IBM Plex Sans",Arial';x.fillStyle='#46505a';x.fillText('Transport sécurisé · Géolocalisation',44,235)});
-const quad=(a,b,c,d,m)=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([...a,...b,...c,...a,...c,...d],3));g.computeVertexNormals();return new THREE.Mesh(g,m)};
-const glassDark=M(0x0a1218,.03,.95,{transparent:true,opacity:.82,side:THREE.DoubleSide});
-function vehicle(len=5.9,H=2.62){
-  const rear=-(len-2.95),W=1.7,out=new THREE.Group(),v=new THREE.Group();v.rotation.y=Math.PI/2;out.add(v);
-  const s=new THREE.Shape();
-  [[rear,.4],[rear,H-.1],[.9,H],[1.6,H-.07],[2.35,1.5],[2.95,1.25],[2.95,.45]].forEach(([x,y],i)=>i?s.lineTo(x,y):s.moveTo(x,y));s.closePath();
-  const geo=new THREE.ExtrudeGeometry(s,{depth:W,bevelEnabled:true,bevelThickness:.1,bevelSize:.12,bevelSegments:6,curveSegments:8});
-  geo.translate(0,0,-W/2);
-  const body=new THREE.Mesh(geo,M(0xf4f5f6,.18,.55,{}));body.castShadow=body.receiveShadow=true;v.add(body);
-  const Z=W/2+.1+.004;
-  for(const sd of[1,-1]){
-    const cab=new THREE.Shape();[[1.05,1.62],[1.1,2.4],[1.6,2.45],[2.12,1.66]].forEach(([x,y],i)=>i?cab.lineTo(x,y):cab.moveTo(x,y));
-    const gm=new THREE.Mesh(new THREE.ShapeGeometry(cab),glassDark);gm.position.z=sd*Z;v.add(gm);
-    const p=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(4.2,len-1.8),1.2),new THREE.MeshBasicMaterial({map:sideLogo,transparent:true}));
-    p.position.set(rear+Math.min(4.2,len-1.8)/2+.4,1.75,sd*Z);if(sd<0)p.rotation.y=Math.PI;v.add(p);
-    const st=new THREE.Mesh(new THREE.PlaneGeometry(len-.6,.1),M(0xe8b04a,.4,.7));st.position.set(rear+(len-.6)/2+.2,1.1,sd*Z);if(sd<0)st.rotation.y=Math.PI;v.add(st);
-    for(const x of[2.2,-.05+rear*0+(rear+1.4)]){}
-    const wx=[1.9,rear+1.35];wx.forEach(x=>{const w=new THREE.Group();w.position.set(x,.43,sd*(W/2-.08));v.add(w);
-      const t=mesh(new THREE.CylinderGeometry(.43,.43,.3,32),M(0x0b0b0c,.85,0),0,0,0,w);t.rotation.x=Math.PI/2;
-      const r=mesh(new THREE.CylinderGeometry(.27,.27,.32,24),M(0xc3cbd3,.2,.95),0,0,0,w);r.rotation.x=Math.PI/2;
-      const hb=mesh(new THREE.CylinderGeometry(.08,.08,.34,12),dark,0,0,0,w);hb.rotation.x=Math.PI/2});
-    const mir=B(.12,.25,.3,dark,2.02,1.95,sd*(W/2+.28),v);
-    B(.08,.2,.5,emi(0xfff4dc,3.5),2.95,1.0,sd*.55,v).castShadow=false;
-    B(.08,.22,.2,emi(0xff2a38,2.5),rear-.12,1.0,sd*.7,v).castShadow=false;
-  }
-  quad([1.6,H-.05,-.78],[1.6,H-.05,.78],[2.33,1.52,.78],[2.33,1.52,-.78],glassDark).parent;
-  const ws=quad([1.62,H-.07,-.78],[1.62,H-.07,.78],[2.36,1.52,.78],[2.36,1.52,-.78],glassDark);v.add(ws);
-  B(.3,.35,W+.1,dark,2.92,.62,0,v);B(.3,.3,W+.1,dark,rear-.1,.58,0,v);
-  const ant=mesh(new THREE.CylinderGeometry(.09,.11,.13,16),emi(0x3cd2ee,2.5),rear+1.2,H+.08,0,v,false);
-  out.userData={ant};return out}
-const vehicles=[]; // {g,x0,z0,speed}
-function addVehicle(len,H,x,z,ry,url){
-  const g=vehicle(len,H);g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);
-  if(url){new GLTFLoader().load(url,r=>{const o=r.scene;o.traverse(c=>{if(c.isMesh)c.castShadow=true});g.children[0].visible=false;g.add(o)},undefined,()=>{})}
-  return g}
-const svc=addVehicle(5.9,2.62,-11,-5,.35,CUSTOM.van);
-svc.position.y=.9;B(.4,1,.4,dark,-12.6,.5,-4.3,HQ);B(.4,1,.4,dark,-9.4,.5,-5.7,HQ);  // pont élévateur
-const convoy=[addVehicle(5.9,2.62,-3,-6,0,CUSTOM.van),addVehicle(8.2,3.05,3.2,-15,0,CUSTOM.truck)];
-const cvStart=convoy.map(g=>g.position.clone());
 
-/* ---------- bureaux ---------- */
-const office=new THREE.Group();office.position.set(0,0,-90);scene.add(office);
-B(46,.3,30,floorM,0,.15,0,office);B(46,10,.2,glassM,0,5.2,-14.5,office);
-for(let x=-18;x<=18;x+=9)B(.15,10,.3,alu,x,5.2,-14.4,office);
-for(let x=-16;x<=16;x+=8)B(5,.08,1.4,emi(0xdfeaff,2),x,9.6,0,office).castShadow=false;
-const dash=tex(512,288,()=>{});
-function drawDash(t){const x=dash.userData.x;x.fillStyle='#091219';x.fillRect(0,0,512,288);x.fillStyle='#3cd2ee';x.font='bold 22px Arial';x.fillText('Suivi de flotte',20,34);
-  for(let i=0;i<5;i++){const y=64+i*34;x.fillStyle='#16303b';x.fillRect(20,y,470,18);x.fillStyle=i===3?'#ff5364':'#5fe0a0';x.fillRect(20,y,90+((t*30+i*70)%370),18)}
-  x.strokeStyle='#e8b04a';x.lineWidth=2;x.beginPath();for(let i=0;i<460;i+=8){const y=250+Math.sin(i*.04+t*2)*14;i?x.lineTo(26+i,y):x.moveTo(26+i,y)}x.stroke();dash.needsUpdate=true}
-for(let i=0;i<6;i++){const x=-12+(i%3)*12,z=-4+Math.floor(i/3)*9;
-  B(6,.12,2.2,M(0x4d555e,.5,.3),x,1.1,z,office);B(.1,1.1,2,dark,x-2.9,.55,z,office);B(.1,1.1,2,dark,x+2.9,.55,z,office);
-  B(3.3,2,.1,dark,x,2.3,z-.6,office);mesh(new THREE.PlaneGeometry(3.1,1.8),new THREE.MeshBasicMaterial({map:dash}),x,2.3,z-.54,office,false)}
+const scene =
+    new THREE.Scene();
 
-/* ---------- supervision ---------- */
-const soc=new THREE.Group();soc.position.set(0,0,-150);scene.add(soc);
-B(46,.3,34,floorM,0,.15,0,soc);B(30,8,.4,dark,0,4.6,-15,soc);
-const wall=tex(1280,340,()=>{});
-mesh(new THREE.PlaneGeometry(29,7.4),new THREE.MeshBasicMaterial({map:wall}),0,4.6,-14.75,soc,false);
-const veh=[...Array(8)].map(()=>({r:60+Math.random()*110,s:.2+Math.random()*.4}));
-function drawWall(t){const x=wall.userData.x;x.fillStyle='#071017';x.fillRect(0,0,1280,340);x.strokeStyle='#12303c';x.lineWidth=1;
-  for(let i=0;i<1280;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,340);x.stroke()}for(let j=0;j<340;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(1280,j);x.stroke()}
-  x.strokeStyle='#3cd2ee';x.lineWidth=2;x.beginPath();for(let i=0;i<=820;i+=10){const y=170+Math.sin(i*.012)*70;i?x.lineTo(40+i,y):x.moveTo(40,y)}x.stroke();
-  veh.forEach((v,i)=>{const px=40+((t*v.s*60+v.r*5)%820),py=170+Math.sin((px-40)*.012)*70;x.fillStyle=i===2&&Math.sin(t*4)>0?'#ff5364':'#5fe0a0';x.beginPath();x.arc(px,py,7,0,6.3);x.fill()});
-  x.fillStyle='#e8f1f6';x.font='bold 26px Arial';x.fillText('Supervision réseau',900,50);x.font='20px Arial';
-  ['Passerelle GPS : en ligne','Cloud : en ligne','API flotte : en ligne','Alerte périmètre : à vérifier'].forEach((s,i)=>{x.fillStyle=i===3?'#ff8a96':'#8fe6b8';x.fillText(s,900,100+i*38)});wall.needsUpdate=true}
-for(let i=0;i<3;i++){const x=-12+i*12;B(7,.9,1.8,M(0x39414a,.45,.5),x,.75,-6,soc);B(3,1.5,.1,dark,x,2.1,-6.3,soc);mesh(new THREE.PlaneGeometry(2.8,1.3),new THREE.MeshBasicMaterial({map:dash}),x,2.1,-6.24,soc,false)}
-for(const[g,c]of[[office,0xbfe3ff],[soc,0x3cd2ee]]){const l=new THREE.PointLight(c,240,48,1.6);l.position.set(0,8,0);g.add(l)}
+scene.background =
+    new THREE.Color(0x05080c);
 
-/* ---------- personnes (modèles 3D animés) ---------- */
-const mixers=[],manager=new THREE.LoadingManager();
-manager.onProgress=(u,i,t)=>{$('bar').style.width=(i/t*100)+'%'};
-manager.onLoad=()=>$('load').classList.add('off');
-setTimeout(()=>$('load').classList.add('off'),6500);
-const gl=new GLTFLoader(manager),cache={};
-const MODELS='https://cdn.jsdelivr.net/gh/mrdoob/three.js@r164/examples/models/gltf/';
-function human(name,pos,ry,parent,anim){
-  (cache[name]??=new Promise((res,rej)=>gl.load(MODELS+name+'.glb',res,undefined,rej))).then(g=>{
-    const o=skClone(g.scene);o.traverse(c=>{if(c.isMesh)c.castShadow=true});
-    const bb=new THREE.Box3().setFromObject(o);o.scale.setScalar(1.75/Math.max(.01,bb.max.y-bb.min.y));
-    const b2=new THREE.Box3().setFromObject(o);o.position.set(pos[0],pos[1]-b2.min.y,pos[2]);o.rotation.y=ry;parent.add(o);
-    const m=new THREE.AnimationMixer(o),clip=THREE.AnimationClip.findByName(g.animations,anim)||g.animations[0];
-    if(clip)m.clipAction(clip).play();mixers.push(m)}).catch(()=>{})}
-human('Soldier',[-6.5,0,-1.5],Math.PI*.75,HQ,'Idle');
-human('Michelle',[9,0,-4.3],-Math.PI*.55,HQ,'');
-human('Soldier',[0,0,0],-Math.PI*.9,HQ,'Idle');
-human('Michelle',[-14.6,0,3.4],Math.PI/2,office,'');
-human('Soldier',[14.6,0,-3],-Math.PI/2,office,'Idle');
-human('Michelle',[-14.6,0,5.6],Math.PI/2,office,'');
-human('Michelle',[-6,0,-2],Math.PI,soc,'');
-human('Soldier',[6,0,-2],Math.PI,soc,'Idle');
+scene.fog =
+    new THREE.Fog(
+        0x05080c,
+        35,
+        190
+    );
 
-/* ---------- pages, caméra et transitions ---------- */
-const PAGES=[
- {k:'Accueil',  cam:[0,4.4,42], look:[0,7,0]},
- {k:"L'entreprise",cam:[0,3.4,16],look:[0,2.6,-8]},
- {k:'Atelier',  cam:[-3,2.3,4],  look:[-11,1.7,-5]},
- {k:'Flotte',   cam:[10,3.6,-20],look:[0,1.6,-50]},
- {k:'Logiciels',cam:[-14,4.6,-72],look:[0,2.2,-90]},
- {k:'Cybersécurité',cam:[10,4.8,-132],look:[0,3,-150]},
- {k:'Contact',  cam:[0,7,-122],look:[0,4,-152]}];
-const panels=[...document.querySelectorAll('.pg')],dotsEl=$('dots');
-const dots=PAGES.map((p,i)=>{const b=document.createElement('button');b.innerHTML='<span>'+p.k+'</span><i></i>';b.onclick=()=>go(i);dotsEl.appendChild(b);return b});
-const cp=V3(...PAGES[0].cam),cl=V3(...PAGES[0].look),fromP=cp.clone(),fromL=cl.clone(),toP=cp.clone(),toL=cl.clone();
-let page=0,t0=0,dur=2.6,busy=false,fx=0,fxT=0,cv=0,cvT=0,lockUntil=0;
-function show(i){panels.forEach((el,k)=>el.classList.toggle('on',k===i));dots.forEach((d,k)=>d.classList.toggle('on',k===i))}
-function go(i){
-  i=Math.max(0,Math.min(PAGES.length-1,i));if(i===page||busy)return;
-  const fwd=i>page;page=i;busy=true;
-  fromP.copy(cp);fromL.copy(cl);toP.set(...PAGES[i].cam);toL.set(...PAGES[i].look);
-  dur=Math.abs(i-(fwd?i-1:i+1))>1?3.2:(i===1||(i===0)?3.4:2.6);t0=clock.elapsedTime;
-  panels.forEach(el=>el.classList.remove('on'));
-  const w=$('wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');
-  fxT=i>=1?1:0;cvT=i>=3?1:0;
-  setTimeout(()=>{busy=false;show(i)},dur*1000-300);
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+const camera =
+    new THREE.PerspectiveCamera(
+        50,
+        innerWidth / innerHeight,
+        .1,
+        500
+    );
+
+camera.position.set(
+    0,
+    6,
+    30
+);
+
+
+/* =========================================================
+   RENDERER
+========================================================= */
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        canvas,
+
+        antialias:true,
+
+        powerPreference:
+            "high-performance"
+
+    });
+
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        1.5
+    )
+);
+
+renderer.setSize(
+    innerWidth,
+    innerHeight
+);
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+renderer.toneMappingExposure =
+    1.05;
+
+
+/* =========================================================
+   LUMIÈRES
+========================================================= */
+
+scene.add(
+    new THREE.HemisphereLight(
+        0xd9e7f5,
+        0x10141a,
+        1.7
+    )
+);
+
+
+const mainLight =
+    new THREE.DirectionalLight(
+        0xffffff,
+        2.2
+    );
+
+mainLight.position.set(
+    20,
+    30,
+    20
+);
+
+scene.add(mainLight);
+
+
+const warmLight =
+    new THREE.PointLight(
+        0xe5ad50,
+        22,
+        55
+    );
+
+warmLight.position.set(
+    0,
+    8,
+    -15
+);
+
+scene.add(warmLight);
+
+
+const cyanLight =
+    new THREE.PointLight(
+        0x35d5ef,
+        20,
+        65
+    );
+
+cyanLight.position.set(
+    0,
+    7,
+    -130
+);
+
+scene.add(cyanLight);
+
+
+const redLight =
+    new THREE.PointLight(
+        0xff3045,
+        15,
+        45
+    );
+
+redLight.position.set(
+    0,
+    6,
+    -215
+);
+
+scene.add(redLight);
+
+
+/* =========================================================
+   MATÉRIAUX
+========================================================= */
+
+function material(
+    color,
+    roughness=.45,
+    metalness=.2
+){
+
+    return new THREE.MeshStandardMaterial({
+
+        color,
+
+        roughness,
+
+        metalness
+
+    });
+
 }
-show(0);
-addEventListener('wheel',e=>{e.preventDefault();if(busy||performance.now()<lockUntil||Math.abs(e.deltaY)<8)return;lockUntil=performance.now()+400;go(page+(e.deltaY>0?1:-1))},{passive:false});
-addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(page+1)}if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(page-1)}});
-let ty=0;addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
-addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)go(page+(d>0?1:-1))},{passive:true});
 
-const clock=new THREE.Clock();
-function frame(){
-  const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
 
-  /* caméra : uniquement pendant une transition, sinon immobile */
-  if(busy||t-t0<dur){const u=ease(Math.min(1,(t-t0)/dur));cp.lerpVectors(fromP,toP,u);cl.lerpVectors(fromL,toL,u)}
-  camera.position.copy(cp);camera.lookAt(cl);
+const concrete =
+    material(
+        0x151a1f,
+        .9,
+        .05
+    );
 
-  /* désossement automatique de la façade */
-  fx+=Math.max(-dt/3.2,Math.min(dt/3.2,fxT-fx));
-  facade.forEach(f=>{const e=smooth(fx*1.5-f.s*1.6);f.g.position.copy(f.b).addScaledVector(f.d,e);f.g.rotation.set(f.r.x*e,f.r.y*e,f.r.z*e);f.g.visible=e<.985});
 
-  /* convoi qui quitte l'atelier */
-  cv+=Math.max(-dt/6,Math.min(dt/6,cvT-cv));
-  convoy.forEach((g,i)=>{const d=smooth((cv-i*.12)/.8);g.position.z=cvStart[i].z-d*190;g.position.x=cvStart[i].x*(1-d);g.userData.ant.material.emissiveIntensity=2+Math.sin(t*5+i)*1.4});
-  svc.userData.ant.material.emissiveIntensity=2+Math.sin(t*6)*1.4;
+const steel =
+    material(
+        0x363d44,
+        .4,
+        .8
+    );
 
-  mixers.forEach(m=>m.update(dt));
-  drawDash(t);drawWall(t);
-  hqLight.intensity=140+180*smooth(fx);
 
-  sun.target.position.copy(cl);sun.position.copy(cl).add(V3(18,34,22));
-  renderer.render(scene,camera);requestAnimationFrame(frame)}
-function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
-addEventListener('resize',resize);resize();frame();
+const dark =
+    material(
+        0x0b0f13,
+        .65,
+        .4
+    );
+
+
+const glass =
+    new THREE.MeshPhysicalMaterial({
+
+        color:0x102d3d,
+
+        roughness:.12,
+
+        metalness:.25,
+
+        transparent:true,
+
+        opacity:.65
+
+    });
+
+
+const white =
+    material(
+        0xd8dde1,
+        .32,
+        .35
+    );
+
+
+const black =
+    material(
+        0x090b0e,
+        .8,
+        .1
+    );
+
+
+const cyan =
+    new THREE.MeshBasicMaterial({
+        color:0x35d5ef
+    });
+
+
+const gold =
+    new THREE.MeshBasicMaterial({
+        color:0xe5ad50
+    });
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+function box(
+    width,
+    height,
+    depth,
+    mat,
+    x=0,
+    y=0,
+    z=0,
+    parent=scene
+){
+
+    const mesh =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                width,
+                height,
+                depth
+            ),
+            mat
+        );
+
+    mesh.position.set(
+        x,
+        y,
+        z
+    );
+
+    parent.add(mesh);
+
+    return mesh;
+
+}
+
+
+function cylinder(
+    radius,
+    height,
+    mat,
+    x=0,
+    y=0,
+    z=0,
+    parent=scene
+){
+
+    const mesh =
+        new THREE.Mesh(
+            new THREE.CylinderGeometry(
+                radius,
+                radius,
+                height,
+                24
+            ),
+            mat
+        );
+
+    mesh.position.set(
+        x,
+        y,
+        z
+    );
+
+    parent.add(mesh);
+
+    return mesh;
+
+}
+
+
+/* =========================================================
+   SOL
+========================================================= */
+
+box(
+    220,
+    .3,
+    500,
+    concrete,
+    0,
+    -.25,
+    -160
+);
+
+
+/* ROUTE */
+
+box(
+    30,
+    .04,
+    480,
+    dark,
+    0,
+    -.07,
+    -160
+);
+
+
+/* lignes */
+
+for(
+    let z=20;
+    z>-400;
+    z-=12
+){
+
+    box(
+        .12,
+        .025,
+        5,
+        gold,
+        0,
+        .02,
+        z
+    );
+
+}
+
+
+/* =========================================================
+   BÂTIMENT
+========================================================= */
+
+const building =
+    new THREE.Group();
+
+building.position.z =
+    -15;
+
+scene.add(building);
+
+
+/* dalle */
+
+box(
+    55,
+    .4,
+    42,
+    concrete,
+    0,
+    .15,
+    0,
+    building
+);
+
+
+/* façade arrière */
+
+box(
+    55,
+    13,
+    .6,
+    steel,
+    0,
+    6.5,
+    -20,
+    building
+);
+
+
+/* côtés */
+
+box(
+    .7,
+    13,
+    40,
+    steel,
+    -27,
+    6.5,
+    0,
+    building
+);
+
+box(
+    .7,
+    13,
+    40,
+    steel,
+    27,
+    6.5,
+    0,
+    building
+);
+
+
+/* façade vitrée */
+
+for(
+    let x=-22;
+    x<=22;
+    x+=7
+){
+
+    box(
+        6.5,
+        10,
+        .16,
+        glass,
+        x,
+        6,
+        -19.65,
+        building
+    );
+
+}
+
+
+/* structure métallique */
+
+for(
+    let x=-26;
+    x<=26;
+    x+=7
+){
+
+    box(
+        .22,
+        13,
+        .4,
+        steel,
+        x,
+        6.5,
+        -19.4,
+        building
+    );
+
+}
+
+
+for(
+    let y=2;
+    y<=11;
+    y+=4
+){
+
+    box(
+        54,
+        .2,
+        .4,
+        steel,
+        0,
+        y,
+        -19.4,
+        building
+    );
+
+}
+
+
+/* =========================================================
+   VÉHICULE
+========================================================= */
+
+function createVan(){
+
+    const van =
+        new THREE.Group();
+
+
+    /* carrosserie */
+
+    const body =
+        box(
+            5.1,
+            2.5,
+            9.2,
+            white,
+            0,
+            2,
+            0,
+            van
+        );
+
+
+    /* partie supérieure */
+
+    box(
+        4.9,
+        1.3,
+        4.1,
+        white,
+        0,
+        3.55,
+        -2.25,
+        van
+    );
+
+
+    /* pare-brise */
+
+    box(
+        4.35,
+        1.25,
+        .08,
+        glass,
+        0,
+        3.35,
+        -4.63,
+        van
+    );
+
+
+    /* vitres latérales */
+
+    box(
+        .08,
+        1.2,
+        2.4,
+        glass,
+        -2.56,
+        3.35,
+        -2.4,
+        van
+    );
+
+    box(
+        .08,
+        1.2,
+        2.4,
+        glass,
+        2.56,
+        3.35,
+        -2.4,
+        van
+    );
+
+
+    /* portes arrière */
+
+    box(
+        4.5,
+        1.5,
+        .08,
+        dark,
+        0,
+        2.7,
+        4.62,
+        van
+    );
+
+
+    /* pare-chocs */
+
+    box(
+        5.25,
+        .3,
+        .3,
+        dark,
+        0,
+        1.05,
+        -4.72,
+        van
+    );
+
+    box(
+        5.25,
+        .3,
+        .3,
+        dark,
+        0,
+        1.05,
+        4.72,
+        van
+    );
+
+
+    /* roues */
+
+    const wheels=[];
+
+    [
+        [-2.65,-3],
+        [2.65,-3],
+        [-2.65,3],
+        [2.65,3]
+
+    ].forEach(
+        ([x,z])=>{
+
+            const wheel =
+                cylinder(
+                    .78,
+                    .48,
+                    black,
+                    x,
+                    1,
+                    z,
+                    van
+                );
+
+            wheel.rotation.z =
+                Math.PI/2;
+
+            wheels.push(wheel);
+
+
+            const hub =
+                cylinder(
+                    .3,
+                    .5,
+                    steel,
+                    x,
+                    1,
+                    z,
+                    van
+                );
+
+            hub.rotation.z =
+                Math.PI/2;
+
+        }
+    );
+
+
+    /* phares */
+
+    for(
+        const x of[-1.55,1.55]
+    ){
+
+        box(
+            .7,
+            .38,
+            .06,
+            new THREE.MeshBasicMaterial({
+                color:0xfff0bd
+            }),
+            x,
+            2.25,
+            -4.78,
+            van
+        );
+
+    }
+
+
+    /* feux arrière */
+
+    for(
+        const x of[-1.6,1.6]
+    ){
+
+        box(
+            .55,
+            .35,
+            .06,
+            new THREE.MeshBasicMaterial({
+                color:0xff2738
+            }),
+            x,
+            2.15,
+            4.77,
+            van
+        );
+
+    }
+
+
+    /* rétroviseurs */
+
+    box(
+        .25,
+        .55,
+        .65,
+        black,
+        -2.8,
+        3,
+        -4.2,
+        van
+    );
+
+    box(
+        .25,
+        .55,
+        .65,
+        black,
+        2.8,
+        3,
+        -4.2,
+        van
+    );
+
+
+    /* GPS */
+
+    const gps =
+        cylinder(
+            .32,
+            .16,
+            dark,
+            0,
+            4.25,
+            0,
+            van
+        );
+
+
+    const antenna =
+        cylinder(
+            .035,
+            .65,
+            steel,
+            0,
+            4.65,
+            0,
+            van
+        );
+
+
+    van.userData.gps =
+        gps;
+
+    van.userData.antenna =
+        antenna;
+
+
+    return van;
+
+}
+
+
+/* =========================================================
+   FLOTTES
+========================================================= */
+
+const fleet=[];
+
+
+const fleetPositions=[
+    [-8,4],
+    [0,0],
+    [8,-5]
+];
+
+
+fleetPositions.forEach(
+    ([x,z])=>{
+
+        const van =
+            createVan();
+
+        van.position.set(
+            x,
+            0,
+            z
+        );
+
+        scene.add(van);
+
+        fleet.push(van);
+
+    }
+);
+
+
+/* =========================================================
+   ATELIER
+========================================================= */
+
+const workshop =
+    new THREE.Group();
+
+workshop.position.z =
+    -70;
+
+scene.add(workshop);
+
+
+/* bâtiment atelier */
+
+box(
+    46,
+    .3,
+    34,
+    concrete,
+    0,
+    .15,
+    0,
+    workshop
+);
+
+
+/* murs */
+
+box(
+    46,
+    10,
+    .35,
+    steel,
+    0,
+    5,
+    -16,
+    workshop
+);
+
+
+/* pont élévateur */
+
+for(
+    const x of[-8,8]
+){
+
+    box(
+        .45,
+        6,
+        .45,
+        steel,
+        x,
+        3,
+        0,
+        workshop
+    );
+
+}
+
+
+/* fourgon de maintenance */
+
+const serviceVan =
+    createVan();
+
+serviceVan.position.set(
+    0,
+    0,
+    0
+);
+
+serviceVan.scale.setScalar(
+    1.08
+);
+
+workshop.add(
+    serviceVan
+);
+
+
+/* =========================================================
+   PERSONNAGES
+========================================================= */
+
+function createWorker(
+    shirtColor,
+    safety=true
+){
+
+    const person =
+        new THREE.Group();
+
+
+    const skin =
+        material(
+            0xc98f73,
+            .8,
+            .05
+        );
+
+
+    const shirt =
+        material(
+            shirtColor,
+            .7,
+            .05
+        );
+
+
+    const pants =
+        material(
+            0x20262d,
+            .8,
+            .05
+        );
+
+
+    const shoe =
+        material(
+            0x121519,
+            .8,
+            .05
+        );
+
+
+    /* jambes */
+
+    for(
+        const side of[-1,1]
+    ){
+
+        box(
+            .28,
+            1.15,
+            .32,
+            pants,
+            side*.22,
+            1,
+            0,
+            person
+        );
+
+
+        box(
+            .38,
+            .25,
+            .62,
+            shoe,
+            side*.22,
+            .28,
+            -.08,
+            person
+        );
+
+    }
+
+
+    /* torse */
+
+    box(
+        .95,
+        1.35,
+        .55,
+        shirt,
+        0,
+        2.25,
+        0,
+        person
+    );
+
+
+    /* gilet */
+
+    if(safety){
+
+        box(
+            1,
+            .9,
+            .58,
+            material(
+                0xe5ad50,
+                .65,
+                .02
+            ),
+            0,
+            2.35,
+            -.01,
+            person
+        );
+
+    }
+
+
+    /* tête */
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .34,
+                20,
+                16
+            ),
+            skin
+        );
+
+    head.position.y =
+        3.25;
+
+    person.add(head);
+
+
+    /* cheveux */
+
+    const hair =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .35,
+                20,
+                12,
+                0,
+                Math.PI*2,
+                0,
+                Math.PI*.55
+            ),
+            material(
+                0x211813,
+                .9,
+                0
+            )
+        );
+
+    hair.position.y =
+        3.37;
+
+    person.add(hair);
+
+
+    /* bras */
+
+    person.userData.arms=[];
+
+    for(
+        const side of[-1,1]
+    ){
+
+        const arm =
+            new THREE.Group();
+
+        arm.position.set(
+            side*.58,
+            2.7,
+            0
+        );
+
+
+        box(
+            .28,
+            1.1,
+            .28,
+            shirt,
+            0,
+            -.45,
+            0,
+            arm
+        );
+
+
+        person.add(
+            arm
+        );
+
+        person.userData.arms.push(
+            arm
+        );
+
+    }
+
+
+    return person;
+
+}
+
+
+/* mécaniciens */
+
+const mechanics=[];
+
+
+[
+    [-6,-2,.6],
+    [6,-1,-.6],
+    [-4,5,1.2],
+    [5,4,-1.2]
+
+].forEach(
+    ([x,z,r],i)=>{
+
+        const p =
+            createWorker(
+                i%2
+                ?0x315d86
+                :0x34495e,
+                true
+            );
+
+        p.position.set(
+            x,
+            0,
+            z
+        );
+
+        p.rotation.y =
+            r;
+
+        workshop.add(p);
+
+        mechanics.push(p);
+
+    }
+);
+
+
+/* =========================================================
+   GPS SIGNAL
+========================================================= */
+
+const gpsRings=[];
+
+
+for(
+    let i=0;
+    i<5;
+    i++
+){
+
+    const ring =
+        new THREE.Mesh(
+
+            new THREE.RingGeometry(
+                .7,
+                .74,
+                64
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color:0x35d5ef,
+                transparent:true,
+                opacity:0,
+                side:THREE.DoubleSide
+            })
+
+        );
+
+
+    ring.rotation.x =
+        -Math.PI/2;
+
+    ring.position.set(
+        0,
+        4.4,
+        -70
+    );
+
+    scene.add(
+        ring
+    );
+
+    gpsRings.push(
+        ring
+    );
+
+}
+
+
+/* =========================================================
+   BUREAUX
+========================================================= */
+
+const office =
+    new THREE.Group();
+
+office.position.z =
+    -135;
+
+scene.add(office);
+
+
+box(
+    50,
+    .3,
+    35,
+    concrete,
+    0,
+    .15,
+    0,
+    office
+);
+
+
+/* vitres */
+
+for(
+    let x=-20;
+    x<=20;
+    x+=8
+){
+
+    box(
+        7,
+        7,
+        .12,
+        glass,
+        x,
+        5.5,
+        -16,
+        office
+    );
+
+}
+
+
+/* bureaux */
+
+const developers=[];
+
+
+for(
+    let i=0;
+    i<6;
+    i++
+){
+
+    const x =
+        -15+
+        (i%3)*15;
+
+    const z =
+        -5+
+        Math.floor(i/3)*10;
+
+
+    /* bureau */
+
+    box(
+        7,
+        .18,
+        2.3,
+        dark,
+        x,
+        1.15,
+        z,
+        office
+    );
+
+
+    /* écran */
+
+    const monitor =
+        box(
+            3,
+            1.7,
+            .08,
+            new THREE.MeshStandardMaterial({
+                color:0x06151c,
+                emissive:0x063d4c,
+                emissiveIntensity:1.3
+            }),
+            x,
+            2.45,
+            z-.7,
+            office
+        );
+
+
+    monitor.userData.monitor=true;
+
+
+    /* développeur */
+
+    const dev =
+        createWorker(
+            [
+                0x31557a,
+                0x634c3c,
+                0x315d50
+            ][i%3],
+            false
+        );
+
+
+    dev.position.set(
+        x,
+        0,
+        z+1.4
+    );
+
+    dev.rotation.y =
+        Math.PI;
+
+    office.add(
+        dev
+    );
+
+    developers.push(
+        dev
+    );
+
+}
+
+
+/* =========================================================
+   ÉCRANS
+========================================================= */
+
+const screenCanvas =
+    document.createElement(
+        "canvas"
+    );
+
+screenCanvas.width=512;
+screenCanvas.height=256;
+
+const ctx =
+    screenCanvas.getContext(
+        "2d"
+    );
+
+
+const screenTexture =
+    new THREE.CanvasTexture(
+        screenCanvas
+    );
+
+
+function drawScreen(time){
+
+    ctx.fillStyle="#061016";
+
+    ctx.fillRect(
+        0,
+        0,
+        512,
+        256
+    );
+
+
+    ctx.fillStyle="#35d5ef";
+
+    ctx.font=
+        "bold 18px Arial";
+
+    ctx.fillText(
+        "SRTRACK / FLEET CONTROL",
+        20,
+        30
+    );
+
+
+    ctx.fillStyle="#8fa1ae";
+
+    ctx.font=
+        "12px Arial";
+
+    ctx.fillText(
+        "GPS  ·  IOT  ·  CLOUD  ·  ALERTS",
+        20,
+        50
+    );
+
+
+    for(
+        let i=0;
+        i<5;
+        i++
+    ){
+
+        const y =
+            75+
+            i*28;
+
+
+        ctx.fillStyle =
+            i===3
+            ?"rgba(255,82,99,.35)"
+            :"rgba(40,75,88,.8)";
+
+
+        ctx.fillRect(
+            20,
+            y,
+            470,
+            17
+        );
+
+
+        ctx.fillStyle =
+            i===3
+            ?"rgba(255,82,99,.95)"
+            :"rgba(82,220,145,.9)";
+
+
+        const width =
+            90+
+            (
+                (time*40+i*55)
+                %330
+            );
+
+
+        ctx.fillRect(
+            25,
+            y+5,
+            width,
+            7
+        );
+
+    }
+
+
+    ctx.strokeStyle =
+        "#e5ad50";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+
+    for(
+        let x=0;
+        x<450;
+        x+=8
+    ){
+
+        const y =
+            220+
+            Math.sin(
+                x*.035+
+                time*2
+            )*15;
+
+
+        if(x===0){
+
+            ctx.moveTo(
+                25+x,
+                y
+            );
+
+        }else{
+
+            ctx.lineTo(
+                25+x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+    screenTexture.needsUpdate=true;
+
+}
+
+
+for(
+    let i=0;
+    i<8;
+    i++
+){
+
+    const screen =
+        new THREE.Mesh(
+
+            new THREE.PlaneGeometry(
+                3,
+                1.7
+            ),
+
+            new THREE.MeshBasicMaterial({
+                map:screenTexture
+            })
+
+        );
+
+
+    screen.position.set(
+        -15+
+        (i%3)*15,
+        2.45,
+        -5+
+        Math.floor(i/3)*10-
+        .72
+    );
+
+
+    office.add(
+        screen
+    );
+
+}
+
+
+/* =========================================================
+   CYBERSÉCURITÉ
+========================================================= */
+
+const cyber =
+    new THREE.Group();
+
+cyber.position.z =
+    -205;
+
+scene.add(
+    cyber
+);
+
+
+box(
+    52,
+    .3,
+    36,
+    concrete,
+    0,
+    .15,
+    0,
+    cyber
+);
+
+
+/* tables */
+
+for(
+    let i=0;
+    i<4;
+    i++
+){
+
+    box(
+        8,
+        .2,
+        2,
+        dark,
+        -15+
+        i*10,
+        1.2,
+        3,
+        cyber
+    );
+
+}
+
+
+/* analystes */
+
+const analysts=[];
+
+
+for(
+    let i=0;
+    i<4;
+    i++
+){
+
+    const analyst =
+        createWorker(
+            i%2
+            ?0x273b63
+            :0x493044,
+            false
+        );
+
+
+    analyst.position.set(
+        -15+
+        i*10,
+        0,
+        5
+    );
+
+
+    analyst.rotation.y =
+        Math.PI;
+
+
+    cyber.add(
+        analyst
+    );
+
+    analysts.push(
+        analyst
+    );
+
+}
+
+
+/* réseau */
+
+const networkPoints=[];
+
+
+for(
+    let i=0;
+    i<35;
+    i++
+){
+
+    const point =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .08,
+                8,
+                8
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color:
+                    i%7===0
+                    ?0xff5263
+                    :0x35d5ef
+            })
+
+        );
+
+
+    point.userData={
+        angle:
+            Math.random()*
+            Math.PI*2,
+
+        radius:
+            4+
+            Math.random()*11,
+
+        speed:
+            .3+
+            Math.random()
+    };
+
+
+    cyber.add(
+        point
+    );
+
+    networkPoints.push(
+        point
+    );
+
+}
+
+
+/* =========================================================
+   CAMÉRA
+========================================================= */
+
+const keyframes=[
+
+    {
+        p:0,
+        pos:[0,5,30],
+        look:[0,3,-5]
+    },
+
+    {
+        p:.08,
+        pos:[0,6,24],
+        look:[0,4,-10]
+    },
+
+    {
+        p:.18,
+        pos:[9,7,10],
+        look:[0,4,-15]
+    },
+
+    {
+        p:.28,
+        pos:[11,6,-40],
+        look:[0,3,-70]
+    },
+
+    {
+        p:.40,
+        pos:[9,5,-62],
+        look:[0,3,-70]
+    },
+
+    {
+        p:.51,
+        pos:[-10,5,-75],
+        look:[0,3,-70]
+    },
+
+    {
+        p:.62,
+        pos:[9,6,-123],
+        look:[0,3,-135]
+    },
+
+    {
+        p:.73,
+        pos:[-9,5,-143],
+        look:[0,3,-135]
+    },
+
+    {
+        p:.84,
+        pos:[10,6,-195],
+        look:[0,4,-205]
+    },
+
+    {
+        p:1,
+        pos:[0,7,-222],
+        look:[0,4,-205]
+    }
+
+];
+
+
+const camPosition =
+    new THREE.Vector3();
+
+const camTarget =
+    new THREE.Vector3();
+
+
+function smoothstep(x){
+
+    x =
+        Math.max(
+            0,
+            Math.min(1,x)
+        );
+
+    return (
+        x*x*
+        (3-2*x)
+    );
+
+}
+
+
+function updateCamera(
+    progress
+){
+
+    let i=0;
+
+
+    while(
+        i<
+        keyframes.length-2 &&
+        progress>
+        keyframes[i+1].p
+    ){
+
+        i++;
+
+    }
+
+
+    const a =
+        keyframes[i];
+
+    const b =
+        keyframes[i+1];
+
+
+    const t =
+        smoothstep(
+            (
+                progress-a.p
+            )/
+            (
+                b.p-a.p
+            )
+        );
+
+
+    camPosition.set(
+        a.pos[0],
+        a.pos[1],
+        a.pos[2]
+    );
+
+
+    camPosition.lerp(
+        new THREE.Vector3(
+            b.pos[0],
+            b.pos[1],
+            b.pos[2]
+        ),
+        t
+    );
+
+
+    camTarget.set(
+        a.look[0],
+        a.look[1],
+        a.look[2]
+    );
+
+
+    camTarget.lerp(
+        new THREE.Vector3(
+            b.look[0],
+            b.look[1],
+            b.look[2]
+        ),
+        t
+    );
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+let targetScroll=0;
+let currentScroll=0;
+
+
+window.addEventListener(
+    "scroll",
+    ()=>{
+
+        const max =
+            document.documentElement
+            .scrollHeight-
+            innerHeight;
+
+
+        targetScroll =
+            max>0
+            ?window.scrollY/max
+            :0;
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   TEXTES
+========================================================= */
+
+const texts =
+    document.querySelectorAll(
+        ".scene-text"
+    );
+
+
+function updateTexts(
+    progress
+){
+
+    texts.forEach(
+        text=>{
+
+            const start =
+                parseFloat(
+                    text.dataset.start
+                );
+
+            const end =
+                parseFloat(
+                    text.dataset.end
+                );
+
+
+            let opacity=0;
+
+
+            if(
+                progress>=start &&
+                progress<=end
+            ){
+
+                const fade=.035;
+
+                const enter =
+                    Math.min(
+                        1,
+                        (
+                            progress-start
+                        )/
+                        fade
+                    );
+
+
+                const leave =
+                    Math.min(
+                        1,
+                        (
+                            end-progress
+                        )/
+                        fade
+                    );
+
+
+                opacity =
+                    Math.min(
+                        enter,
+                        leave
+                    );
+
+            }
+
+
+            text.classList.toggle(
+                "active",
+                opacity>.05
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+const clock =
+    new THREE.Clock();
+
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    const delta =
+        Math.min(
+            clock.getDelta(),
+            .05
+        );
+
+
+    const time =
+        clock.elapsedTime;
+
+
+    currentScroll +=
+        (
+            targetScroll-
+            currentScroll
+        )*.07;
+
+
+    const p =
+        currentScroll;
+
+
+    /* caméra */
+
+    updateCamera(
+        p
+    );
+
+
+    camera.position.lerp(
+        camPosition,
+        .075
+    );
+
+
+    camera.lookAt(
+        camTarget
+    );
+
+
+    /* léger mouvement naturel */
+
+    camera.position.y +=
+        Math.sin(
+            time*.25
+        )*.035;
+
+
+    /* -----------------------------------------------------
+       FLOTTES
+    ----------------------------------------------------- */
+
+    fleet.forEach(
+        (van,i)=>{
+
+            const start =
+                .18+
+                i*.025;
+
+
+            const movement =
+                smoothstep(
+                    (
+                        p-start
+                    )/.22
+                );
+
+
+            van.position.z =
+                fleetPositions[i][1]-
+                movement*52;
+
+
+            van.position.x =
+                fleetPositions[i][0]+
+                Math.sin(
+                    time*.6+i
+                )*.35;
+
+
+            van.rotation.y =
+                Math.sin(
+                    time*.35+i
+                )*.008;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       ATELIER
+    ----------------------------------------------------- */
+
+    mechanics.forEach(
+        (person,i)=>{
+
+            person.userData
+                .arms
+                .forEach(
+                    (arm,j)=>{
+
+                        arm.rotation.x =
+                            -.45+
+                            Math.sin(
+                                time*2.4+
+                                i+
+                                j
+                            )*.22;
+
+                    }
+                );
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       GPS
+    ----------------------------------------------------- */
+
+    gpsRings.forEach(
+        (ring,i)=>{
+
+            const q =
+                (
+                    time*.45+
+                    i*.2
+                )%1;
+
+
+            ring.scale.setScalar(
+                .5+
+                q*2.7
+            );
+
+
+            ring.material.opacity =
+                (
+                    1-q
+                )*.55;
+
+
+            ring.position.y =
+                4.4+
+                q*1.8;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       DÉVELOPPEURS
+    ----------------------------------------------------- */
+
+    developers.forEach(
+        (person,i)=>{
+
+            person.userData
+                .arms
+                .forEach(
+                    (arm,j)=>{
+
+                        arm.rotation.x =
+                            -.4+
+                            Math.sin(
+                                time*4+
+                                i+
+                                j
+                            )*.12;
+
+                    }
+                );
+
+        }
+    );
+
+
+    /* écrans */
+
+    drawScreen(
+        time
+    );
+
+
+    /* -----------------------------------------------------
+       CYBERSÉCURITÉ
+    ----------------------------------------------------- */
+
+    analysts.forEach(
+        (person,i)=>{
+
+            person.userData
+                .arms
+                .forEach(
+                    (arm,j)=>{
+
+                        arm.rotation.x =
+                            -.5+
+                            Math.sin(
+                                time*2+
+                                i
+                            )*.1;
+
+                    }
+                );
+
+        }
+    );
+
+
+    networkPoints.forEach(
+        (point,i)=>{
+
+            const data =
+                point.userData;
+
+
+            const angle =
+                data.angle+
+                time*
+                data.speed;
+
+
+            point.position.set(
+                Math.cos(angle)*
+                data.radius,
+
+                5+
+                Math.sin(
+                    angle*1.6
+                )*2.5,
+
+                -205+
+                Math.sin(angle)*
+                data.radius*.7
+            );
+
+
+            point.material.opacity =
+                .4+
+                Math.abs(
+                    Math.sin(
+                        time*2+i
+                    )
+                )*.5;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       INTERFACE
+    ----------------------------------------------------- */
+
+    document
+        .getElementById("progress")
+        .style.width =
+            (
+                p*100
+            )+"%";
+
+
+    updateTexts(
+        p
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+/* =========================================================
+   REDIMENSIONNEMENT
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    ()=>{
+
+        camera.aspect =
+            innerWidth/
+            innerHeight;
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            innerWidth,
+            innerHeight
+        );
+
+    }
+);
+
+
+/* START */
+
+animate();
+
+})();
+
 </script>
+
 </body>
 </html>
