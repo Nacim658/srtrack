@@ -2,856 +2,323 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>S.R.TRACK — Sécuriser · Géolocaliser · Connecter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.R.TRACK – Transport sécurisé, géolocalisation et logiciels métiers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--panel:#0b1017e8;--text:#f2f5f8;--mut:#aab5c2;--gold:#e7b45b;--cyan:#38d5f0;--red:#ff5364;--green:#65e39a}
+:root{--ink:#0a0d11;--steel:#9aa7b4;--paper:#eef2f5;--amber:#e8b04a;--cyan:#3cd2ee;--ok:#5fe0a0}
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;background:#05070a}
-body{background:#05070a;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--paper);font:400 16px/1.6 "IBM Plex Sans",system-ui,sans-serif;overflow-x:hidden}
 #scene{position:fixed;inset:0;width:100%;height:100%;display:block}
-#scroll{height:1150vh}
-#progress{position:fixed;z-index:30;left:0;top:0;width:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--cyan));box-shadow:0 0 18px #38d5f088}
-nav{position:fixed;z-index:40;top:0;left:0;right:0;padding:20px 5vw;display:flex;justify-content:space-between;align-items:center;letter-spacing:.16em;font-size:12px;text-transform:uppercase;background:linear-gradient(#05070acc,transparent);pointer-events:none}
-nav strong{font-size:15px;letter-spacing:.12em}
-nav strong span{color:var(--gold)}
-nav em{font-style:normal;color:#8995a4;letter-spacing:.18em}
-.caption{position:fixed;z-index:20;left:5vw;bottom:8vh;width:min(570px,90vw);opacity:0;transform:translateY(30px);pointer-events:none;padding:22px 25px;border-left:3px solid var(--gold);background:linear-gradient(90deg,#05070ae8,#05070a88,transparent);backdrop-filter:blur(8px)}
-.caption.center{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);text-align:center;width:min(820px,90vw);border:0;background:none;padding:0}
-.caption.center h1{font-size:clamp(3.8rem,13vw,10rem);letter-spacing:.08em;line-height:.9}
-.caption.center h1 span{display:inline-block;background:linear-gradient(180deg,#fff 15%,#e7b45b 85%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(60px) rotateX(65deg);animation:heroIn .9s forwards}
-.caption small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:7px}
-.caption h2{font-size:clamp(1.7rem,3.5vw,3rem);line-height:1.06;margin-bottom:9px}
-.caption p{color:var(--mut);line-height:1.55;max-width:650px}
-.caption.center p{max-width:none;margin-top:18px}
-.hint{margin-top:35px;color:var(--cyan);font-size:11px;letter-spacing:.28em;animation:pulse 1.8s infinite}
-.stats{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
-.stat{border:1px solid #ffffff16;background:#0b1017c9;border-radius:999px;padding:8px 12px;font-size:11px;color:#d9e0e7}
-.stat b{color:#fff}
-.status{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:#b8c4d0;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
-#fallback{display:none;position:fixed;inset:0;z-index:100;background:#05070a;color:#fff;place-items:center;text-align:center;padding:30px}
+#spacer{height:1000vh}
+h1,h2{font-family:"Barlow Semi Condensed",system-ui,sans-serif;font-weight:600;line-height:1.02}
+header{position:fixed;z-index:40;top:0;left:0;right:0;padding:18px 4vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#0a0d11d0,transparent)}
+header b{font:700 22px "Barlow Semi Condensed",sans-serif;letter-spacing:.06em}
+header b i{font-style:normal;color:var(--amber)}
+header a{color:var(--paper);text-decoration:none;font-size:14px;border:1px solid #ffffff40;padding:8px 16px;border-radius:3px}
+header a:hover,header a:focus-visible{background:var(--amber);color:#111;border-color:var(--amber)}
+.panel{position:fixed;z-index:20;left:4vw;bottom:9vh;width:min(540px,92vw);padding:24px 26px;background:#0a0d11d9;border-left:3px solid var(--amber);backdrop-filter:blur(10px);opacity:0;pointer-events:none}
+.panel h2{font-size:clamp(1.9rem,3.4vw,2.9rem);margin-bottom:10px}
+.panel p{color:#c3ccd5;max-width:60ch}
+.panel ul{list-style:none;padding:0;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.panel li{font-size:13px;padding:6px 12px;border:1px solid #ffffff2a;border-radius:3px;color:#dfe6ec}
+.panel.hero{left:50%;top:48%;bottom:auto;width:min(860px,92vw);text-align:center;border:0;background:none;backdrop-filter:none;transform:translate(-50%,-50%)}
+.panel.hero h1{font-size:clamp(3.2rem,11vw,8.5rem);letter-spacing:.04em}
+.panel.hero p{margin:14px auto 0;font-size:1.1rem}
+.panel.end{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);text-align:center;border:0;width:min(760px,92vw)}
+.panel.end ul{justify-content:center}
+.btn{display:inline-block;margin-top:20px;padding:12px 24px;background:var(--amber);color:#111;font-weight:500;text-decoration:none;border-radius:3px}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#rail{position:fixed;z-index:40;right:2.2vw;top:50%;transform:translateY(-50%);height:56vh;width:2px;background:#ffffff26}
+#fill{position:absolute;left:0;top:0;width:2px;height:0;background:linear-gradient(var(--amber),var(--cyan))}
+#thumb{position:absolute;left:-6px;top:0;width:14px;height:14px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px #e8b04a33;transform:translateY(-50%)}
+#rail button{position:absolute;right:16px;transform:translateY(-50%);background:none;border:0;color:var(--steel);font:500 12px "IBM Plex Sans",sans-serif;cursor:pointer;white-space:nowrap;padding:2px 4px}
+#rail button.on{color:#fff}
+#rail button:focus-visible{outline:2px solid var(--amber)}
+#pct{position:fixed;z-index:40;left:4vw;top:70px;font:500 13px "IBM Plex Sans",sans-serif;color:var(--steel)}
+#cur{position:fixed;z-index:60;left:0;top:0;width:34px;height:34px;margin:-17px;border:1.5px solid var(--amber);border-radius:50%;pointer-events:none;transition:width .2s,height .2s,margin .2s}
+#cur.big{width:56px;height:56px;margin:-28px}
+#load{position:fixed;inset:0;z-index:90;background:var(--ink);display:grid;place-items:center;transition:opacity .8s}
+#load.off{opacity:0;pointer-events:none}
+#load div{width:220px;text-align:center;font:600 20px "Barlow Semi Condensed",sans-serif;letter-spacing:.08em}
+#load i{display:block;height:2px;margin-top:14px;background:linear-gradient(90deg,var(--amber),var(--cyan));width:0;transition:width .3s}
+#fallback{display:none;position:fixed;inset:0;z-index:100;background:var(--ink);place-items:center;text-align:center;padding:30px}
 #fallback.show{display:grid}
-@keyframes heroIn{to{opacity:1;transform:none}}
-@keyframes pulse{50%{opacity:.45;transform:translateY(5px)}}
-@media(max-width:700px){
-nav em{display:none}
-.caption{left:4vw;width:92vw;bottom:5vh;padding:17px}
-.caption h2{font-size:1.55rem}
-.caption p{font-size:.9rem}
-.stats{gap:6px}
-.stat{font-size:10px}
-}
+@media(max-width:700px){#rail button{display:none}.panel{padding:18px}#cur{display:none}}
+@media(pointer:coarse){#cur{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
-  }
-}
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}
 </script>
 </head>
-
 <body>
-
 <canvas id="scene"></canvas>
-<div id="progress"></div>
+<header><b>S.R.<i>TRACK</i></b><a href="tel:+33146864881">01 46 86 48 81</a></header>
+<div id="pct">0 %</div>
+<nav id="rail" aria-label="Chapitres"><div id="fill"></div><div id="thumb"></div></nav>
+<div id="cur"></div>
+<div id="load"><div>S.R.TRACK<i id="bar"></i></div></div>
+<div id="fallback"><div><h2>La 3D n'est pas disponible sur ce navigateur.</h2><p id="fbmsg">Activez WebGL et l'accélération matérielle, puis rechargez la page.</p></div></div>
 
-<nav>
-<strong>S.R.<span>TRACK</span></strong>
-<em>Sécuriser · Géolocaliser · Connecter</em>
-</nav>
-
-<div id="fallback">
-<div>
-<h2>Votre navigateur ne permet pas l'expérience 3D.</h2>
-<p id="fallback-msg">Activez WebGL puis rechargez la page.</p>
-</div>
-</div>
-
-<section class="caption center" data-a="0" data-b=".075">
-<h1 id="brand"></h1>
-<p>Technologies connectées pour le transport sécurisé, la géolocalisation et les logiciels métiers.</p>
-<div class="hint">FAITES DÉFILER ↓</div>
+<section class="panel hero" data-a="0" data-b=".07">
+<h1>S.R.TRACK</h1>
+<p>Sécuriser, géolocaliser et connecter vos opérations de transport.</p>
 </section>
-
-<section class="caption" data-a=".08" data-b=".20">
-<small>01 · L'entreprise</small>
-<h2>Une entreprise qui relie le terrain au numérique.</h2>
-<p>S.R.TRACK est présenté comme le pôle logiciel et réseau d'un écosystème IoT : cloud, logiciels métiers, interfaces et infrastructures de communication.</p>
-<div class="stats">
-<span class="stat">Orly · France</span>
-<span class="stat">IoT &amp; cloud</span>
-<span class="stat">Logiciels métiers</span>
-</div>
+<section class="panel" data-a=".08" data-b=".25">
+<h2>Une entreprise qui relie le terrain au numérique</h2>
+<p>S.R.TRACK est le pôle logiciel et réseau d'un écosystème IoT : cloud, logiciels métiers, interfaces et infrastructures de communication.</p>
+<ul><li>Orly, France</li><li>IoT et cloud</li><li>Logiciels métiers</li></ul>
 </section>
-
-<section class="caption" data-a=".20" data-b=".37">
-<small>02 · Flotte sécurisée</small>
-<h2>Des fourgons réels. Des trajets suivis.</h2>
-<p>Les véhicules quittent l'atelier, leurs positions remontent en temps réel et les équipes peuvent surveiller les périmètres définis autour des opérations.</p>
-<div class="status">
-<i class="dot"></i>
-CONVOI CONNECTÉ · GPS ACTIF
-</div>
+<section class="panel" data-a=".27" data-b=".5">
+<h2>L'atelier : installation et tests des balises</h2>
+<p>Le fourgon se démonte pièce par pièce : panneaux, toit, équipements et électronique. Les techniciens posent, raccordent et testent la balise de géolocalisation avant la remise du véhicule.</p>
+<ul><li>Installation</li><li>Diagnostic</li><li>Test GPS</li></ul>
 </section>
-
-<section class="caption" data-a=".37" data-b=".52">
-<small>03 · Atelier technique</small>
-<h2>Le véhicule s'ouvre jusqu'à ses systèmes.</h2>
-<p>Le fourgon se désassemble progressivement : habillage, panneaux, équipements et électronique deviennent visibles. Les techniciens installent et testent les balises de géolocalisation.</p>
-<div class="status">
-<i class="dot"></i>
-INSTALLATION · DIAGNOSTIC · TEST
-</div>
+<section class="panel" data-a=".52" data-b=".68">
+<h2>Des convois suivis de bout en bout</h2>
+<p>Les véhicules quittent l'atelier, leur position remonte en continu et les équipes surveillent les périmètres définis autour de chaque opération.</p>
+<ul><li>Position en temps réel</li><li>Zones surveillées</li><li>Alertes</li></ul>
 </section>
-
-<section class="caption" data-a=".52" data-b=".69">
-<small>04 · Logiciels &amp; cloud</small>
-<h2>Des équipes développent les outils qui pilotent le terrain.</h2>
-<p>Interfaces de suivi, applications métiers, données de flotte et services cloud sont réunis dans une salle de supervision animée.</p>
-<div class="stats">
-<span class="stat">API</span>
-<span class="stat">Cloud</span>
-<span class="stat">Interfaces</span>
-<span class="stat">IoT</span>
-</div>
+<section class="panel" data-a=".7" data-b=".82">
+<h2>Les équipes qui développent les outils du terrain</h2>
+<p>Interfaces de suivi, applications métiers, données de flotte et services cloud sont conçus au même endroit, au plus près des besoins d'exploitation.</p>
+<ul><li>API</li><li>Cloud</li><li>Interfaces</li><li>IoT</li></ul>
 </section>
-
-<section class="caption" data-a=".69" data-b=".86">
-<small>05 · Sécurité numérique</small>
-<h2>La protection ne s'arrête pas au véhicule.</h2>
-<p>Une cellule dédiée visualise les flux, les accès et les alertes autour de l'infrastructure numérique. L'animation représente une supervision cybersécurité, sans prétendre décrire une architecture interne publique.</p>
-<div class="status">
-<i class="dot"></i>
-SUPERVISION · ALERTES · RÉSEAU
-</div>
+<section class="panel" data-a=".84" data-b=".94">
+<h2>La protection ne s'arrête pas au véhicule</h2>
+<p>Une cellule de supervision suit les flux, les accès et les alertes de l'infrastructure numérique. Cette scène illustre le principe, sans décrire l'architecture interne de l'entreprise.</p>
+<ul><li>Supervision</li><li>Alertes</li><li>Réseau</li></ul>
 </section>
-
-<section class="caption center" data-a=".90" data-b="1">
-<small>SR.TRACK · ORLY</small>
-<h2>Du véhicule connecté au logiciel métier.</h2>
-<p>Un même fil conducteur : sécuriser, géolocaliser et connecter les opérations.</p>
-<div class="stats" style="justify-content:center">
-<span class="stat">39 rue de l'Aviation · 94310 Orly</span>
-<span class="stat">01 46 86 48 81</span>
-</div>
+<section class="panel end" data-a=".95" data-b="1.1">
+<h2>Du véhicule connecté au logiciel métier</h2>
+<p>S.R.TRACK, 39 rue de l'Aviation, 94310 Orly.</p>
+<a class="btn" href="tel:+33146864881">Appeler le 01 46 86 48 81</a>
 </section>
-
-<div id="scroll"></div>
+<div id="spacer"></div>
 
 <script type="module">
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {clone as skClone} from 'three/addons/utils/SkeletonUtils.js';
 
-const canvas = document.getElementById('scene');
-
-function showFallback(msg){
-  if(msg) document.getElementById('fallback-msg').textContent = msg;
-  document.getElementById('fallback').classList.add('show');
-}
-
+const $=id=>document.getElementById(id);
+const fail=m=>{if(m)$('fbmsg').textContent=m;$('fallback').classList.add('show');$('load').classList.add('off')};
 let renderer;
-try{
-  renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    powerPreference: 'high-performance'
-  });
-}catch(e){
-  console.error(e);
-  showFallback('WebGL est désactivé ou indisponible. Activez l\'accélération matérielle dans les paramètres du navigateur, puis rechargez la page.');
-  throw e;
+try{renderer=new THREE.WebGLRenderer({canvas:$('scene'),antialias:true,powerPreference:'high-performance'})}
+catch(e){fail("WebGL est désactivé. Activez l'accélération matérielle du navigateur puis rechargez.");throw e}
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.05;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x0a0d11);
+scene.fog=new THREE.Fog(0x0a0d11,45,210);
+scene.environment=new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(),.04).texture;
+scene.environmentIntensity=.5;
+const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,400);
+scene.add(new THREE.HemisphereLight(0xb8ccff,0x1a1d22,.7));
+const sun=new THREE.DirectionalLight(0xdfe8ff,2.1);
+sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-40,right:40,top:40,bottom:-40,near:1,far:120});
+sun.shadow.bias=-.0004;
+scene.add(sun,sun.target);
+
+/* ---------- aides ---------- */
+const M=(c,r=.5,m=.1,x={})=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,...x});
+const emi=(c,i=1.5)=>new THREE.MeshStandardMaterial({color:0x000000,emissive:c,emissiveIntensity:i});
+const mesh=(geo,m,x,y,z,p)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;(p||scene).add(o);return o};
+const B=(w,h,d,m,x=0,y=0,z=0,p)=>mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z,p);
+const RB=(w,h,d,r,m,x=0,y=0,z=0,p)=>mesh(new RoundedBoxGeometry(w,h,d,4,r),m,x,y,z,p);
+const canvasTex=(w,h,draw)=>{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;t.userData={x,w,h};return t};
+const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
+
+const concrete=M(0x343b43,.85,.05),floorM=M(0x1b2026,.38,.2),white=M(0xeceff2,.28,.35,{}),dark=M(0x14181d,.5,.5);
+const alu=M(0x56606b,.35,.8),gold=M(0xe8b04a,.35,.8),glassM=M(0x86a9bd,.05,.9,{transparent:true,opacity:.38});
+
+/* ---------- sol et route ---------- */
+mesh(new THREE.PlaneGeometry(400,600),M(0x15191e,.9,.05),0,-.01,-180,null).rotation.x=-Math.PI/2;
+const road=mesh(new THREE.PlaneGeometry(16,420),M(0x0e1115,.55,.15),0,.01,-215,null);road.rotation.x=-Math.PI/2;road.castShadow=false;
+for(let z=-14;z>-420;z-=9)B(.2,.02,4,emi(0xe8b04a,.4),0,.03,z).castShadow=false;
+
+/* ---------- siège : coque ---------- */
+const HQ=new THREE.Group();scene.add(HQ);
+B(38,.3,24,floorM,0,.15,-1,HQ);
+B(.6,14,24,concrete,-19,7,-1,HQ);B(.6,14,24,concrete,19,7,-1,HQ);
+B(38,.6,24,concrete,0,14.3,-1,HQ);
+B(14,14,.6,concrete,-12,7,-13,HQ);B(14,14,.6,concrete,12,7,-13,HQ);B(10,4,.6,concrete,0,12,-13,HQ);
+for(let z=8;z>-12;z-=5)B(30,.1,.5,emi(0xdfeaff,2.2),0,13.9,z,HQ).castShadow=false;
+const bench=B(7,.9,1.8,M(0x4a525b,.5,.6),11,.6,-6,HQ);
+for(let i=0;i<4;i++)B(.6,.35,.5,[gold,alu,dark,white][i],8.8+i*1.4,1.25,-6,HQ);
+for(let i=0;i<3;i++){B(.5,3.2,3.4,M(0x2b323a,.5,.6),-17.6,1.8,-8+i*4.2,HQ);B(.4,.12,3.2,gold,-17.3,2.8,-8+i*4.2,HQ)}
+mesh(new THREE.PlaneGeometry(36,22),M(0xe8b04a,.7,0,{transparent:true,opacity:.0}),0,.2,-1,HQ).rotation.x=-Math.PI/2;
+const hqLight=new THREE.PointLight(0xfff0d8,260,40,1.6);hqLight.position.set(0,10,-4);HQ.add(hqLight);
+
+/* ---------- façade qui se désosse ---------- */
+const facade=[];
+const logo=canvasTex(1024,200,(x,w,h)=>{x.fillStyle='#0d1115';x.fillRect(0,0,w,h);x.font='700 130px "Barlow Semi Condensed",Arial';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#f2f5f8';x.fillText('S.R.',330,104);x.fillStyle='#e8b04a';x.fillText('TRACK',640,104)});
+for(let c=0;c<6;c++)for(let r=0;r<3;r++){
+  const x=-15.5+c*6.2,y=2.35+r*4.7,g=new THREE.Group();g.position.set(x,y,11.4);HQ.add(g);
+  B(6,4.55,.3,alu,0,0,0,g);
+  if((c+r)%2===0)B(4.8,3.3,.1,glassM,0,0,.2,g);else B(.1,4.55,.34,gold,2.95,0,.02,g);
+  facade.push({g,b:g.position.clone(),d:new THREE.Vector3(x*.22+(Math.random()-.5)*5,6+Math.random()*10,10+Math.random()*16),r:new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).multiplyScalar(3)});
 }
-
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.12;
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x05070a);
-scene.fog = new THREE.Fog(0x05070a, 30, 180);
-
-const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, .1, 400);
-
-scene.add(new THREE.HemisphereLight(0xbfd7ff, 0x10141b, 1.65));
-
-const key = new THREE.DirectionalLight(0xffffff, 2.4);
-key.position.set(18, 28, 22);
-scene.add(key);
-
-const goldLight = new THREE.PointLight(0xe7b45b, 35, 55);
-goldLight.position.set(0, 9, -20);
-scene.add(goldLight);
-
-const cyanLight = new THREE.PointLight(0x38d5f0, 25, 70);
-cyanLight.position.set(0, 7, -110);
-scene.add(cyanLight);
-
-const redLight = new THREE.PointLight(0xff3048, 18, 45);
-redLight.position.set(0, 8, -220);
-scene.add(redLight);
-
-const mat = (color, rough = .48, metal = .15, extra = {}) =>
-  new THREE.MeshPhysicalMaterial(Object.assign({
-    color,
-    roughness: rough,
-    metalness: metal,
-    clearcoat: .25,
-    clearcoatRoughness: .18
-  }, extra));
-
-const basic = (color, extra = {}) =>
-  new THREE.MeshBasicMaterial(Object.assign({ color }, extra));
-
-const box = (w, h, d, m, x = 0, y = 0, z = 0, parent = scene) => {
-  const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
-  o.position.set(x, y, z);
-  parent.add(o);
-  return o;
-};
-
-const textSprite = (text, color = '#e7b45b', size = 44) => {
-  const c = document.createElement('canvas');
-  c.width = 1024;
-  c.height = 180;
-  const x = c.getContext('2d');
-  x.clearRect(0, 0, c.width, c.height);
-  x.font = '700 ' + size + 'px Arial';
-  x.textAlign = 'center';
-  x.textBaseline = 'middle';
-  x.fillStyle = color;
-  x.shadowColor = color;
-  x.shadowBlur = 14;
-  x.fillText(text, 512, 92);
-
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-
-  const s = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: t,
-    transparent: true,
-    depthWrite: false
-  }));
-  s.scale.set(8, 1.4, 1);
-  return s;
-};
-
-
-/* ================= SOL INDUSTRIEL ================= */
-
-box(240, .3, 520, mat(0x11151a, .82, .05), 0, -.25, -160);
-box(28, .04, 480, mat(0x171b20, .9, .02), 0, -.07, -160);
-
-for(let z = 30; z > -410; z -= 10){
-  const line = box(.12, .025, 5, basic(0xe7b45b), 0, .02, z);
-  line.material.opacity = .55;
-  line.material.transparent = true;
-}
-
-
-/* ================= PARTICULES ================= */
-
-{
-  const N = 1800;
-  const pos = new Float32Array(N * 3);
-  for(let i = 0; i < N; i++){
-    pos[i * 3]     = (Math.random() - .5) * 220;
-    pos[i * 3 + 1] = Math.random() * 25;
-    pos[i * 3 + 2] = 30 - Math.random() * 470;
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0x9db8d0,
-    size: .08,
-    transparent: true,
-    opacity: .38
-  })));
-}
-
-
-/* ================= SIÈGE / BÂTIMENT ================= */
-
-const HQ = new THREE.Group();
-HQ.position.set(0, 0, -12);
-scene.add(HQ);
-
-box(54, .35, 42, mat(0x151a20, .8, .08), 0, .15, 0, HQ);
-box(54, 12, 1.1, mat(0x303840, .55, .35), 0, 6, -20, HQ);
-box(1.2, 12, 40, mat(0x252b31, .58, .3), -26, 6, 0, HQ);
-box(1.2, 12, 40, mat(0x252b31, .58, .3), 26, 6, 0, HQ);
-
-const glass = mat(0x173044, .15, .42, {
-  transmission: .12,
-  transparent: true,
-  opacity: .7
-});
-
-for(let x = -21; x <= 21; x += 7){
-  box(5.8, 9, .12, glass, x, 5.5, -19.3, HQ);
-}
-
-const hqLogo = textSprite('S.R.TRACK', '#e7b45b', 52);
-hqLogo.position.set(0, 8, -20);
-HQ.add(hqLogo);
-
-
-/* ================= VÉHICULE ================= */
-
-function createVan(){
-  const g = new THREE.Group();
-
-  const body = mat(0xe4e6e8, .35, .55);
-  const dark = mat(0x11151a, .25, .65);
-  const glassMat = mat(0x08131b, .08, .55, {
-    transmission: .08,
-    transparent: true,
-    opacity: .9
-  });
-
-  box(5.2, 2.1, 10.4, body, 0, 1.55, 0, g);
-  box(5, 1.4, 4.3, body, 0, 3.2, 2.6, g);
-  box(4.7, 1.1, 2.4, glassMat, 0, 3.35, 4.1, g);
-  box(4.7, 1.1, 2.3, glassMat, 0, 3.35, 1.6, g);
-
-  for(const x of [-2.7, 2.7]){
-    for(const z of [-3.3, 3.3]){
-      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(.72, .72, .45, 32), dark);
-      wheel.rotation.z = Math.PI / 2;
-      wheel.position.set(x, .72, z);
-      g.add(wheel);
-    }
-  }
-
-  for(const x of [-2.0, 2.0]){
-    const head = box(.8, .45, .12, basic(0xf8fbff), x, 2.15, -5.23, g);
-    head.material.opacity = .9;
-  }
-
-  const gps = box(.32, .12, .55, basic(0x38d5f0), 0, 4.02, 0, g);
-  gps.userData.gps = true;
-
-  return g;
-}
-
-
-/* ================= FLOTTES ================= */
-
-const vans = [];
-
-for(let i = 0; i < 3; i++){
-  const v = createVan();
-  v.position.set([-8, 0, 8][i], .1, [4, 0, -5][i]);
-  v.scale.setScalar(.95);
-  scene.add(v);
-  vans.push(v);
-}
-
-
-/* ================= ATELIER ================= */
-
-const workshop = new THREE.Group();
-workshop.position.set(0, 0, -72);
-scene.add(workshop);
-
-box(42, .25, 32, mat(0x12171c, .8, .1), 0, .12, 0, workshop);
-box(42, 9, .3, mat(0x22282e, .45, .45), 0, 4.5, -15, workshop);
-
-for(let x = -12; x <= 12; x += 8){
-  box(.28, 7, .28, mat(0x394047, .35, .75), x, 3, -4, workshop);
-  box(7, .18, .18, mat(0x394047, .35, .75), x, 6.6, -4, workshop);
-}
-
-const workLight = basic(0xd8f3ff);
-
-for(let x = -10; x <= 10; x += 5){
-  const l = box(3.2, .05, .16, workLight, x, 6.4, -4, workshop);
-  l.material.opacity = .85;
-  l.material.transparent = true;
-}
-
-
-/* ================= PERSONNES ================= */
-
-function worker(color = 0x2d6da3, vest = true){
-  const g = new THREE.Group();
-
-  const skin  = mat(0xc98f73, .72, .02);
-  const shirt = mat(color, .6, .05);
-  const pants = mat(0x202833, .68, .08);
-  const boot  = mat(0x111418, .72, .15);
-  const hair  = mat(0x211812, .8, .02);
-
-  box(.9, 1.35, .5, shirt, 0, 2.25, 0, g);
-
-  const head = new THREE.Mesh(new THREE.SphereGeometry(.34, 24, 18), skin);
-  head.position.y = 3.2;
-  g.add(head);
-
-  const h = new THREE.Mesh(
-    new THREE.SphereGeometry(.35, 24, 12, 0, Math.PI * 2, 0, Math.PI * .55),
-    hair
-  );
-  h.position.y = 3.34;
-  g.add(h);
-
-  g.userData.arms = [];
-
-  for(const s of [-1, 1]){
-    box(.32, 1.1, .34, pants, s * .22, 1.0, 0, g);
-    box(.34, .55, .55, boot, s * .22, .25, -.04, g);
-
-    const arm = new THREE.Group();
-    arm.position.set(s * .56, 2.65, 0);
-    box(.28, 1.1, .28, shirt, 0, -.45, 0, arm);
-    g.add(arm);
-    g.userData.arms.push(arm);
-  }
-
-  if(vest){
-    box(1, .9, .53, mat(0xe7b84f, .52, .05), 0, 2.3, -.02, g);
-  }
-
-  g.userData.phase = Math.random() * 6.28;
-  return g;
-}
-
-const mechanics = [];
-
-for(let i = 0; i < 4; i++){
-  const p = worker(i % 2 ? 0x2c6f9f : 0x34495e, true);
-  /* position LOCALE à l'atelier (corrigé) */
-  p.position.set([-7, 7, -4, 4][i], 0, [-2, 1, 2, -1][i]);
-  p.rotation.y = [.5, -.6, 1.3, -1.2][i];
-  workshop.add(p);
-  mechanics.push(p);
-}
-
-
-/* ================= GPS ================= */
-
-const gpsRings = [];
-
-for(let i = 0; i < 5; i++){
-  const r = new THREE.Mesh(
-    new THREE.TorusGeometry(.6 + i * .7, .025, 10, 64),
-    basic(0x38d5f0, { transparent: true, opacity: 0 })
-  );
-  r.rotation.x = Math.PI / 2;
-  r.position.set(0, 4.3, -72);
-  scene.add(r);
-  gpsRings.push(r);
-}
-
-const signalLines = [];
-
-for(let i = 0; i < 20; i++){
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
-  const l = new THREE.Line(g, new THREE.LineBasicMaterial({
-    color: 0x38d5f0,
-    transparent: true,
-    opacity: .3
-  }));
-  scene.add(l);
-  signalLines.push(l);
-}
-
-
-/* ================= BUREAUX / DÉVELOPPEURS ================= */
-
-const office = new THREE.Group();
-office.position.set(0, 0, -142);
-scene.add(office);
-
-box(48, .25, 34, mat(0x11161c, .75, .08), 0, .12, 0, office);
-box(48, 12, .3, mat(0x222a32, .45, .45), 0, 6, -15, office);
-
-for(let x = -18; x <= 18; x += 9){
-  box(7.8, 6.5, .12, mat(0x142633, .18, .5, {
-    transmission: .1,
-    transparent: true,
-    opacity: .65
-  }), x, 5.5, -14.8, office);
-}
-
-const developers = [];
-
-for(let i = 0; i < 6; i++){
-  const x = -15 + (i % 3) * 15;
-  const z = -6 + Math.floor(i / 3) * 10;
-
-  box(7, .18, 2.2, mat(0x2a3138, .6, .25), x, 1.15, z, office);
-  box(.18, 1.3, 1.7, mat(0x161b21, .55, .3), x - 3.2, .65, z, office);
-  box(.18, 1.3, 1.7, mat(0x161b21, .55, .3), x + 3.2, .65, z, office);
-
-  box(2.9, 1.7, .08, mat(0x071015, .18, .5, {
-    emissive: 0x03242e,
-    emissiveIntensity: 1.1
-  }), x, 2.45, z - .7, office);
-
-  const p = worker([0x314e7a, 0x6a4935, 0x315d50][i % 3], false);
-  p.position.set(x, 0, z + 1.5);
-  p.rotation.y = Math.PI;
-  office.add(p);
-  developers.push(p);
-}
-
-
-/* ================= DASHBOARD ================= */
-
-const screenCanvas = document.createElement('canvas');
-screenCanvas.width = 512;
-screenCanvas.height = 256;
-const sc = screenCanvas.getContext('2d');
-
-const screenTex = new THREE.CanvasTexture(screenCanvas);
-screenTex.colorSpace = THREE.SRGBColorSpace;
-
-function drawDashboard(t){
-  sc.fillStyle = '#061016';
-  sc.fillRect(0, 0, 512, 256);
-
-  sc.fillStyle = '#38d5f0';
-  sc.font = 'bold 18px Arial';
-  sc.fillText('SRTRACK / FLEET CONTROL', 22, 28);
-
-  sc.fillStyle = '#a9b7c5';
-  sc.font = '12px Arial';
-  sc.fillText('GPS  •  CLOUD  •  IOT  •  ALERTS', 22, 48);
-
-  for(let i = 0; i < 5; i++){
-    const y = 76 + i * 30;
-    sc.fillStyle = i === 3 ? '#ff5364' : '#1a3641';
-    sc.fillRect(20, y, 470, 17);
-    sc.fillStyle = i === 3 ? '#ff5364' : '#65e39a';
-    sc.fillRect(26, y + 5, 80 + ((t * 40 + i * 33) % 330), 7);
-  }
-
-  sc.strokeStyle = '#e7b45b';
-  sc.beginPath();
-  for(let x = 0; x < 450; x += 10){
-    const y = 220 + Math.sin(x * .035 + t * 2) * 16;
-    if(x === 0) sc.moveTo(25 + x, y);
-    else sc.lineTo(25 + x, y);
-  }
-  sc.stroke();
-
-  screenTex.needsUpdate = true;
-}
-
-for(let i = 0; i < 6; i++){
-  const s = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.9, 1.7),
-    new THREE.MeshBasicMaterial({ map: screenTex, transparent: true })
-  );
-  s.position.set(-15 + (i % 3) * 15, 2.45, -6 + Math.floor(i / 3) * 10 - .75);
-  office.add(s);
-}
-
-
-/* ================= CYBERSÉCURITÉ ================= */
-
-const cyber = new THREE.Group();
-cyber.position.set(0, 0, -218);
-scene.add(cyber);
-
-box(52, .25, 38, mat(0x0c1117, .85, .1), 0, .12, 0, cyber);
-
-for(let x = -20; x <= 20; x += 10){
-  box(9, .12, 9, mat(0x141c24, .7, .1), x, .2, -2, cyber);
-}
-
-const analysts = [];
-
-for(let i = 0; i < 4; i++){
-  const p = worker(i % 2 ? 0x202b4a : 0x4a2b36, false);
-  p.position.set([-15, -5, 5, 15][i], 0, 5);
-  p.rotation.y = Math.PI;
-  cyber.add(p);
-  analysts.push(p);
-}
-
-const ring = new THREE.Mesh(
-  new THREE.TorusGeometry(9, .08, 10, 80),
-  basic(0x38d5f0, { transparent: true, opacity: .4 })
-);
-ring.rotation.x = Math.PI / 2;
-ring.position.y = 7;
-cyber.add(ring);
-
-const threatDots = [];
-
-for(let i = 0; i < 30; i++){
-  const d = new THREE.Mesh(
-    new THREE.SphereGeometry(.09, 8, 8),
-    basic(i % 5 === 0 ? 0xff5364 : 0x38d5f0, { transparent: true })
-  );
-  d.userData = {
-    a: Math.random() * Math.PI * 2,
-    r: 4 + Math.random() * 10,
-    s: .4 + Math.random()
-  };
-  cyber.add(d);
-  threatDots.push(d);
-}
-
-const cyberText = textSprite('SECURITY OPERATIONS', '#38d5f0', 42);
-cyberText.scale.set(8, 1.2, 1);
-cyberText.position.set(0, 10, -2);
-cyber.add(cyberText);
-
-
-/* ================= MODÈLES GLTF EXTERNES ================= */
-
-const mixers = [];
-const loader = new GLTFLoader();
-
-const assetBase = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/';
-
-function loadGLB(url, scale, pos, rot){
-  loader.load(
-    url,
-    g => {
-      const o = g.scene;
-      o.scale.setScalar(scale);
-      o.position.set(...pos);
-      o.rotation.y = rot || 0;
-      scene.add(o);
-
-      if(g.animations && g.animations.length){
-        const m = new THREE.AnimationMixer(o);
-        g.animations.forEach(a => m.clipAction(a).play());
-        mixers.push(m);
-      }
-    },
-    undefined,
-    err => console.warn('Modèle GLB non chargé (optionnel) :', url)
-  );
-}
-
-loadGLB(assetBase + 'CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb', 1.7, [16, .2, -100], Math.PI * .5);
-loadGLB(assetBase + 'CesiumMan/glTF-Binary/CesiumMan.glb', 2.1, [11, 0, -75], Math.PI * .75);
-loadGLB(assetBase + 'CesiumMan/glTF-Binary/CesiumMan.glb', 2.1, [-11, 0, -75], -Math.PI * .75);
-
-
-/* ================= DÉSASSEMBLAGE ================= */
-
-const explode = [];
-
-HQ.traverse(o => {
-  if(o.isMesh){
-    explode.push({
-      o,
-      b: o.position.clone(),
-      d: new THREE.Vector3(
-        (o.position.x >= 0 ? 1 : -1) * .4,
-        Math.random() * .6,
-        (o.position.z >= 0 ? 1 : -1) * .5
-      ),
-      a: Math.random() * 3
-    });
-  }
-});
-
-function smooth(x){
-  x = Math.max(0, Math.min(1, x));
-  return x * x * (3 - 2 * x);
-}
-
-
-/* ================= CAMÉRA ================= */
-
-const KF = [
-  [0,   [0, 4, 27],     [0, 3, -4]],
-  [.07, [0, 5, 22],     [0, 4, -10]],
-  [.16, [8, 6, 11],     [0, 2, -18]],
-  [.25, [12, 6, -46],   [0, 2, -70]],
-  [.34, [8, 5, -64],    [0, 2, -72]],
-  [.46, [-10, 4, -74],  [0, 2, -72]],
-  [.58, [8, 6, -130],   [0, 3, -142]],
-  [.7,  [-8, 5, -145],  [0, 2, -142]],
-  [.82, [10, 6, -206],  [0, 3, -218]],
-  [1,   [0, 7, -230],   [0, 4, -218]]
-];
-
-const cp = new THREE.Vector3();
-const cl = new THREE.Vector3();
-const tmp = new THREE.Vector3();
-
-function cameraAt(p){
-  let i = 0;
-  while(i < KF.length - 2 && p > KF[i + 1][0]) i++;
-
-  const A = KF[i];
-  const B = KF[i + 1];
-  const u = smooth((p - A[0]) / (B[0] - A[0]));
-
-  cp.fromArray(A[1]).lerp(tmp.fromArray(B[1]), u);
-  cl.fromArray(A[2]).lerp(tmp.fromArray(B[2]), u);
-}
-
-
-/* ================= SCROLL ================= */
-
-let scrollP = 0;
-let targetP = 0;
-
-function onScroll(){
-  const h = document.documentElement.scrollHeight - innerHeight;
-  targetP = h > 0 ? scrollY / h : 0;
-}
-addEventListener('scroll', onScroll, { passive: true });
-onScroll();
-
-const captions = [...document.querySelectorAll('.caption')];
-const progress = document.getElementById('progress');
-const brand = document.getElementById('brand');
-
-'S.R.TRACK'.split('').forEach((c, i) => {
-  const s = document.createElement('span');
-  s.textContent = c;
-  s.style.animationDelay = (.12 + i * .08) + 's';
-  brand.appendChild(s);
-});
-
-function updateCaption(p){
-  captions.forEach(c => {
-    const a = parseFloat(c.dataset.a);
-    const b = parseFloat(c.dataset.b);
-
-    const v = smooth((p - a) / .035) * (1 - smooth((p - (b - .035)) / .035));
-
-    c.style.opacity = v;
-
-    if(!c.classList.contains('center')){
-      c.style.transform = 'translateY(' + (30 * (1 - v)) + 'px)';
-    }
-
-    c.style.pointerEvents = v > .5 ? 'auto' : 'none';
-  });
-}
-
-
-/* ================= ANIMATION PRINCIPALE ================= */
-
-const clock = new THREE.Clock();
-
-function loop(){
-  const dt = Math.min(clock.getDelta(), .05);
-  const t = clock.elapsedTime;
-
-  scrollP += (targetP - scrollP) * (1 - Math.pow(.0008, dt));
-  const p = scrollP;
-
-  /* Bâtiment */
-  const he = smooth((p - .08) / .12);
-
-  explode.forEach(q => {
-    q.o.position.copy(q.b).addScaledVector(q.d, he * q.a * 3.2);
-  });
-
-  /* Fourgons */
-  vans.forEach((v, i) => {
-    const d = smooth((p - .15 - i * .025) / .22);
-    v.position.z = [4, 0, -5][i] - d * 65;
-    v.position.x = [-8, 0, 8][i] + Math.sin(t * .7 + i) * .4;
-    v.rotation.y = .01 * Math.sin(t + i);
-  });
-
-  /* Techniciens */
-  mechanics.forEach((m, i) => {
-    m.userData.arms.forEach((a, j) => {
-      a.rotation.x = -.65 + Math.sin(t * 3 + i + j) * .35;
-    });
-  });
-
-  /* GPS */
-  gpsRings.forEach((r, i) => {
-    const q = (t * .42 + i * .2) % 1;
-    r.scale.setScalar(.2 + q * 2.5);
-    r.material.opacity = (1 - q) * .65;
-    r.position.y = 4.3 + q * 2.2;
-  });
-
-  signalLines.forEach((l, i) => {
-    const ang = i / 20 * Math.PI * 2 + t * .22;
-    const pos = l.geometry.attributes.position;
-    pos.setXYZ(0, 0, 5, -72);
-    pos.setXYZ(
-      1,
-      Math.cos(ang) * 18,
-      9 + Math.sin(t + i) * 2,
-      -72 + Math.sin(ang) * 18
-    );
-    pos.needsUpdate = true;
-    l.material.opacity = .08 + .12 * Math.abs(Math.sin(t * 2 + i));
-  });
-
-  /* Développeurs */
-  drawDashboard(t);
-
-  developers.forEach((d, i) => {
-    d.userData.arms.forEach((a, j) => {
-      a.rotation.x = -.5 + Math.sin(t * 5 + i + j) * .15;
-    });
-  });
-
-  /* Cybersécurité */
-  analysts.forEach((d, i) => {
-    d.userData.arms.forEach((a, j) => {
-      a.rotation.x = -.7 + Math.sin(t * 2 + i + j) * .12;
-    });
-  });
-
-  ring.rotation.z = t * .06;
-
-  threatDots.forEach((d, i) => {
-    const u = d.userData;
-    const a = u.a + t * u.s;
-    d.position.set(
-      Math.cos(a) * u.r,
-      7 + Math.sin(a * 1.7) * 3,
-      Math.sin(a) * u.r * .7
-    );
-    d.material.opacity = .35 + .65 * Math.abs(Math.sin(t * 3 + i));
-  });
-
-  /* Modèles animés */
-  mixers.forEach(m => m.update(dt));
-
-  /* Caméra */
-  cameraAt(p);
-  camera.position.lerp(cp, .08);
-  camera.lookAt(cl);
-  camera.position.x += Math.sin(t * .25) * .12;
-  camera.position.y += Math.cos(t * .21) * .06;
-
-  /* Interface */
-  progress.style.width = (p * 100) + '%';
-  updateCaption(p);
-
-  renderer.render(scene, camera);
-  requestAnimationFrame(loop);
-}
-
-
-/* ================= RESPONSIVE ================= */
-
-function resize(){
-  renderer.setSize(innerWidth, innerHeight);
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-}
-
-addEventListener('resize', resize);
-resize();
-loop();
+const sign=new THREE.Group();sign.position.set(0,15.4,11.9);HQ.add(sign);
+B(16,2.6,.5,dark,0,0,0,sign);
+const sp=mesh(new THREE.PlaneGeometry(15.4,3),new THREE.MeshBasicMaterial({map:logo}),0,0,.27,sign);sp.scale.y=.8;sp.castShadow=false;
+facade.push({g:sign,b:sign.position.clone(),d:new THREE.Vector3(0,12,14),r:new THREE.Vector3(.6,.2,.4)});
+
+/* ---------- fourgon blindé (mètres, avant vers -z) ---------- */
+const sideLogo=canvasTex(1024,320,(x,w,h)=>{x.clearRect(0,0,w,h);x.font='700 150px "Barlow Semi Condensed",Arial';x.textBaseline='middle';x.fillStyle='#14181d';x.fillText('S.R.',40,120);x.fillStyle='#c98f22';x.fillText('TRACK',330,120);x.font='500 50px "IBM Plex Sans",Arial';x.fillStyle='#46505a';x.fillText('Transport sécurisé · Géolocalisation',44,255)});
+function van(){
+  const g=new THREE.Group(),parts=[];
+  const part=(o,d)=>{parts.push({o,b:o.position.clone(),d:new THREE.Vector3(...d)});return o};
+  B(2.1,.1,4.3,dark,0,.9,.95,g);
+  part(B(.08,2.1,4.3,white,-1.04,1.95,.95,g),[-4,.4,0]);
+  part(B(.08,2.1,4.3,white,1.04,1.95,.95,g),[4,.4,0]);
+  part(B(2.1,.1,4.3,white,0,3.0,.95,g),[0,4.5,0]);
+  B(2,2.1,.08,dark,0,1.95,-1.15,g);
+  part(B(1,2,.06,white,-.5,1.95,3.12,g),[-2.2,0,3.2]);part(B(1,2,.06,white,.5,1.95,3.12,g),[2.2,0,3.2]);
+  for(const s of[-1,1]){const p=new THREE.Mesh(new THREE.PlaneGeometry(4,1.25),new THREE.MeshBasicMaterial({map:sideLogo,transparent:true}));p.position.set(s*1.085,2.1,.95);p.rotation.y=-s*Math.PI/2;g.add(p);parts.push({o:p,b:p.position.clone(),d:new THREE.Vector3(s*4,.4,0)});
+    B(.1,.12,4.3,gold,s*1.09,1.2,.95,g)}
+  RB(2.06,1.55,1.9,.2,white,0,1.65,-2.15,g);RB(2,.75,1.2,.2,white,0,1.25,-3.25,g);
+  const ws=B(1.8,.85,.05,glassM,0,2.08,-3.05,g);ws.rotation.x=.5;
+  for(const s of[-1,1]){B(.05,.7,1.2,glassM,s*1.04,2.1,-2.2,g);B(.06,.2,.2,emi(0xffffff,3),s*.75,1.3,-3.88,g)}
+  B(2.1,.35,.15,dark,0,.8,-3.9,g);
+  for(const[x,z]of[[-1,-2.4],[1,-2.4],[-1,2.1],[1,2.1]]){const w=new THREE.Group();w.position.set(x,.45,z);g.add(w);
+    const t=mesh(new THREE.CylinderGeometry(.45,.45,.32,28),M(0x0a0a0a,.9,0),0,0,0,w);t.rotation.z=Math.PI/2;
+    const rim=mesh(new THREE.CylinderGeometry(.27,.27,.34,20),M(0xb9c2cb,.25,.9),0,0,0,w);rim.rotation.z=Math.PI/2;
+    parts.push({o:w,b:w.position.clone(),d:new THREE.Vector3(x*3,-.1,0)})}
+  part(B(1.2,.9,1.1,M(0x3b434c,.4,.85),0,1.45,-.3,g),[0,3,-1.5]);
+  part(B(.6,.35,.8,dark,-.6,1.2,1.6,g),[-1,2.8,0]);
+  const ecu=B(.6,.5,.4,dark,.6,1.3,1.6,g);B(.5,.12,.02,emi(0x3cd2ee,2.5),.6,1.4,1.41,g);part(ecu,[1,3.5,0]);
+  const mod=part(B(.35,.1,.5,emi(0x3cd2ee,2),0,1.0,2.4,g),[0,2.2,1.5]);
+  const ant=mesh(new THREE.CylinderGeometry(.08,.1,.12,16),emi(0x3cd2ee,2.5),0,2.5,-1.8,g);
+  g.userData={parts,mod,ant};return g}
+
+/* service (atelier) et convoi */
+const svc=van();svc.position.set(-12,0,-6);svc.rotation.y=.25;scene.add(svc);
+const convoy=[0,1].map(i=>{const v=van();v.position.set(i?3:-3,0,[-6,-14][i]);scene.add(v);return v});
+
+/* ---------- bureaux ---------- */
+const office=new THREE.Group();office.position.set(0,0,-90);scene.add(office);
+B(46,.3,30,floorM,0,.15,0,office);B(46,10,.2,glassM,0,5.2,-14.5,office);
+for(let x=-18;x<=18;x+=9)B(.15,10,.3,alu,x,5.2,-14.4,office);
+for(let x=-16;x<=16;x+=8)B(5,.08,1.4,emi(0xdfeaff,2),x,9.6,0,office).castShadow=false;
+const dash=canvasTex(512,288,()=>{});
+function drawDash(t,x=dash.userData.x,w=512,h=288){x.fillStyle='#091219';x.fillRect(0,0,w,h);x.fillStyle='#3cd2ee';x.font='bold 22px Arial';x.fillText('Suivi de flotte',20,34);
+  for(let i=0;i<5;i++){const y=64+i*34;x.fillStyle='#16303b';x.fillRect(20,y,470,18);x.fillStyle=i===3?'#ff5364':'#5fe0a0';x.fillRect(20,y,90+((t*30+i*70)%370),18)}
+  x.strokeStyle='#e8b04a';x.lineWidth=2;x.beginPath();for(let i=0;i<460;i+=8){const y=250+Math.sin(i*.04+t*2)*14;i?x.lineTo(26+i,y):x.moveTo(26+i,y)}x.stroke();dash.needsUpdate=true}
+for(let i=0;i<6;i++){const x=-12+(i%3)*12,z=-4+Math.floor(i/3)*9;
+  B(6,.12,2.2,M(0x4d555e,.5,.3),x,1.1,z,office);B(.1,1.1,2,dark,x-2.9,.55,z,office);B(.1,1.1,2,dark,x+2.9,.55,z,office);
+  B(3.3,2,.1,dark,x,2.3,z-.6,office);const s=mesh(new THREE.PlaneGeometry(3.1,1.8),new THREE.MeshBasicMaterial({map:dash}),x,2.3,z-.54,office);s.castShadow=false;s.rotation.y=Math.PI;s.position.z=z-.66;
+  /* écran vers la caméra (+z) */s.rotation.y=0;s.position.z=z-.54}
+
+/* ---------- supervision cyber ---------- */
+const soc=new THREE.Group();soc.position.set(0,0,-150);scene.add(soc);
+B(46,.3,34,floorM,0,.15,0,soc);B(30,8,.4,dark,0,4.6,-15,soc);
+const wall=canvasTex(1280,340,()=>{});
+const wallMesh=mesh(new THREE.PlaneGeometry(29,7.4),new THREE.MeshBasicMaterial({map:wall}),0,4.6,-14.75,soc);wallMesh.castShadow=false;
+const veh=[...Array(8)].map((_,i)=>({a:Math.random()*6.28,r:60+Math.random()*110,s:.2+Math.random()*.4,y:60+Math.random()*220}));
+function drawWall(t){const x=wall.userData.x;x.fillStyle='#071017';x.fillRect(0,0,1280,340);x.strokeStyle='#12303c';x.lineWidth=1;
+  for(let i=0;i<1280;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,340);x.stroke()}for(let j=0;j<340;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(1280,j);x.stroke()}
+  x.strokeStyle='#3cd2ee';x.lineWidth=2;x.beginPath();for(let i=0;i<=820;i+=10){const y=170+Math.sin(i*.012)*70+Math.sin(i*.05+t)*10;i?x.lineTo(40+i,y):x.moveTo(40,y)}x.stroke();
+  veh.forEach((v,i)=>{const px=40+((t*v.s*60+v.r*5)%820),py=170+Math.sin(px*.012)*70;x.fillStyle=i===2&&Math.sin(t*4)>0?'#ff5364':'#5fe0a0';x.beginPath();x.arc(px,py,7,0,6.3);x.fill()});
+  x.fillStyle='#e8f1f6';x.font='bold 26px Arial';x.fillText('Supervision réseau',900,50);x.font='20px Arial';
+  ['Passerelle GPS : en ligne','Cloud : en ligne','API flotte : en ligne','Alerte périmètre : à vérifier'].forEach((s,i)=>{x.fillStyle=i===3?'#ff8a96':'#8fe6b8';x.fillText(s,900,100+i*38)});wall.needsUpdate=true}
+for(let i=0;i<3;i++){const x=-12+i*12;B(7,.9,1.8,M(0x39414a,.45,.5),x,.75,-6,soc);const m=B(3,1.5,.1,dark,x,2.1,-6.3,soc);mesh(new THREE.PlaneGeometry(2.8,1.3),new THREE.MeshBasicMaterial({map:dash}),x,2.1,-6.24,soc).castShadow=false}
+const ring=new THREE.Mesh(new THREE.TorusGeometry(5,.05,8,80),emi(0x3cd2ee,2));ring.rotation.x=Math.PI/2;ring.position.set(0,.4,4);soc.add(ring);
+const alert=new THREE.PointLight(0xff3048,0,40,1.8);alert.position.set(0,9,-4);soc.add(alert);
+
+/* lumières locales */
+for(const[g,c,z]of[[office,0xbfe3ff,0],[soc,0x3cd2ee,0]]){const l=new THREE.PointLight(c,220,45,1.6);l.position.set(0,8,z);g.add(l)}
+
+/* ---------- personnes (modèles 3D réels, animés) ---------- */
+const mixers=[],manager=new THREE.LoadingManager();
+manager.onProgress=(u,i,t)=>{$('bar').style.width=(i/t*100)+'%'};
+manager.onLoad=()=>$('load').classList.add('off');
+setTimeout(()=>$('load').classList.add('off'),7000);
+const gl=new GLTFLoader(manager),cache={};
+const MODELS='https://cdn.jsdelivr.net/gh/mrdoob/three.js@r164/examples/models/gltf/';
+function human(name,pos,ry,parent,anim){
+  (cache[name]??=new Promise((res,rej)=>gl.load(MODELS+name+'.glb',res,undefined,rej))).then(g=>{
+    const o=skClone(g.scene);o.traverse(c=>{if(c.isMesh)c.castShadow=true});
+    const bb=new THREE.Box3().setFromObject(o);o.scale.setScalar(1.75/Math.max(.01,bb.max.y-bb.min.y));
+    const b2=new THREE.Box3().setFromObject(o);o.position.set(pos[0],pos[1]-b2.min.y,pos[2]);o.rotation.y=ry;parent.add(o);
+    const m=new THREE.AnimationMixer(o),clip=THREE.AnimationClip.findByName(g.animations,anim)||g.animations[0];
+    if(clip)m.clipAction(clip).play();mixers.push(m)}).catch(()=>{})}
+human('Soldier',[-4,0,-4],Math.PI*.8,HQ,'Idle');          /* agent de sécurité à l'atelier */
+human('Michelle',[9,0,-4.4],-Math.PI*.55,HQ,'');          /* technicienne à l'établi */
+human('Michelle',[-14.5,0,3.4],Math.PI/2,office,'');
+human('Soldier',[14.5,0,-3],-Math.PI/2,office,'Idle');
+human('Michelle',[-14.5,0,5.4],Math.PI/2,office,'');
+human('Michelle',[-6,0,-2],Math.PI,soc,'');
+human('Soldier',[6,0,-2],Math.PI,soc,'Idle');
+human('Michelle',[0,0,0],Math.PI,soc,'');
+
+/* ---------- caméra ---------- */
+const KF=[[0,[0,4,36],[0,6,0]],[.08,[0,4.5,30],[0,6,0]],[.2,[-8,5,26],[0,6,0]],[.27,[0,2.8,12],[0,2.2,-8]],
+[.4,[-4,2.4,2],[-12,1.6,-6]],[.5,[-6,2.6,-1],[-12,1.8,-6]],[.6,[7,3.2,-24],[0,1.5,-44]],[.68,[10,4,-52],[0,2,-90]],
+[.76,[-12,4.6,-72],[0,2.2,-90]],[.84,[9,4.8,-132],[0,3,-150]],[1,[0,6.5,-130],[0,4,-155]]];
+const cp=new THREE.Vector3(),cl=new THREE.Vector3(),tp=new THREE.Vector3();
+function camAt(p){let i=0;while(i<KF.length-2&&p>KF[i+1][0])i++;const A=KF[i],Bk=KF[i+1],u=smooth((p-A[0])/(Bk[0]-A[0]));
+  cp.fromArray(A[1]).lerp(tp.fromArray(Bk[1]),u);cl.fromArray(A[2]).lerp(tp.fromArray(Bk[2]),u)}
+
+/* ---------- interface : rail, curseur, panneaux ---------- */
+const chapters=[[0,'Accueil'],[.08,"L'entreprise"],[.27,'Atelier'],[.52,'Flotte'],[.7,'Logiciels'],[.84,'Cybersécurité'],[.95,'Contact']];
+const rail=$('rail'),btns=chapters.map(([p,l])=>{const b=document.createElement('button');b.textContent=l;b.style.top=(p*100)+'%';
+  b.onclick=()=>scrollTo({top:p*(document.documentElement.scrollHeight-innerHeight),behavior:'smooth'});rail.appendChild(b);return b});
+const panels=[...document.querySelectorAll('.panel')];
+let target=0,cur=0;
+const onScroll=()=>{const h=document.documentElement.scrollHeight-innerHeight;target=h>0?scrollY/h:0};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+const cursor=$('cur');
+addEventListener('pointermove',e=>{cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`});
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('pointerenter',()=>cursor.classList.add('big'));el.addEventListener('pointerleave',()=>cursor.classList.remove('big'))});
+
+const clock=new THREE.Clock();
+function frame(){
+  const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+  cur+=(target-cur)*(1-Math.pow(.001,dt));const p=cur;
+
+  /* façade */
+  const fe=smooth((p-.1)/.14);
+  facade.forEach(f=>{f.g.position.copy(f.b).addScaledVector(f.d,fe);f.g.rotation.set(f.r.x*fe,f.r.y*fe,f.r.z*fe);f.g.visible=fe<.985});
+
+  /* fourgon de l'atelier : démontage puis remontage */
+  const ve=smooth((p-.3)/.1)*(1-smooth((p-.47)/.06));
+  svc.userData.parts.forEach(q=>q.o.position.copy(q.b).addScaledVector(q.d,ve));
+  svc.userData.mod.material.emissiveIntensity=2+Math.sin(t*6)*1.4;
+
+  /* convoi */
+  convoy.forEach((v,i)=>{const d=smooth((p-.5-i*.03)/.2);v.position.z=[-6,-14][i]-d*180;v.position.x=(i?3:-3)*(1-d)+Math.sin(d*3+i)*.6*d;v.userData.ant.material.emissiveIntensity=2+Math.sin(t*5+i)*1.5});
+
+  mixers.forEach(m=>m.update(dt));
+  drawDash(t);drawWall(t);ring.rotation.z=t*.3;
+  alert.intensity=Math.max(0,Math.sin(t*3))*90*(p>.8?1:0);
+
+  /* caméra, lumière, ombres */
+  camAt(p);camera.position.lerp(cp,.1);camera.position.x+=Math.sin(t*.3)*.06;camera.lookAt(cl);
+  sun.target.position.copy(cl);sun.position.copy(cl).add(new THREE.Vector3(18,34,22));
+  hqLight.intensity=260*(.4+.6*smooth((p-.15)/.1));
+
+  /* panneaux, rail, compteur */
+  panels.forEach(el=>{const a=+el.dataset.a,b=+el.dataset.b,v=smooth((p-a)/.03)*(1-smooth((p-(b-.03))/.03));el.style.opacity=v;if(!el.classList.contains('hero')&&!el.classList.contains('end'))el.style.transform=`translateY(${(1-v)*24}px)`;el.style.pointerEvents=v>.5?'auto':'none'});
+  const h=$('rail').clientHeight;$('fill').style.height=(p*100)+'%';$('thumb').style.top=(p*100)+'%';
+  let k=0;chapters.forEach(([c],i)=>{if(p>=c-.02)k=i});btns.forEach((b,i)=>b.classList.toggle('on',i===k));
+  $('pct').textContent=Math.round(p*100)+' %';
+
+  renderer.render(scene,camera);requestAnimationFrame(frame)}
+function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
+addEventListener('resize',resize);resize();frame();
 </script>
-
 </body>
 </html>
