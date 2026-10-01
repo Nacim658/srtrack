@@ -3,220 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>S.R.TRACK — Transport connecté & sécurisé</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
+    <!-- Canvas de fond -->
     <canvas id="scene"></canvas>
 
+    <!-- Barre de progression -->
     <div id="progress"></div>
 
+    <!-- En-tête -->
     <header>
-        <div class="logo">
-            S.R.<span>TRACK</span>
-        </div>
-
-        <div class="header-right">
-            Transport · IoT · Logiciels · Sécurité
-        </div>
+        <div class="logo">S.R.<span>TRACK</span></div>
+        <div class="header-right">Transport · IoT · Logiciels · Sécurité</div>
     </header>
 
+    <!-- Sections de texte (Scroll) -->
+    <div id="scroll-container">
+        <section class="scene-text center active" data-start="0" data-end="0.1">
+            <div class="kicker">Technologie connectée pour le transport</div>
+            <h1>S.R.TRACK</h1>
+            <p>Sécuriser les véhicules. Géolocaliser les opérations. Connecter le terrain au logiciel.</p>
+            <div class="scroll-hint">DÉFILEZ POUR ENTRER</div>
+        </section>
 
-    <section
-        class="scene-text center active"
-        data-start="0"
-        data-end=".09"
-    >
-        <div class="kicker">
-            Technologie connectée pour le transport
-        </div>
+        <section class="scene-text" data-start="0.1" data-end="0.25">
+            <div class="kicker">01 · L'entreprise</div>
+            <h2>Une entreprise pensée autour du véhicule connecté.</h2>
+            <p>S.R.TRACK associe la géolocalisation, les technologies IoT, les logiciels métiers et les outils de supervision.</p>
+            <div class="tags">
+                <span class="tag">IoT</span>
+                <span class="tag">Cloud</span>
+                <span class="tag">GPS</span>
+                <span class="tag">Logiciels</span>
+            </div>
+        </section>
 
-        <h1>S.R.TRACK</h1>
+        <section class="scene-text" data-start="0.25" data-end="0.4">
+            <div class="kicker">02 · Flotte connectée</div>
+            <h2>Chaque véhicule devient une source d'information.</h2>
+            <p>Les fourgons circulent sur le site et transmettent leur position. Les équipes peuvent visualiser les déplacements et les événements importants.</p>
+            <div class="status">
+                <span class="status-dot"></span> GPS · POSITION · ALERTES
+            </div>
+        </section>
 
-        <p>
-            Sécuriser les véhicules.
-            Géolocaliser les opérations.
-            Connecter le terrain au logiciel.
-        </p>
+        <section class="scene-text" data-start="0.4" data-end="0.55">
+            <div class="kicker">03 · Atelier technique</div>
+            <h2>Installation et maintenance directement sur les véhicules.</h2>
+            <p>Les techniciens travaillent sur les fourgons, installent les équipements de géolocalisation et réalisent les tests.</p>
+            <div class="status">
+                <span class="status-dot"></span> INSTALLATION · DIAGNOSTIC · TEST
+            </div>
+        </section>
 
-        <div class="scroll-hint">
-            DÉFILEZ POUR ENTRER
-        </div>
-    </section>
+        <section class="scene-text" data-start="0.55" data-end="0.7">
+            <div class="kicker">04 · Logiciels & Cloud</div>
+            <h2>Le terrain est piloté par des logiciels.</h2>
+            <p>Des développeurs travaillent sur les interfaces, les données de flotte, les services cloud et les applications utilisées par les équipes.</p>
+            <div class="tags">
+                <span class="tag">API</span>
+                <span class="tag">Cloud</span>
+                <span class="tag">Applications</span>
+                <span class="tag">Data</span>
+            </div>
+        </section>
 
+        <section class="scene-text" data-start="0.7" data-end="0.85">
+            <div class="kicker">05 · Cybersécurité</div>
+            <h2>Une supervision permanente des infrastructures.</h2>
+            <p>Une équipe dédiée surveille les réseaux, les systèmes, les accès et les événements de sécurité.</p>
+            <div class="status">
+                <span class="status-dot"></span> RÉSEAU · SURVEILLANCE · ALERTES
+            </div>
+        </section>
 
-    <section
-        class="scene-text"
-        data-start=".09"
-        data-end=".22"
-    >
-        <div class="kicker">
-            01 · L'entreprise
-        </div>
+        <section class="scene-text center" data-start="0.85" data-end="1">
+            <div class="kicker">S.R.TRACK</div>
+            <h2>Du véhicule connecté au logiciel métier.</h2>
+            <p>Une technologie pensée pour rapprocher les opérations physiques et le monde numérique.</p>
+            <div class="tags">
+                <span class="tag">Transport connecté</span>
+                <span class="tag">IoT</span>
+                <span class="tag">GPS</span>
+            </div>
+        </section>
+    </div>
 
-        <h2>
-            Une entreprise pensée autour du véhicule connecté.
-        </h2>
-
-        <p>
-            S.R.TRACK associe la géolocalisation,
-            les technologies IoT, les logiciels métiers
-            et les outils de supervision.
-        </p>
-
-        <div class="tags">
-            <span class="tag">IoT</span>
-            <span class="tag">Cloud</span>
-            <span class="tag">GPS</span>
-            <span class="tag">Logiciels</span>
-        </div>
-    </section>
-
-
-    <section
-        class="scene-text"
-        data-start=".22"
-        data-end=".37"
-    >
-        <div class="kicker">
-            02 · Flotte connectée
-        </div>
-
-        <h2>
-            Chaque véhicule devient une source d'information.
-        </h2>
-
-        <p>
-            Les fourgons circulent sur le site et transmettent
-            leur position. Les équipes peuvent visualiser les
-            déplacements et les événements importants.
-        </p>
-
-        <div class="status">
-            <span class="status-dot"></span>
-            GPS · POSITION · ALERTES
-        </div>
-    </section>
-
-
-    <section
-        class="scene-text"
-        data-start=".37"
-        data-end=".53"
-    >
-        <div class="kicker">
-            03 · Atelier technique
-        </div>
-
-        <h2>
-            Installation et maintenance directement sur les véhicules.
-        </h2>
-
-        <p>
-            Les techniciens travaillent sur les fourgons,
-            installent les équipements de géolocalisation
-            et réalisent les tests.
-        </p>
-
-        <div class="status">
-            <span class="status-dot"></span>
-            INSTALLATION · DIAGNOSTIC · TEST
-        </div>
-    </section>
-
-
-    <section
-        class="scene-text"
-        data-start=".53"
-        data-end=".70"
-    >
-        <div class="kicker">
-            04 · Logiciels & Cloud
-        </div>
-
-        <h2>
-            Le terrain est piloté par des logiciels.
-        </h2>
-
-        <p>
-            Des développeurs travaillent sur les interfaces,
-            les données de flotte, les services cloud et les
-            applications utilisées par les équipes.
-        </p>
-
-        <div class="tags">
-            <span class="tag">API</span>
-            <span class="tag">Cloud</span>
-            <span class="tag">Applications</span>
-            <span class="tag">Data</span>
-        </div>
-    </section>
-
-
-    <section
-        class="scene-text"
-        data-start=".70"
-        data-end=".86"
-    >
-        <div class="kicker">
-            05 · Cybersécurité
-        </div>
-
-        <h2>
-            Une supervision permanente des infrastructures.
-        </h2>
-
-        <p>
-            Une équipe dédiée surveille les réseaux,
-            les systèmes, les accès et les événements
-            de sécurité.
-        </p>
-
-        <div class="status">
-            <span class="status-dot"></span>
-            RÉSEAU · SURVEILLANCE · ALERTES
-        </div>
-    </section>
-
-
-    <section
-        class="scene-text center"
-        data-start=".88"
-        data-end="1"
-    >
-        <div class="kicker">
-            S.R.TRACK
-        </div>
-
-        <h2>
-            Du véhicule connecté au logiciel métier.
-        </h2>
-
-        <p>
-            Une technologie pensée pour rapprocher
-            les opérations physiques et le monde numérique.
-        </p>
-
-        <div class="tags">
-            <span class="tag">Transport connecté</span>
-            <span class="tag">IoT</span>
-            <span class="tag">GPS</span>
-        </div>
-    </section>
-
-
-    <div id="scroll"></div>
-
-
-    <!-- Bibliothèque Three.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js" defer></script>
-
-    <!-- Notre JavaScript -->
+    <!-- Script -->
     <script src="script.js" defer></script>
-
 </body>
 </html>
