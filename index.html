@@ -1,562 +1,3928 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
+
+<title>S.R.Tech — Transport connecté & sécurisé</title>
+
 <style>
-:root{--ink:#0b1b3a;--bg:#f4f7fb;--b:#2563ff;--b2:#5b8cff;--o:#ff6a2b;--mut:#5b6b86;--card:#fff;--bd:#e3e9f3;--sh:0 10px 40px rgba(20,40,90,.08)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden}
-a{text-decoration:none;color:inherit}ul{list-style:none}
-#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:2000;background:linear-gradient(90deg,var(--b),var(--o))}
 
-/* Header */
-header{display:flex;justify-content:space-between;align-items:center;padding:16px 80px;position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.75);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);transition:transform .4s}
-header.hide{transform:translateY(-100%)}
-.logo{font-weight:900;font-size:24px;letter-spacing:.5px}.logo b{color:var(--b)}
-nav ul{display:flex;gap:32px}
-nav a{font-weight:600;font-size:15px;color:var(--mut);position:relative;transition:color .3s}
-nav a:hover{color:var(--b)}
-nav a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--o);transition:width .3s}
-nav a:hover::after{width:100%}
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-/* Hero */
-.hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:130px 80px 80px;background:radial-gradient(ellipse at 85% 20%,rgba(37,99,255,.12),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(255,106,43,.08),transparent 50%)}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--b);font-weight:700;letter-spacing:2.5px;font-size:12px;text-transform:uppercase;margin-bottom:22px;background:#e8efff;padding:8px 16px;border-radius:50px}
-.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--o)}
-h1{font-size:clamp(34px,4.8vw,66px);font-weight:900;line-height:1.08;letter-spacing:-1.5px}
-h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em}
-h1 .w>span{display:inline-block;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
-@keyframes up{to{transform:none}}
-h1 em{font-style:normal;color:var(--b)}
-.lead{max-width:540px;color:var(--mut);font-size:19px;margin:24px 0 36px}
-.btns{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-block;padding:15px 32px;border-radius:50px;font-weight:700;font-size:16px;border:none;cursor:pointer;transition:transform .2s,box-shadow .3s;will-change:transform}
-.btn-p{background:var(--b);color:#fff;box-shadow:0 10px 30px rgba(37,99,255,.35)}
-.btn-p:hover{box-shadow:0 14px 40px rgba(37,99,255,.5)}
-.btn-o{border:2px solid var(--ink);color:var(--ink);background:transparent}
-.btn-o:hover{background:var(--ink);color:#fff}
+:root{
+    --green:#08783f;
+    --green2:#0fa45b;
+    --green-light:#e9f7ef;
+    --green-pale:#f4fbf7;
 
-/* Carte de suivi hero */
-.dash{perspective:1200px}
-.dash-card{background:#fff;border-radius:28px;padding:22px;box-shadow:0 40px 90px rgba(20,40,90,.18);border:1px solid var(--bd);transform:rotateY(-12deg) rotateX(6deg);transition:transform .2s ease-out}
-.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:700;font-size:14px}
-.live{color:var(--o);display:flex;align-items:center;gap:6px;font-size:12px}.live i{width:8px;height:8px;border-radius:50%;background:var(--o);animation:pl 1.6s infinite}
-@keyframes pl{50%{opacity:.25}}
-.map{border-radius:18px;background:#eef3fb;overflow:hidden}
-.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.chip{background:#f4f7fb;border-radius:12px;padding:10px 12px;font-size:12px;color:var(--mut)}.chip b{display:block;color:var(--ink);font-size:15px}
+    --white:#ffffff;
+    --text:#123b2a;
+    --muted:#527263;
 
-/* Layout */
-.container{padding:100px 80px}
-.section-title{font-size:clamp(28px,3.4vw,44px);font-weight:900;letter-spacing:-1px;margin-bottom:44px}
-.section-title::after{content:"";display:block;width:60px;height:5px;margin-top:14px;border-radius:5px;background:var(--o)}
-.grid-2,.grid-3,.grid-4{display:grid;gap:26px}
-.grid-2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
-.grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.grid-3{margin-top:26px}
-.reveal{opacity:0;transform:translateY(50px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
-.reveal.visible{opacity:1;transform:none}
-.reveal .grid-2>*,.reveal .grid-3>*,.reveal .grid-4>*{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*.12s + .15s)}
-.reveal.visible .grid-2>*,.reveal.visible .grid-3>*,.reveal.visible .grid-4>*{opacity:1;transform:none}
+    --border:rgba(8,120,63,.13);
 
-.intro-card{max-width:1000px;margin:0 auto;text-align:center;padding:54px 60px;border-radius:36px;background:linear-gradient(135deg,var(--b),#1b3fb8);color:#fff;box-shadow:0 30px 70px rgba(37,99,255,.3)}
-.intro-card p{font-size:21px;opacity:.92;margin-bottom:14px}.intro-card strong{color:#ffd2bd}
-
-/* Cartes 3D */
-.tilt{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;border-radius:22px;background:var(--card);border:1px solid var(--bd);box-shadow:var(--sh);overflow:hidden;transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .15s ease-out,box-shadow .3s,border-color .3s;will-change:transform}
-.tilt:hover{box-shadow:0 30px 70px rgba(20,40,90,.16);border-color:var(--b2)}
-.tilt::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.55),transparent 45%)}
-.tilt:hover::after{opacity:1}
-.card-img{height:220px;overflow:hidden;background:linear-gradient(135deg,#dbe7ff,#aac2ff)}
-.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
-.tilt:hover .card-img img{transform:scale(1.08)}
-.card-body{padding:26px}
-.card-body h3,.sc h3{font-size:20px;margin-bottom:10px}
-.card-body p,.sc p{color:var(--mut)}
-.sc{padding:30px}
-.ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;font-size:22px;background:#e8efff}
-.sc:hover .ico{background:var(--o)}
-
-/* ===== Section 3D épinglée ===== */
-#story{height:560vh;position:relative}
-.stage{position:sticky;top:0;height:100vh;overflow:hidden}
-#c3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.cap-wrap{position:absolute;left:80px;top:50%;transform:translateY(-50%);width:min(420px,40vw);z-index:3}
-.cap{position:absolute;top:50%;left:0;right:0;transform:translateY(-35%);background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:24px;padding:30px;box-shadow:var(--sh);opacity:0;transition:opacity .6s,transform .6s;pointer-events:none}
-.cap.on{opacity:1;transform:translateY(-50%)}
-.cap small{display:inline-block;color:#fff;background:var(--o);font-weight:800;padding:3px 12px;border-radius:50px;font-size:12px;letter-spacing:1px;margin-bottom:12px}
-.cap h3{font-size:26px;letter-spacing:-.5px;margin-bottom:8px}.cap p{color:var(--mut)}
-.rail{position:absolute;right:40px;top:20%;bottom:20%;width:3px;background:#d6dfee;border-radius:3px;z-index:3}
-.rail i{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(var(--b),var(--o));border-radius:3px}
-.track{position:absolute;right:80px;bottom:40px;width:300px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:20px;padding:18px;box-shadow:var(--sh);z-index:3;opacity:0;transform:translateY(20px);transition:.5s}
-.track.on{opacity:1;transform:none}
-.track h4{font-size:13px;color:var(--o);letter-spacing:1.5px;margin-bottom:10px}
-.tr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:13px;margin-bottom:12px}
-.tr b{font-size:14px}.tr span{color:var(--mut);text-align:right}
-.tr div{grid-column:1/3;height:6px;background:#e6ecf6;border-radius:6px;overflow:hidden}
-.tr div i{display:block;height:100%;width:0;background:var(--b);border-radius:6px}
-.hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:3px;color:var(--mut);z-index:3;transition:opacity .4s}
-.nogl{height:auto!important}
-.nogl .stage{position:relative;height:auto;padding:80px}
-.nogl #c3d,.nogl .rail,.nogl .track,.nogl .hint{display:none}
-.nogl .cap-wrap{position:static;transform:none;width:auto}
-.nogl .cap{position:static;opacity:1;transform:none;margin-bottom:20px}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 80px 20px}
-.stat{text-align:center;padding:34px 10px;border-radius:22px;background:#fff;border:1px solid var(--bd);box-shadow:var(--sh)}
-.stat b{display:block;font-size:clamp(38px,5vw,58px);font-weight:900;color:var(--b);line-height:1.1}
-.stat span{color:var(--mut);font-size:15px}
-
-.services-section{background:#fff}
-.sub-brand{border-left:5px solid var(--o);padding:6px 0 6px 22px;margin-bottom:26px;transition:transform .3s}
-.sub-brand:hover{transform:translateX(10px)}
-.sub-brand h3{font-size:24px;color:var(--b)}.sub-brand p{color:var(--mut)}
-.group-lead{margin-bottom:34px;font-size:19px;color:var(--mut);max-width:800px}
-
-.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin:0 80px;padding:60px;border-radius:32px;background:#fff;border:1px solid var(--bd);box-shadow:var(--sh)}
-.contact-info h2{font-size:clamp(32px,4vw,48px);color:var(--b);margin-bottom:20px;letter-spacing:-1px}
-.contact-info p{color:var(--mut)}
-.form-row{display:flex;gap:20px}.form-group{margin-bottom:20px;flex:1}
-label{display:block;margin-bottom:8px;font-weight:600;font-size:14px}
-input{width:100%;padding:14px;border:1px solid var(--bd);border-radius:12px;font-size:15px;background:#f8fafd;transition:border-color .3s,box-shadow .3s}
-input:focus{outline:none;border-color:var(--b);box-shadow:0 0 0 4px rgba(37,99,255,.12)}
-#ok{display:none;margin-top:16px;color:var(--b);font-weight:700}
-
-footer{margin-top:100px;padding:60px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;background:var(--ink);color:#c8d3e8}
-footer h4{font-size:19px;color:#fff;margin-bottom:18px}
-footer li{margin-bottom:10px}footer a:hover{color:var(--o)}
-
-@media(max-width:900px){
-.hero{grid-template-columns:1fr;padding-top:120px}.dash{display:none}
+    --shadow:0 15px 45px rgba(8,120,63,.10);
+    --shadow-hover:0 25px 60px rgba(8,120,63,.17);
 }
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+    background:#ffffff;
+    line-height:1.6;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+ul{
+    list-style:none;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(8,120,63,.06),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 10% 85%,
+            rgba(15,164,91,.05),
+            transparent 30%
+        );
+}
+
+
+/* =========================================================
+   3D CANVAS
+========================================================= */
+
+#bg{
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:0;
+    pointer-events:none;
+
+    opacity:.38;
+}
+
+main,
+header,
+footer{
+    position:relative;
+    z-index:2;
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+#loader{
+    position:fixed;
+    inset:0;
+
+    z-index:9999;
+
+    background:#ffffff;
+
+    display:grid;
+    place-items:center;
+
+    transition:
+        opacity .8s,
+        visibility .8s;
+}
+
+#loader.off{
+    opacity:0;
+    visibility:hidden;
+}
+
+#loader div{
+    font-size:28px;
+    font-weight:900;
+
+    color:var(--green);
+
+    letter-spacing:6px;
+
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        opacity:.35;
+        transform:scale(.96);
+    }
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+#bar{
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    height:3px;
+    width:0;
+
+    z-index:2000;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--green2)
+        );
+}
+
+
+/* =========================================================
+   CURSOR GLOW
+========================================================= */
+
+.glow{
+    position:fixed;
+
+    width:420px;
+    height:420px;
+
+    margin:-210px 0 0 -210px;
+
+    border-radius:50%;
+
+    z-index:1;
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(15,164,91,.08),
+            transparent 65%
+        );
+
+    will-change:transform;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 50px;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+    right:0;
+
+    z-index:1000;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:
+        1px solid rgba(8,120,63,.10);
+
+    box-shadow:
+        0 4px 20px rgba(0,0,0,.04);
+
+    transition:
+        transform .4s;
+}
+
+header.hide{
+    transform:translateY(-100%);
+}
+
+
+/* LOGO */
+
+.logo{
+    font-weight:900;
+    font-size:23px;
+
+    letter-spacing:1px;
+
+    color:var(--text);
+}
+
+.logo b{
+    color:var(--green);
+}
+
+
+/* NAVIGATION */
+
+nav ul{
+    display:flex;
+    gap:34px;
+}
+
+nav a{
+    font-weight:600;
+
+    position:relative;
+
+    color:#176044;
+
+    transition:
+        color .3s;
+}
+
+nav a::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:-7px;
+
+    height:2px;
+    width:0;
+
+    background:var(--green);
+
+    transition:
+        width .3s;
+}
+
+nav a:hover{
+    color:var(--green);
+}
+
+nav a:hover::after{
+    width:100%;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+
+    padding:
+        150px 80px
+        100px;
+
+    position:relative;
+}
+
+.eyebrow{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:var(--green);
+
+    font-weight:700;
+
+    letter-spacing:3px;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+    margin-bottom:24px;
+}
+
+.eyebrow i{
+    width:9px;
+    height:9px;
+
+    border-radius:50%;
+
+    background:var(--green2);
+
+    box-shadow:
+        0 0 0 0 rgba(15,164,91,.4);
+
+    animation:ping 1.8s infinite;
+}
+
+@keyframes ping{
+    to{
+        box-shadow:
+            0 0 0 14px transparent;
+    }
+}
+
+
+.hero-titles{
+    display:grid;
+
+    max-width:850px;
+
+    perspective:900px;
+}
+
+.hero-title{
+    grid-area:1/1;
+
+    font-size:
+        clamp(40px,5.4vw,76px);
+
+    font-weight:900;
+
+    line-height:1.06;
+
+    color:#0b5f35;
+
+    pointer-events:none;
+}
+
+.hero-title.active{
+    pointer-events:auto;
+}
+
+.hero-title .w{
+    display:inline-block;
+
+    overflow:hidden;
+
+    vertical-align:top;
+
+    padding-bottom:.12em;
+}
+
+.hero-title .w>span{
+    display:inline-block;
+
+    transform:
+        translateY(110%)
+        rotateX(-70deg);
+
+    opacity:0;
+
+    transition:
+        transform .9s cubic-bezier(.2,.8,.2,1),
+        opacity .6s;
+
+    transition-delay:
+        var(--d);
+}
+
+.hero-title.active .w>span{
+    transform:none;
+    opacity:1;
+}
+
+.hero-title:not(.active) .w>span{
+    transition-delay:0s;
+
+    transform:
+        translateY(-110%);
+}
+
+.hero-title em{
+    font-style:normal;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--green2)
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.hero p.lead{
+    max-width:650px;
+
+    color:var(--muted);
+
+    font-size:20px;
+
+    margin:
+        28px 0 38px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btns{
+    display:flex;
+
+    gap:16px;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+}
+
+.btn{
+    display:inline-block;
+
+    padding:
+        15px 34px;
+
+    border-radius:50px;
+
+    font-weight:700;
+
+    font-size:16px;
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s,
+        box-shadow .3s;
+}
+
+.btn-p{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green2)
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 10px 30px
+        rgba(8,120,63,.22);
+}
+
+.btn-p:hover{
+    box-shadow:
+        0 15px 40px
+        rgba(8,120,63,.30);
+}
+
+.btn-o{
+    border:
+        1px solid var(--green);
+
+    color:var(--green);
+
+    background:#ffffff;
+}
+
+.btn-o:hover{
+    background:var(--green-light);
+}
+
+#pauseBtn{
+    width:44px;
+    height:44px;
+
+    border-radius:50%;
+
+    border:
+        1px solid var(--border);
+
+    background:#ffffff;
+
+    color:var(--green);
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    box-shadow:
+        0 5px 20px rgba(8,120,63,.08);
+}
+
+
+/* =========================================================
+   SCROLL HINT
+========================================================= */
+
+.scroll-hint{
+    position:absolute;
+
+    bottom:30px;
+    left:80px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.scroll-hint span{
+    width:1px;
+    height:46px;
+
+    background:
+        linear-gradient(
+            var(--green),
+            transparent
+        );
+
+    animation:drip 2s infinite;
+}
+
+@keyframes drip{
+
+    0%{
+        transform:scaleY(0);
+        transform-origin:top;
+    }
+
+    50%{
+        transform:scaleY(1);
+        transform-origin:top;
+    }
+
+    51%{
+        transform-origin:bottom;
+    }
+
+    100%{
+        transform:scaleY(0);
+        transform-origin:bottom;
+    }
+}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee{
+    overflow:hidden;
+
+    border-block:
+        1px solid var(--border);
+
+    background:#f8fcfa;
+
+    padding:18px 0;
+}
+
+.marquee div{
+    display:flex;
+
+    gap:60px;
+
+    width:max-content;
+
+    animation:
+        mq 28s linear infinite;
+
+    color:var(--green);
+
+    font-weight:800;
+
+    letter-spacing:4px;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+}
+
+@keyframes mq{
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+
+/* =========================================================
+   GENERAL LAYOUT
+========================================================= */
+
+.container{
+    padding:
+        100px 80px;
+}
+
+.section-title{
+    font-size:
+        clamp(30px,3.6vw,48px);
+
+    font-weight:900;
+
+    color:#0b5f35;
+
+    margin-bottom:46px;
+}
+
+.section-title::after{
+    content:"";
+
+    display:block;
+
+    width:70px;
+    height:4px;
+
+    margin-top:14px;
+
+    border-radius:4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--green2)
+        );
+}
+
+.grid-2,
+.grid-3,
+.grid-4{
+    display:grid;
+
+    gap:28px;
+}
+
+.grid-2{
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(340px,1fr)
+        );
+}
+
+.grid-3{
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(280px,1fr)
+        );
+}
+
+.grid-4{
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px,1fr)
+        );
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{
+    opacity:0;
+
+    transform:
+        translateY(50px);
+
+    transition:
+        opacity .9s,
+        transform .9s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+.reveal.visible{
+    opacity:1;
+
+    transform:none;
+}
+
+.reveal .grid-2>*,
+.reveal .grid-3>*,
+.reveal .grid-4>*{
+    opacity:0;
+
+    transform:
+        translateY(40px)
+        scale(.96);
+
+    transition:
+        opacity .7s,
+        transform .7s
+        cubic-bezier(.2,.8,.2,1);
+
+    transition-delay:
+        calc(var(--i)*.12s + .15s);
+}
+
+.reveal.visible .grid-2>*,
+.reveal.visible .grid-3>*,
+.reveal.visible .grid-4>*{
+    opacity:1;
+
+    transform:none;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro-card{
+    max-width:1000px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+    padding:
+        50px 60px;
+
+    border-radius:35px;
+
+    background:#ffffff;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+.intro-card p{
+    font-size:21px;
+
+    color:var(--muted);
+
+    margin-bottom:14px;
+}
+
+.intro-card strong{
+    color:var(--green);
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.tilt{
+    --rx:0deg;
+    --ry:0deg;
+    --mx:50%;
+    --my:50%;
+
+    position:relative;
+
+    border-radius:22px;
+
+    background:#ffffff;
+
+    border:
+        1px solid var(--border);
+
+    overflow:hidden;
+
+    transform:
+        perspective(900px)
+        rotateX(var(--rx))
+        rotateY(var(--ry));
+
+    transition:
+        transform .15s ease-out,
+        border-color .3s,
+        box-shadow .3s;
+
+    will-change:transform;
+
+    box-shadow:var(--shadow);
+}
+
+.tilt:hover{
+    border-color:
+        rgba(8,120,63,.35);
+
+    box-shadow:
+        var(--shadow-hover);
+}
+
+.tilt::after{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transition:opacity .3s;
+
+    background:
+        radial-gradient(
+            circle at var(--mx) var(--my),
+            rgba(15,164,91,.08),
+            transparent 45%
+        );
+}
+
+.tilt:hover::after{
+    opacity:1;
+}
+
+
+/* =========================================================
+   IMAGE CARDS
+========================================================= */
+
+.card-img{
+    height:250px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e9f7ef,
+            #bce8cf
+        );
+}
+
+.card-img img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:
+        transform .8s;
+}
+
+.tilt:hover .card-img img{
+    transform:scale(1.07);
+}
+
+.card-body{
+    padding:28px;
+}
+
+.card-body h3,
+.sc h3{
+    font-size:22px;
+
+    color:var(--green);
+
+    margin-bottom:10px;
+}
+
+.card-body p,
+.sc p{
+    color:var(--muted);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px,1fr)
+        );
+
+    gap:20px;
+
+    padding:
+        0 80px 20px;
+}
+
+.stat{
+    text-align:center;
+
+    padding:
+        34px 10px;
+
+    border-radius:20px;
+
+    background:#ffffff;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+.stat b{
+    display:block;
+
+    font-size:
+        clamp(38px,5vw,60px);
+
+    font-weight:900;
+
+    color:var(--green);
+
+    line-height:1;
+}
+
+.stat span{
+    color:var(--muted);
+
+    font-size:15px;
+}
+
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services-section{
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f4fbf7 50%,
+            #ffffff 100%
+        );
+}
+
+
+/* SERVICE CARD */
+
+.service-card{
+    padding:0 !important;
+
+    overflow:hidden;
+
+    background:#ffffff;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+
+/* SERVICE IMAGE */
+
+.service-img{
+    width:100%;
+
+    height:230px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e9f7ef,
+            #c7ecd7
+        );
+}
+
+.service-img::after{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 45%,
+            rgba(8,120,63,.18)
+        );
+}
+
+.service-img img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:
+        transform .7s ease;
+}
+
+.service-card:hover .service-img img{
+    transform:scale(1.08);
+}
+
+
+/* SERVICE CONTENT */
+
+.service-content{
+    padding:28px;
+}
+
+.service-content h3{
+    color:var(--green);
+
+    font-size:22px;
+
+    margin-bottom:10px;
+}
+
+.service-content p{
+    color:var(--muted);
+
+    line-height:1.7;
+}
+
+
+/* SERVICE ICON */
+
+.service-icon{
+    width:48px;
+    height:48px;
+
+    border-radius:14px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin-bottom:16px;
+
+    font-size:22px;
+
+    background:var(--green-light);
+
+    border:
+        1px solid var(--border);
+}
+
+
+/* =========================================================
+   SMALL CARDS
+========================================================= */
+
+.sc{
+    padding:30px;
+}
+
+.sc .ico{
+    width:46px;
+    height:46px;
+
+    border-radius:14px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin-bottom:18px;
+
+    font-size:22px;
+
+    background:var(--green-light);
+
+    border:
+        1px solid var(--border);
+}
+
+
+/* =========================================================
+   GROUP
+========================================================= */
+
+.sub-brand{
+    border-left:
+        4px solid var(--green);
+
+    padding:
+        8px 0 8px 22px;
+
+    margin-bottom:26px;
+
+    transition:
+        transform .3s;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,120,63,.04),
+            transparent
+        );
+}
+
+.sub-brand:hover{
+    transform:
+        translateX(10px);
+}
+
+.sub-brand h3{
+    font-size:24px;
+
+    color:var(--green);
+}
+
+.sub-brand p{
+    color:var(--muted);
+}
+
+.group-lead{
+    margin-bottom:34px;
+
+    font-size:19px;
+
+    color:var(--muted);
+
+    max-width:800px;
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact-container{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:60px;
+
+    margin:
+        0 80px;
+
+    padding:60px;
+
+    border-radius:30px;
+
+    background:#ffffff;
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+.contact-info h2{
+    font-size:
+        clamp(32px,4vw,48px);
+
+    color:var(--green);
+
+    margin-bottom:20px;
+}
+
+.contact-info p{
+    color:var(--muted);
+}
+
+.form-row{
+    display:flex;
+
+    gap:20px;
+}
+
+.form-group{
+    margin-bottom:20px;
+
+    flex:1;
+}
+
+label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:var(--green);
+
+    font-size:14px;
+}
+
+input{
+    width:100%;
+
+    padding:14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    background:#f8fcfa;
+
+    color:var(--text);
+
+    transition:
+        border-color .3s,
+        box-shadow .3s;
+}
+
+input:focus{
+    outline:none;
+
+    border-color:var(--green);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(8,120,63,.10);
+}
+
+#ok{
+    display:none;
+
+    margin-top:16px;
+
+    color:var(--green);
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    margin-top:100px;
+
+    padding:
+        60px 80px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px,1fr)
+        );
+
+    gap:40px;
+
+    background:#073b25;
+
+    border-top:
+        1px solid rgba(8,120,63,.15);
+}
+
+footer h4{
+    font-size:20px;
+
+    color:#7ee2ae;
+
+    margin-bottom:18px;
+}
+
+footer li{
+    margin-bottom:10px;
+}
+
+footer a,
+footer p{
+    color:#d4eee0;
+}
+
+footer a:hover{
+    color:#ffffff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media(max-width:768px){
-header,.hero,.container,.stats,footer{padding-left:20px;padding-right:20px}
-.container{padding-top:70px;padding-bottom:70px}nav ul{gap:14px;font-size:14px}
-.contact-container{grid-template-columns:1fr;margin:0 20px;padding:30px 22px}.form-row{flex-direction:column;gap:0}
-.cap-wrap{left:16px;right:16px;top:auto;bottom:70px;transform:none;width:auto}
-.cap{top:auto;bottom:0;transform:translateY(20px);padding:20px}.cap.on{transform:none}
-.cap h3{font-size:20px}.track{display:none}.rail{right:10px}.intro-card{padding:32px 22px}
+
+    header{
+        padding:
+            16px 20px;
+    }
+
+    header,
+    .hero,
+    .container,
+    .stats,
+    footer{
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    nav ul{
+        gap:14px;
+
+        font-size:13px;
+    }
+
+    .hero{
+        padding-top:120px;
+    }
+
+    .hero-title{
+        font-size:
+            clamp(34px,10vw,52px);
+    }
+
+    .hero p.lead{
+        font-size:17px;
+    }
+
+    .scroll-hint{
+        left:20px;
+    }
+
+    .container{
+        padding-top:70px;
+        padding-bottom:70px;
+    }
+
+    .contact-container{
+        grid-template-columns:1fr;
+
+        margin:
+            0 20px;
+
+        padding:
+            30px 22px;
+    }
+
+    .form-row{
+        flex-direction:column;
+
+        gap:0;
+    }
+
+    .intro-card{
+        padding:
+            30px 22px;
+    }
+
+    .glow{
+        display:none;
+    }
+
+    .service-img{
+        height:200px;
+    }
+
+    .card-img{
+        height:210px;
+    }
+
+    #bg{
+        opacity:.18;
+    }
 }
-@media(prefers-reduced-motion:reduce){h1 .w>span{animation-duration:.01s}}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *{
+        animation:none !important;
+
+        transition-duration:.01s !important;
+    }
+}
+
 </style>
 </head>
+
+
 <body>
-<div id="bar"></div>
 
-<header id="hd">
-  <a href="#" class="logo">S.R.<b>Tech</b></a>
-  <nav><ul>
-    <li><a href="#histoire">Histoire</a></li>
-    <li><a href="#groupe">Notre groupe</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul></nav>
-</header>
 
-<main>
-<section class="hero">
-  <div>
-    <div class="eyebrow"><i></i>Transport · IoT · Sécurité</div>
-    <h1>Sécuriser, Géolocaliser, <em>Solutions IoT</em> pour le transport.</h1>
-    <p class="lead">La sécurité ne doit jamais être une option. Suivez vos véhicules et conteneurs en temps réel, 24h/24.</p>
-    <div class="btns">
-      <a href="#story" class="btn btn-p mag">Voir comment ça marche</a>
-      <a href="#contact" class="btn btn-o mag">Nous contacter</a>
-    </div>
-  </div>
-  <div class="dash" id="dash">
-    <div class="dash-card" id="dashCard">
-      <div class="dash-top"><span>S.R.Track · Flotte</span><span class="live"><i></i>EN DIRECT</span></div>
-      <div class="map">
-        <svg viewBox="0 0 400 250" width="100%">
-          <defs><pattern id="g" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#dbe4f2"/></pattern></defs>
-          <rect width="400" height="250" fill="url(#g)"/>
-          <rect x="60" y="40" width="70" height="45" rx="6" fill="#e1e9f6"/><rect x="250" y="150" width="90" height="55" rx="6" fill="#e1e9f6"/><rect x="290" y="30" width="60" height="60" rx="6" fill="#e1e9f6"/>
-          <path id="rt" d="M30 210 C110 200 120 110 200 120 S300 190 370 60" fill="none" stroke="#2563ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 10"/>
-          <circle cx="30" cy="210" r="7" fill="#0b1b3a"/>
-          <g><circle r="16" fill="#ff6a2b" opacity=".2"/><circle r="8" fill="#ff6a2b"/><animateMotion dur="9s" repeatCount="indefinite"><mpath href="#rt"/></animateMotion></g>
-          <g transform="translate(370 60)"><path d="M0 0l-9-18a10 10 0 1 1 18 0z" fill="#2563ff"/><circle cy="-22" r="4" fill="#fff"/></g>
-        </svg>
-      </div>
-      <div class="chips"><div class="chip">Porte<b>Fermée ✔</b></div><div class="chip">Position<b>Live</b></div><div class="chip">Alertes<b>0</b></div></div>
-    </div>
-  </div>
-</section>
+<!-- =======================================================
+     LOADER
+======================================================= -->
 
-<section class="container reveal" id="histoire">
-  <div class="intro-card">
-    <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
-    <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
-  </div>
-</section>
-
-<!-- ===== SECTION 3D : l'entreprise qui se désosse ===== -->
-<section id="story">
-  <div class="stage">
-    <canvas id="c3d"></canvas>
-    <div class="cap-wrap">
-      <div class="cap on"><small>01</small><h3>Un site, une équipe</h3><p>Voici l’entrepôt S.R.Tech d’Orly : le point de départ de chaque livraison sécurisée.</p></div>
-      <div class="cap"><small>02</small><h3>On ouvre le bâtiment</h3><p>Toit, murs, façade : tout s’écarte pour révéler le stockage, les quais et les équipes qui préparent chaque commande.</p></div>
-      <div class="cap"><small>03</small><h3>Balises GPS installées</h3><p>Avant le départ, chaque camion reçoit sa balise S.R.Track : position, ouverture de porte, alertes en temps réel.</p></div>
-      <div class="cap"><small>04</small><h3>Livraison suivie en direct</h3><p>Les camions rejoignent leurs clients, reliés par satellite à notre plateforme et surveillés 24h/24.</p></div>
-    </div>
-    <div class="rail"><i id="railFill"></i></div>
-    <div class="track" id="track">
-      <h4>SUIVI EN DIRECT</h4>
-      <div class="tr"><b>SR-01 → Bordeaux</b><span id="s0">Au quai</span><div><i id="b0"></i></div></div>
-      <div class="tr"><b>SR-02 → Marseille</b><span id="s1">Au quai</span><div><i id="b1"></i></div></div>
-      <div class="tr"><b>SR-03 → Lyon</b><span id="s2">Au quai</span><div><i id="b2"></i></div></div>
-    </div>
-    <div class="hint" id="hint">FAITES DÉFILER ↓</div>
-  </div>
-</section>
-
-<div class="stats reveal" style="margin-top:80px">
-  <div class="stat"><b data-count="15" data-suf="+">0</b><span>années d'expertise</span></div>
-  <div class="stat"><b data-count="2500" data-suf="+">0</b><span>camions équipés</span></div>
-  <div class="stat"><b data-count="24" data-suf="/7">0</b><span>surveillance</span></div>
-  <div class="stat"><b data-count="100" data-suf="%">0</b><span>données hébergées en France</span></div>
+<div id="loader">
+    <div>S.R.TECH</div>
 </div>
 
-<section class="container reveal">
-  <h2 class="section-title">Sécuriser votre supply chain</h2>
-  <div class="grid-2">
-    <div class="tilt" style="--i:0"><div class="card-img"><img src="images/truck.jpg" alt="Sécurisation transport routier" onerror="this.style.display='none'"></div><div class="card-body"><h3>Sécurisation</h3><p>Nous offrons un suivi continu pour protéger vos flux logistiques et véhicules routiers contre le vol et les intrusions.</p></div></div>
-    <div class="tilt" style="--i:1"><div class="card-img"><img src="images/containers.jpg" alt="Géolocalisation conteneurs" onerror="this.style.display='none'"></div><div class="card-body"><h3>Géolocalisation</h3><p>En suivant en direct les conteneurs et marchandises à chaque étape du trajet maritime ou terrestre.</p></div></div>
-  </div>
-</section>
+<div id="bar"></div>
 
-<section class="container services-section reveal" id="services">
-  <h2 class="section-title">Nos Services</h2>
-  <div class="grid-2">
-    <div class="tilt sc" style="--i:0"><div class="ico">🛡️</div><h3>Sécurisation 24H/24</h3><p><strong>Surveillance humaine en temps réel :</strong> Nos partenaires de télésurveillance traitent en direct les alertes (ouverture de porte, intrusion, déviation). Les opérateurs agissent immédiatement selon vos consignes.</p></div>
-    <div class="tilt sc" style="--i:1"><div class="ico">📍</div><h3>Géolocalisation en temps réel</h3><p><strong>Suivi de flotte complet :</strong> Suivez la position exacte de vos véhicules et conteneurs via notre plateforme web/mobile. Vue cartographique dynamique et historique des trajets disponibles 24h/24.</p></div>
-  </div>
-  <div class="grid-3">
-    <div class="tilt sc" style="--i:2"><div class="ico">👁️</div><h3>Surveillance 24/7</h3><p>Traitement direct des alertes véhicule et conteneur par des opérateurs qualifiés.</p></div>
-    <div class="tilt sc" style="--i:3"><div class="ico">⚙️</div><h3>Accompagnement sur mesure</h3><p>Personnalisation des paramètres, seuils d'alerte, zones de sécurité et tableaux de bord.</p></div>
-    <div class="tilt sc" style="--i:4"><div class="ico">🇫🇷</div><h3>Infrastructure française</h3><p>Hébergement des données en France dans le strict respect du RGPD et des normes de cybersécurité.</p></div>
-  </div>
-</section>
+<div class="glow" id="glow"></div>
 
-<section class="container reveal">
-  <h2 class="section-title">Notre mission</h2>
-  <div class="grid-3" style="margin-top:0">
-    <div class="tilt" style="--i:0"><div class="card-img"><img src="images/truck.jpg" alt="Camion" onerror="this.style.display='none'"></div><div class="card-body"><h3>Offrir une surveillance en temps réel</h3><p>Suivi permanent des véhicules et conteneurs.</p></div></div>
-    <div class="tilt" style="--i:1"><div class="card-img"><img src="images/security.jpg" alt="Centre de contrôle" onerror="this.style.display='none'"></div><div class="card-body"><h3>Réduire les délais</h3><p>Intervention immédiate en cas d'alerte détectée.</p></div></div>
-    <div class="tilt" style="--i:2"><div class="card-img"><img src="images/containers.jpg" alt="Traçabilité" onerror="this.style.display='none'"></div><div class="card-body"><h3>Garantir la conformité</h3><p>Traçabilité complète à chaque étape du transport.</p></div></div>
-  </div>
-</section>
+<canvas id="bg"></canvas>
 
-<section class="container reveal" style="background:#fff">
-  <h2 class="section-title">Ce qui nous distingue</h2>
-  <div class="grid-4">
-    <div class="tilt sc" style="--i:0"><h3>Réactivité terrain</h3><p>Interventions rapides partout en France pour assurer la continuité opérationnelle.</p></div>
-    <div class="tilt sc" style="--i:1"><h3>Technologie éprouvée</h3><p>Validée sur le terrain avec plus de 2 500 camions équipés en activité.</p></div>
-    <div class="tilt sc" style="--i:2"><h3>Adaptabilité</h3><p>Solutions configurées spécifiquement pour transporteurs et logisticiens.</p></div>
-    <div class="tilt sc" style="--i:3"><h3>Service client dédié</h3><p>Équipe support réactive et joignable directement sans intermédiaire.</p></div>
-  </div>
-</section>
 
-<section class="container reveal" id="groupe">
-  <h2 class="section-title">Notre groupe.</h2>
-  <p class="group-lead">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
-  <div class="sub-brand"><h3>S.R.Track - Logiciel et réseau</h3><p>Systèmes d’exploitation cloud, fabrication d’objets IoT, logiciels métiers et interfaces.</p></div>
-  <div class="sub-brand"><h3>S.R.+ – Matériel et objets Connectés</h3><p>Cloud, logiciels et SAV.</p></div>
-</section>
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
-<section class="contact-container reveal" id="contact">
-  <div class="contact-info">
-    <h2>Contactez-nous.</h2>
-    <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
-    <p style="margin-top:10px">Notre équipe est à votre écoute.</p>
-  </div>
-  <form id="form" action="#" method="post">
-    <div class="form-row">
-      <div class="form-group"><label for="fname">Prénom (obligatoire)</label><input type="text" id="fname" required></div>
-      <div class="form-group"><label for="lname">Nom de famille (obligatoire)</label><input type="text" id="lname" required></div>
+<header id="hd">
+
+    <a href="#" class="logo">
+        S.R.<b>Tech</b>
+    </a>
+
+    <nav>
+
+        <ul>
+
+            <li>
+                <a href="#histoire">
+                    Histoire
+                </a>
+            </li>
+
+            <li>
+                <a href="#groupe">
+                    Notre groupe
+                </a>
+            </li>
+
+            <li>
+                <a href="#services">
+                    Services
+                </a>
+            </li>
+
+            <li>
+                <a href="#contact">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
+<main>
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="hero">
+
+    <div class="eyebrow">
+
+        <i></i>
+
+        Transport · IoT · Sécurité
+
     </div>
-    <div class="form-group"><label for="email">E-mail (obligatoire)</label><input type="email" id="email" required></div>
-    <button type="submit" class="btn btn-p mag">Envoyer</button>
-    <div id="ok">✔ Merci ! Nous revenons vers vous rapidement.</div>
-  </form>
+
+
+    <div class="hero-titles">
+
+        <h1 class="hero-title active">
+
+            Sécuriser,
+            Géolocaliser,
+
+            <em>
+                Solutions IoT
+            </em>
+
+            pour le transport.
+
+        </h1>
+
+
+        <h1 class="hero-title">
+
+            La sécurité ne doit
+
+            <em>
+                jamais
+            </em>
+
+            être une option.
+
+        </h1>
+
+    </div>
+
+
+    <p class="lead">
+
+        Surveillance en temps réel de vos
+        véhicules et conteneurs,
+        partout, 24h/24.
+
+    </p>
+
+
+    <div class="btns">
+
+        <a
+            href="#services"
+            class="btn btn-p mag"
+        >
+            Découvrir nos services
+        </a>
+
+
+        <a
+            href="#contact"
+            class="btn btn-o mag"
+        >
+            Nous contacter
+        </a>
+
+
+        <button
+            id="pauseBtn"
+            aria-label="Pause"
+        >
+            ❚❚
+        </button>
+
+    </div>
+
+
+    <div class="scroll-hint">
+
+        <span></span>
+
+        SCROLL
+
+    </div>
+
 </section>
+
+
+<!-- =======================================================
+     MARQUEE
+======================================================= -->
+
+<div class="marquee">
+
+    <div id="mq">
+
+        <i>Géolocalisation</i>
+
+        <i>Sécurisation 24/7</i>
+
+        <i>IoT</i>
+
+        <i>Télésurveillance</i>
+
+        <i>Supply chain</i>
+
+        <i>RGPD</i>
+
+        <i>Hébergement France</i>
+
+        <i>Conteneurs</i>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     HISTOIRE
+======================================================= -->
+
+<section
+    class="container reveal"
+    id="histoire"
+>
+
+    <div class="intro-card">
+
+        <p>
+
+            Depuis plus de
+
+            <strong>
+                15 ans
+            </strong>
+
+            , SRTech dispose d’une large gamme
+            d’
+
+            <strong>
+                équipements sécuritaires
+            </strong>
+
+            répondant ainsi aux cahiers des
+            charges les plus poussés.
+
+        </p>
+
+
+        <p>
+
+            Son service R&D associé aux
+            nouvelles technologies, lui permet
+            d’être leader de sa profession.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     STATS
+======================================================= -->
+
+<div class="stats reveal">
+
+    <div class="stat">
+
+        <b
+            data-count="15"
+            data-suf="+"
+        >
+            0
+        </b>
+
+        <span>
+            années d'expertise
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b
+            data-count="2500"
+            data-suf="+"
+        >
+            0
+        </b>
+
+        <span>
+            camions équipés
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b
+            data-count="24"
+            data-suf="/7"
+        >
+            0
+        </b>
+
+        <span>
+            surveillance
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <b
+            data-count="100"
+            data-suf="%"
+        >
+            0
+        </b>
+
+        <span>
+            données hébergées en France
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     SUPPLY CHAIN
+======================================================= -->
+
+<section class="container reveal">
+
+    <h2 class="section-title">
+
+        Sécuriser votre supply chain
+
+    </h2>
+
+
+    <div class="grid-2">
+
+
+        <!-- Sécurisation -->
+
+        <div
+            class="tilt"
+            style="--i:0"
+        >
+
+            <div class="card-img">
+
+                <img
+                    src="images/truck.jpg"
+                    alt="Sécurisation transport routier"
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h3>
+                    Sécurisation
+                </h3>
+
+                <p>
+
+                    Nous offrons un suivi continu
+                    pour protéger vos flux logistiques
+                    et véhicules routiers contre le vol
+                    et les intrusions.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Géolocalisation -->
+
+        <div
+            class="tilt"
+            style="--i:1"
+        >
+
+            <div class="card-img">
+
+                <img
+                    src="images/containers.jpg"
+                    alt="Géolocalisation conteneurs"
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h3>
+                    Géolocalisation
+                </h3>
+
+                <p>
+
+                    En suivant en direct les conteneurs
+                    et marchandises à chaque étape
+                    du trajet maritime ou terrestre.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     SERVICES
+======================================================= -->
+
+<section
+    class="container services-section reveal"
+    id="services"
+>
+
+    <h2 class="section-title">
+
+        Nos Services
+
+    </h2>
+
+
+    <!-- SERVICES PRINCIPAUX -->
+
+    <div class="grid-2">
+
+
+        <!-- SERVICE 1 -->
+
+        <div
+            class="tilt service-card"
+            style="--i:0"
+        >
+
+            <div class="service-img">
+
+                <img
+                    src="images/security.jpg"
+                    alt="Sécurisation et surveillance des véhicules"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+
+                <div class="service-icon">
+                    🛡️
+                </div>
+
+
+                <h3>
+                    Sécurisation 24H/24
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Surveillance humaine en temps réel :
+                    </strong>
+
+                    nos partenaires de télésurveillance
+                    traitent directement les alertes
+                    d'ouverture de porte, intrusion
+                    ou déviation.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVICE 2 -->
+
+        <div
+            class="tilt service-card"
+            style="--i:1"
+        >
+
+            <div class="service-img">
+
+                <img
+                    src="images/containers.jpg"
+                    alt="Géolocalisation des véhicules et conteneurs"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+
+                <div class="service-icon">
+                    📍
+                </div>
+
+
+                <h3>
+                    Géolocalisation en temps réel
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Suivi de flotte complet :
+                    </strong>
+
+                    visualisez la position de vos
+                    véhicules et conteneurs grâce
+                    à une plateforme web et mobile.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- AUTRES SERVICES -->
+
+    <div
+        class="grid-3"
+        style="margin-top:28px"
+    >
+
+
+        <!-- SERVICE 3 -->
+
+        <div
+            class="tilt service-card"
+            style="--i:2"
+        >
+
+            <div class="service-img">
+
+                <img
+                    src="images/truck.jpg"
+                    alt="Surveillance des véhicules"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+
+                <div class="service-icon">
+                    👁️
+                </div>
+
+
+                <h3>
+                    Surveillance 24/7
+                </h3>
+
+
+                <p>
+
+                    Traitement direct des alertes
+                    véhicule et conteneur par des
+                    opérateurs qualifiés.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVICE 4 -->
+
+        <div
+            class="tilt service-card"
+            style="--i:3"
+        >
+
+            <div class="service-img">
+
+                <img
+                    src="images/security.jpg"
+                    alt="Accompagnement et gestion de flotte"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+
+                <div class="service-icon">
+                    ⚙️
+                </div>
+
+
+                <h3>
+                    Accompagnement sur mesure
+                </h3>
+
+
+                <p>
+
+                    Personnalisation des paramètres,
+                    seuils d'alerte, zones de sécurité
+                    et tableaux de bord.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVICE 5 -->
+
+        <div
+            class="tilt service-card"
+            style="--i:4"
+        >
+
+            <div class="service-img">
+
+                <img
+                    src="images/containers.jpg"
+                    alt="Infrastructure et données sécurisées"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+
+                <div class="service-icon">
+                    🇫🇷
+                </div>
+
+
+                <h3>
+                    Infrastructure française
+                </h3>
+
+
+                <p>
+
+                    Hébergement des données en France
+                    dans le respect du RGPD et des
+                    exigences de cybersécurité.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     MISSION
+======================================================= -->
+
+<section class="container reveal">
+
+    <h2 class="section-title">
+        Notre mission
+    </h2>
+
+
+    <div class="grid-3">
+
+
+        <div
+            class="tilt"
+            style="--i:0"
+        >
+
+            <div class="card-img">
+
+                <img
+                    src="images/truck.jpg"
+                    alt="Camion"
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h3>
+                    Offrir une surveillance
+                    en temps réel
+                </h3>
+
+                <p>
+                    Suivi permanent des véhicules
+                    et conteneurs.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="tilt"
+            style="--i:1"
+        >
+
+            <div class="card-img">
+
+                <img
+                    src="images/security.jpg"
+                    alt="Centre de contrôle"
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h3>
+                    Réduire les délais
+                </h3>
+
+                <p>
+                    Intervention immédiate en cas
+                    d'alerte détectée.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="tilt"
+            style="--i:2"
+        >
+
+            <div class="card-img">
+
+                <img
+                    src="images/containers.jpg"
+                    alt="Traçabilité"
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h3>
+                    Garantir la conformité
+                </h3>
+
+                <p>
+                    Traçabilité complète à chaque
+                    étape du transport.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     DIFFERENCE
+======================================================= -->
+
+<section class="container reveal">
+
+    <h2 class="section-title">
+
+        Ce qui nous distingue
+
+    </h2>
+
+
+    <div class="grid-4">
+
+
+        <div
+            class="tilt sc"
+            style="--i:0"
+        >
+
+            <div class="ico">
+                🚚
+            </div>
+
+            <h3>
+                Réactivité terrain
+            </h3>
+
+            <p>
+                Interventions rapides partout
+                en France pour assurer la
+                continuité opérationnelle.
+            </p>
+
+        </div>
+
+
+        <div
+            class="tilt sc"
+            style="--i:1"
+        >
+
+            <div class="ico">
+                ⚙️
+            </div>
+
+            <h3>
+                Technologie éprouvée
+            </h3>
+
+            <p>
+                Validée sur le terrain avec
+                plus de 2 500 camions équipés
+                en activité.
+            </p>
+
+        </div>
+
+
+        <div
+            class="tilt sc"
+            style="--i:2"
+        >
+
+            <div class="ico">
+                🔧
+            </div>
+
+            <h3>
+                Adaptabilité
+            </h3>
+
+            <p>
+                Solutions configurées spécifiquement
+                pour transporteurs et logisticiens.
+            </p>
+
+        </div>
+
+
+        <div
+            class="tilt sc"
+            style="--i:3"
+        >
+
+            <div class="ico">
+                🎧
+            </div>
+
+            <h3>
+                Service client dédié
+            </h3>
+
+            <p>
+                Équipe support réactive et
+                joignable directement.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     GROUPE
+======================================================= -->
+
+<section
+    class="container reveal"
+    id="groupe"
+>
+
+    <h2 class="section-title">
+        Notre groupe
+    </h2>
+
+
+    <p class="group-lead">
+
+        Ensemble, nous maîtrisons vos projets
+        de A à Z, en proposant des solutions
+        connectées sur mesure, de la conception
+        à la mise en service.
+
+    </p>
+
+
+    <div class="sub-brand">
+
+        <h3>
+            S.R.Track — Logiciel et réseau
+        </h3>
+
+        <p>
+            Systèmes d’exploitation cloud,
+            fabrication d’objets IoT, logiciels
+            métiers et interfaces.
+        </p>
+
+    </div>
+
+
+    <div class="sub-brand">
+
+        <h3>
+            S.R.+ — Matériel et objets connectés
+        </h3>
+
+        <p>
+            Cloud, logiciels et SAV.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     CONTACT
+======================================================= -->
+
+<section
+    class="contact-container reveal"
+    id="contact"
+>
+
+
+    <div class="contact-info">
+
+        <h2>
+            Contactez-nous.
+        </h2>
+
+        <p>
+            Vous avez une question, un projet
+            ou besoin d'assistance ?
+        </p>
+
+        <p style="margin-top:10px">
+
+            Notre équipe est à votre écoute.
+
+        </p>
+
+    </div>
+
+
+    <form
+        id="form"
+        action="#"
+        method="post"
+    >
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label for="fname">
+                    Prénom
+                </label>
+
+                <input
+                    type="text"
+                    id="fname"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lname">
+                    Nom de famille
+                </label>
+
+                <input
+                    type="text"
+                    id="lname"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="email">
+                E-mail
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                required
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-p mag"
+        >
+            Envoyer
+        </button>
+
+
+        <div id="ok">
+
+            ✔ Merci ! Nous revenons vers vous rapidement.
+
+        </div>
+
+    </form>
+
+</section>
+
+
 </main>
 
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
 <footer>
-  <div><h4>Navigation</h4><ul><li><a href="#">Accueil</a></li><li><a href="#histoire">Histoire</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
-  <div><h4>Légales</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Politique de confidentialité</a></li></ul></div>
-  <div><h4>Contact</h4><p><strong>S.R.Tech</strong></p><p>39 Rue de l’aviation, 94310 Orly</p><p>01 46 86 48 81</p></div>
+
+
+    <div>
+
+        <h4>
+            Navigation
+        </h4>
+
+        <ul>
+
+            <li>
+                <a href="#">
+                    Accueil
+                </a>
+            </li>
+
+            <li>
+                <a href="#histoire">
+                    Histoire
+                </a>
+            </li>
+
+            <li>
+                <a href="#services">
+                    Services
+                </a>
+            </li>
+
+            <li>
+                <a href="#contact">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div>
+
+        <h4>
+            Légales
+        </h4>
+
+        <ul>
+
+            <li>
+                <a href="#">
+                    Mentions légales
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Politique de confidentialité
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div>
+
+        <h4>
+            Contact
+        </h4>
+
+        <p>
+            <strong>
+                S.R.Tech
+            </strong>
+        </p>
+
+        <p>
+            39 Rue de l’aviation,
+            94310 Orly
+        </p>
+
+        <p>
+            01 46 86 48 81
+        </p>
+
+    </div>
+
+
 </footer>
 
+
+<!-- =======================================================
+     JAVASCRIPT — UI
+======================================================= -->
+
 <script>
-/* ================= UI ================= */
-(()=>{
-  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-  const touch=matchMedia('(hover:none)').matches;
 
-  // Titre : découpe en mots animés
-  const h=$('h1');let k=0;
-  (function walk(n){[...n.childNodes].forEach(c=>{
-    if(c.nodeType===3){const f=document.createDocumentFragment();
-      c.textContent.split(/(\s+)/).forEach(p=>{if(!p.trim()){f.append(p);return}
-        const w=document.createElement('span');w.className='w';w.innerHTML='<span style="--d:'+(.15+k++*.07)+'s">'+p+'</span>';f.append(w)});
-      c.replaceWith(f)}else walk(c)})})(h);
+(() => {
 
-  // Reveal + compteurs
-  function count(el){const to=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now();
-    (function f(t){const p=Math.min((t-t0)/1800,1),e=1-Math.pow(1-p,4);
-      el.textContent=Math.round(to*e).toLocaleString('fr-FR')+suf;if(p<1)requestAnimationFrame(f)})(t0)}
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);
-    e.target.querySelectorAll('[data-count]').forEach(count)}}),{threshold:.15});
-  $$('.reveal').forEach(el=>io.observe(el));
+"use strict";
 
-  // Tilt 3D des cartes
-  $$('.tilt').forEach(c=>{
-    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
-      c.style.setProperty('--ry',((x-.5)*12)+'deg');c.style.setProperty('--rx',((.5-y)*12)+'deg');
-      c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%')});
-    c.addEventListener('mouseleave',()=>{c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')});
-  });
 
-  // Carte hero : suit la souris
-  const dc=$('#dashCard');
-  if(!touch)addEventListener('mousemove',e=>{
-    const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
-    dc.style.transform='rotateY('+(-12+x*10)+'deg) rotateX('+(6-y*8)+'deg)'});
+/* =========================================================
+   HELPERS
+========================================================= */
 
-  // Boutons magnétiques
-  if(!touch)$$('.mag').forEach(b=>{
-    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
-      b.style.transform='translate('+(e.clientX-r.left-r.width/2)*.2+'px,'+(e.clientY-r.top-r.height/2)*.3+'px)'});
-    b.addEventListener('mouseleave',()=>b.style.transform='')});
+const $ =
+    selector =>
+    document.querySelector(selector);
 
-  // Progression + header
-  let ly=0;
-  addEventListener('scroll',()=>{const y=scrollY,hh=document.documentElement.scrollHeight-innerHeight;
-    $('#bar').style.width=(y/hh*100)+'%';
-    const inStory=$('#story').getBoundingClientRect();
-    $('#hd').classList.toggle('hide',y>ly&&y>200||(inStory.top<0&&inStory.bottom>innerHeight));ly=y},{passive:true});
+const $$ =
+    selector =>
+    [...document.querySelectorAll(selector)];
 
-  $('#form').addEventListener('submit',e=>{e.preventDefault();$('#ok').style.display='block';e.target.reset()});
-})();
+const touch =
+    matchMedia("(hover:none)").matches;
 
-/* ================= SCÈNE 3D ================= */
-(()=>{
-  const sec=document.getElementById('story'),cv=document.getElementById('c3d');
-  const fail=()=>sec.classList.add('nogl');
-  function load(u,cb){
-    if(window.THREE)return cb();
-    if(!u.length)return fail();
-    const s=document.createElement('script');s.src=u.shift();s.onload=cb;s.onerror=()=>load(u,cb);document.head.appendChild(s);
-  }
-  load(['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js'],
-    ()=>{try{init()}catch(e){console.warn('3D indisponible',e);fail()}});
 
-  function init(){
-    const mob=innerWidth<768;
-    const ren=new THREE.WebGLRenderer({canvas:cv,antialias:!mob});
-    ren.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
-    ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
-    const SKY=0xe9eff8;
-    const scene=new THREE.Scene();scene.background=new THREE.Color(SKY);scene.fog=new THREE.Fog(SKY,70,170);
-    const cam=new THREE.PerspectiveCamera(42,1,.5,300);
+/* =========================================================
+   LOADER
+========================================================= */
 
-    // Lumières
-    scene.add(new THREE.HemisphereLight(0xffffff,0xb7c3d8,.95));
-    const sun=new THREE.DirectionalLight(0xfff1dc,.85);sun.position.set(20,32,24);sun.castShadow=true;
-    sun.shadow.mapSize.set(mob?1024:2048,mob?1024:2048);
-    Object.assign(sun.shadow.camera,{left:-30,right:30,top:30,bottom:-30,near:1,far:100});sun.shadow.bias=-.0004;scene.add(sun);
+addEventListener(
+    "load",
+    () => {
 
-    // Helpers
-    const M=(c,r=.75,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-    const B=(w,h,d,c,x,y,z,p=scene,sh=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);m.castShadow=sh;m.receiveShadow=true;p.add(m);return m};
-    const tex=(w,h,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t};
-    const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),sm=t=>t*t*(3-2*t),seg=(p,a,b)=>clamp((p-a)/(b-a));
-    const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+        setTimeout(
+            () =>
+            $("#loader")
+            .classList
+            .add("off"),
 
-    // Sol + quadrillage "carte"
-    const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),M(0xdde5f0,1));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-    const grid=new THREE.GridHelper(500,125,0xcbd5e4,0xd3dcea);grid.position.y=.02;scene.add(grid);
-    B(34,.06,20,0xa7b1c1,0,.03,13,scene,false); // cour bitumée
+            500
+        );
 
-    /* ---------- Bâtiment ---------- */
-    const W=12,D=8,H=4.2,T=.3;
-    const WALL=0xf8fafc,BAND=0x2563ff;
-    B(W+.6,.2,D+.6,0xbfc8d6,0,.1,0);                 // dalle
-    B(W-.2,.12,D-.2,0xd4dbe6,0,.22,0,scene,false);   // sol intérieur
-
-    function pivotWall(px,pz,w,d,vx){ // groupe pivot + mur blanc + bandeau bleu
-      const g=new THREE.Group();g.position.set(px,.15,pz);scene.add(g);
-      B(w,H,d,WALL,0,H/2,0,g);B(w+.02,.45,d+.02,BAND,0,H-.7,0,g);return g}
-    const wl=pivotWall(-W/2,0,T,D),wr=pivotWall(W/2,0,T,D),wb=pivotWall(0,-D/2,W,T);
-
-    // Façade avant : piliers + linteau + enseigne (s'enfonce dans le sol)
-    const front=new THREE.Group();front.position.set(0,.15,D/2);scene.add(front);
-    [-5.75,5.75].forEach(x=>B(.5,H,T,WALL,x,H/2,0,front));
-    [-2,2].forEach(x=>B(1,H,T,WALL,x,H/2,0,front));
-    B(W,1.2,T,WALL,0,H-.6,0,front);
-    const signT=tex(1024,128,(c,w,h)=>{c.fillStyle='#0b1b3a';c.fillRect(0,0,w,h);c.fillStyle='#fff';c.font='900 78px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText('S.R.TECH',w/2-40,h/2+4);c.fillStyle='#ff6a2b';c.beginPath();c.arc(w/2+205,h/2+4,16,0,7);c.fill()});
-    const sign=new THREE.Mesh(new THREE.PlaneGeometry(7.5,.95),new THREE.MeshBasicMaterial({map:signT}));sign.position.set(0,H-.6,T/2+.01);front.add(sign);
-    [-4,0,4].forEach(x=>B(3.1,.5,.12,0xdfe6f0,x,2.75,T/2-.02,front)); // volets de quai relevés
-
-    // Toit en deux moitiés
-    const roofL=B(W/2+.3,.28,D+.5,0xe6ebf3,0,0,0),roofR=B(W/2+.3,.28,D+.5,0xe6ebf3,0,0,0);
-    B(.01,.01,.01,0,0,0,scene,false).visible=false;
-
-    /* ---------- Intérieur : racks, palettes, équipes ---------- */
-    const pal=[0xc9a06a,0xb88b52,0xe2e2e2,0x7fa6ff];
-    function rack(z,w){
-      const g=new THREE.Group();g.position.set(0,.2,z);scene.add(g);
-      [-w/2,w/2].forEach(x=>[-.4,.4].forEach(dz=>B(.1,3.4,.1,BAND,x,1.7,dz,g)));
-      for(let l=0;l<3;l++){const y=.45+l*1.1;
-        [-.4,.4].forEach(dz=>B(w,.1,.1,0xff6a2b,0,y,dz,g));
-        for(let x=-w/2+.7;x<w/2-.5;x+=1.25){const hh=.5+Math.random()*.28;
-          B(1,hh,.7,pal[(Math.random()*pal.length)|0],x,y+.05+hh/2,0,g,false)}}
     }
-    rack(-3.1,10.4);rack(-1.3,10.4);
-    [-4,0,4].forEach(x=>{ // palettes devant chaque quai
-      B(1.4,.14,1.2,0x9a7348,x,.3,2.5);B(1.2,.8,1,0xc9a06a,x,.78,2.5);B(1.1,.5,.9,0x7fa6ff,x,1.43,2.5);
+);
+
+
+setTimeout(
+    () =>
+    $("#loader")
+    .classList
+    .add("off"),
+
+    3500
+);
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+$("#mq").innerHTML +=
+    $("#mq").innerHTML;
+
+$$(
+    "#mq i"
+).forEach(
+    i =>
+    i.style.fontStyle =
+    "normal"
+);
+
+
+/* =========================================================
+   HERO TITLES
+========================================================= */
+
+const titles =
+    $$(".hero-title");
+
+
+titles.forEach(title => {
+
+    let index = 0;
+
+
+    const walk = node => {
+
+        [
+            ...node.childNodes
+        ].forEach(child => {
+
+            if(child.nodeType === 3){
+
+                const fragment =
+                    document
+                    .createDocumentFragment();
+
+
+                child.textContent
+                    .split(/(\s+)/)
+                    .forEach(part => {
+
+                        if(!part.trim()){
+
+                            fragment.append(part);
+
+                            return;
+                        }
+
+
+                        const word =
+                            document
+                            .createElement("span");
+
+
+                        word.className =
+                            "w";
+
+
+                        word.innerHTML =
+                            `<span style="--d:${index++ * .07}s">${part}</span>`;
+
+
+                        fragment.append(word);
+
+                    });
+
+
+                child.replaceWith(fragment);
+
+            }
+
+            else{
+
+                walk(child);
+
+            }
+
+        });
+
+    };
+
+
+    walk(title);
+
+});
+
+
+let current = 0;
+
+let playing = true;
+
+let timer;
+
+
+const next = () => {
+
+    titles[current]
+        .classList
+        .remove("active");
+
+
+    current =
+        (current + 1)
+        % titles.length;
+
+
+    titles[current]
+        .classList
+        .add("active");
+
+};
+
+
+const start = () => {
+
+    clearInterval(timer);
+
+    timer =
+        setInterval(
+            next,
+            5000
+        );
+
+};
+
+
+$("#pauseBtn").onclick =
+    event => {
+
+        if(playing){
+
+            clearInterval(timer);
+
+        }
+
+        else{
+
+            start();
+
+        }
+
+
+        event.target.textContent =
+            playing
+            ? "▶"
+            : "❚❚";
+
+
+        playing =
+            !playing;
+
+    };
+
+
+start();
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+const observer =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(
+                    entry.isIntersecting
+                ){
+
+                    entry.target
+                        .classList
+                        .add("visible");
+
+
+                    entry.target
+                        .querySelectorAll(
+                            "[data-count]"
+                        )
+                        .forEach(count);
+
+
+                    observer
+                        .unobserve(
+                            entry.target
+                        );
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold:.15
+        }
+
+    );
+
+
+$$(".reveal")
+    .forEach(
+        element =>
+        observer.observe(element)
+    );
+
+
+/* =========================================================
+   COUNTERS
+========================================================= */
+
+function count(element){
+
+    const target =
+        +element.dataset.count;
+
+    const suffix =
+        element.dataset.suf || "";
+
+    const startTime =
+        performance.now();
+
+    const duration =
+        1800;
+
+
+    function animate(time){
+
+        const progress =
+            Math.min(
+                (time - startTime)
+                / duration,
+                1
+            );
+
+
+        const easing =
+            1 -
+            Math.pow(
+                1 - progress,
+                4
+            );
+
+
+        element.textContent =
+            Math.round(
+                target * easing
+            ).toLocaleString("fr-FR")
+            +
+            suffix;
+
+
+        if(progress < 1){
+
+            requestAnimationFrame(
+                animate
+            );
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+/* =========================================================
+   3D CARD TILT
+========================================================= */
+
+$$(".tilt").forEach(card => {
+
+    card.addEventListener(
+        "mousemove",
+        event => {
+
+            const rect =
+                card.getBoundingClientRect();
+
+
+            const x =
+                (event.clientX - rect.left)
+                / rect.width;
+
+
+            const y =
+                (event.clientY - rect.top)
+                / rect.height;
+
+
+            card.style.setProperty(
+                "--ry",
+                ((x - .5) * 10) + "deg"
+            );
+
+
+            card.style.setProperty(
+                "--rx",
+                ((.5 - y) * 10) + "deg"
+            );
+
+
+            card.style.setProperty(
+                "--mx",
+                (x * 100) + "%"
+            );
+
+
+            card.style.setProperty(
+                "--my",
+                (y * 100) + "%"
+            );
+
+        }
+    );
+
+
+    card.addEventListener(
+        "mouseleave",
+        () => {
+
+            card.style.setProperty(
+                "--rx",
+                "0deg"
+            );
+
+            card.style.setProperty(
+                "--ry",
+                "0deg"
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   MAGNETIC BUTTONS
+========================================================= */
+
+if(!touch){
+
+    $$(".mag").forEach(button => {
+
+        button.addEventListener(
+            "mousemove",
+            event => {
+
+                const rect =
+                    button.getBoundingClientRect();
+
+
+                const x =
+                    event.clientX
+                    - rect.left
+                    - rect.width / 2;
+
+
+                const y =
+                    event.clientY
+                    - rect.top
+                    - rect.height / 2;
+
+
+                button.style.transform =
+                    `translate(${x*.18}px,${y*.25}px)`;
+
+            }
+        );
+
+
+        button.addEventListener(
+            "mouseleave",
+            () => {
+
+                button.style.transform = "";
+
+            }
+        );
+
     });
-    B(.12,.01,7,0xffc400,-2,.29,0,scene,false);B(.12,.01,7,0xffc400,2,.29,0,scene,false); // marquage
 
-    const workers=[[-3,3.1],[-1,3.4],[2,3],[4.6,3.5]].map((a,i)=>{
-      const g=new THREE.Group();
-      const body=new THREE.Mesh(new THREE.CylinderGeometry(.2,.22,.7,10),M(0xff6a2b));body.position.y=1.15;
-      const leg=new THREE.Mesh(new THREE.CylinderGeometry(.17,.15,.8,10),M(0x1d2b4a));leg.position.y=.6;
-      const head=new THREE.Mesh(new THREE.SphereGeometry(.16,14,12),M(0xe2b48c));head.position.y=1.7;
-      const helm=new THREE.Mesh(new THREE.SphereGeometry(.18,14,8,0,6.3,0,1.5),M(0xffffff));helm.position.y=1.74;
-      [body,leg,head,helm].forEach(m=>{m.castShadow=true;g.add(m)});g.position.set(a[0],0,a[1]);scene.add(g);return{g,x:a[0],z:a[1],i}});
+}
 
-    /* ---------- Camions ---------- */
-    const logoT=tex(512,128,(c,w,h)=>{c.fillStyle='#fff';c.fillRect(0,0,w,h);c.fillStyle='#2563ff';c.fillRect(0,h-26,w,26);c.fillStyle='#0b1b3a';c.font='900 70px Arial';c.textBaseline='middle';c.fillText('S.R.TECH',24,50);c.fillStyle='#ff6a2b';c.beginPath();c.arc(w-60,50,16,0,7);c.fill()});
-    function truck(){
-      const g=new THREE.Group();
-      B(2.1,2.4,5.6,0xffffff,0,1.85,2.8,g);               // remorque
-      B(1.9,.3,7.6,0x1d2b4a,0,.55,3.7,g);                 // châssis
-      B(2.1,2.0,1.5,0x2563ff,0,1.6,6.5,g);                // cabine
-      B(1.9,.75,.06,0x0e1a33,0,2.15,7.27,g,false);        // pare-brise
-      B(1.7,.6,.4,0x1d2b4a,0,1.0,7.3,g);                  // pare-chocs
-      [[.95,.9],[.95,2.0],[.95,6.3],[-.95,.9],[-.95,2.0],[-.95,6.3]].forEach(a=>{
-        const w=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.32,20),M(0x111827,.9));w.rotation.z=Math.PI/2;w.position.set(a[0],.5,a[1]);w.castShadow=true;g.add(w)});
-      [1,-1].forEach(s=>{const p=new THREE.Mesh(new THREE.PlaneGeometry(5.4,1.35),new THREE.MeshBasicMaterial({map:logoT}));
-        p.position.set(s*1.06,2.2,2.8);p.rotation.y=s*Math.PI/2;g.add(p)});
-      // Balise GPS
-      const bc=new THREE.Group();bc.position.set(0,2.75,6.4);g.add(bc);
-      B(.4,.2,.4,0xff6a2b,0,0,0,bc,false);
-      const led=new THREE.Mesh(new THREE.SphereGeometry(.09,12,12),new THREE.MeshBasicMaterial({color:0xffffff}));led.position.y=.18;bc.add(led);
-      const ring=new THREE.Mesh(new THREE.RingGeometry(.3,.36,40),new THREE.MeshBasicMaterial({color:0xff6a2b,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
-      ring.rotation.x=-Math.PI/2;ring.position.y=.2;bc.add(ring);
-      g.userData={bc,ring,led};return g}
 
-    const bx=[-4,0,4],dest=[[-42,44,'Bordeaux'],[6,60,'Marseille'],[44,42,'Lyon']];
-    const routes=dest.map((d,i)=>new THREE.CatmullRomCurve3([[bx[i],.05,4.3],[bx[i],.05,14],[bx[i]*2+(i-1)*6,.05,21],[d[0]*.55,.05,d[1]*.55],[d[0],.05,d[1]]].map(a=>V(...a))));
-    const trucks=routes.map((r,i)=>{const t=truck();t.position.set(bx[i],0,4.3);scene.add(t);return t});
+/* =========================================================
+   CURSOR GLOW
+========================================================= */
 
-    // Routes : route grise + tracé bleu progressif
-    const prog=routes.map(r=>{
-      const road=new THREE.Mesh(new THREE.TubeGeometry(r,150,1.1,8),M(0x8793a6,1));road.scale.y=.03;road.receiveShadow=true;scene.add(road);
-      const g=new THREE.TubeGeometry(r,150,.14,6),m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0x2563ff}));m.position.y=.14;scene.add(m);
-      g.setDrawRange(0,0);return g});
+const glow =
+    $("#glow");
 
-    // Villes de destination
-    function label(txt){const t=tex(256,64,(c,w,h)=>{c.fillStyle='#fff';c.beginPath();c.roundRect?c.roundRect(4,4,w-8,h-8,24):c.rect(4,4,w-8,h-8);c.fill();c.strokeStyle='#2563ff';c.lineWidth=4;c.stroke();c.fillStyle='#0b1b3a';c.font='800 30px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(txt,w/2,h/2+2)});
-      const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false}));s.scale.set(8,2,1);s.renderOrder=10;return s}
-    const pins=dest.map(d=>{
-      const g=new THREE.Group();g.position.set(d[0],0,d[1]);scene.add(g);
-      const cone=new THREE.Mesh(new THREE.ConeGeometry(.7,2.2,16),M(0xff6a2b));cone.rotation.x=Math.PI;cone.position.y=1.1;cone.castShadow=true;g.add(cone);
-      const ball=new THREE.Mesh(new THREE.SphereGeometry(.8,18,14),M(0xff6a2b));ball.position.y=2.6;g.add(ball);
-      const dot=new THREE.Mesh(new THREE.SphereGeometry(.3,12,10),new THREE.MeshBasicMaterial({color:0xffffff}));dot.position.y=2.6;g.add(dot);
-      const rg=new THREE.Mesh(new THREE.RingGeometry(1,1.15,40),new THREE.MeshBasicMaterial({color:0xff6a2b,transparent:true,side:THREE.DoubleSide,depthWrite:false}));rg.rotation.x=-Math.PI/2;rg.position.y=.1;g.add(rg);
-      const lb=label(d[2]);lb.position.y=5.2;g.add(lb);
-      for(let k=0;k<14;k++){const a=Math.random()*6.28,r=5+Math.random()*9,w=1.5+Math.random()*2,h=1+Math.random()*5;
-        B(w,h,w,k%2?0xd3dcea:0xc3cfe1,Math.cos(a)*r,h/2,Math.sin(a)*r,g)}
-      g.visible=false;return{g,rg}});
 
-    // Satellite + faisceaux
-    const sat=new THREE.Group();sat.position.set(8,42,22);scene.add(sat);
-    B(1.8,1.2,1.2,0xdfe6f0,0,0,0,sat,false);
-    [-2.4,2.4].forEach(x=>B(3,.06,1.5,0x2563ff,x,0,0,sat,false));
-    B(.1,.1,1,0xff6a2b,0,.8,0,sat,false);
-    sat.scale.setScalar(1.6);
-    const beams=trucks.map(()=>{const g=new THREE.BufferGeometry().setFromPoints([V(),V()]);
-      const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xff6a2b,transparent:true,opacity:0}));scene.add(l);return l});
+let gx = 0;
+let gy = 0;
 
-    /* ---------- Caméra : plan par plan ---------- */
-    const K=[[0,[17,7,21],[0,2,2]],[.16,[-13,7.5,19],[0,2,2]],[.38,[0,16,12],[0,1,2]],[.55,[9,6.5,16],[0,1.5,5]],[.74,[24,20,28],[10,0,16]],[1,[36,36,44],[4,0,28]]];
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    function camAt(p){
-      let i=0;while(i<K.length-2&&p>K[i+1][0])i++;
-      const a=K[i],b=K[i+1],t=sm(clamp((p-a[0])/(b[0]-a[0])));
-      const look=a[2].map((v,j)=>lerp(v,b[2][j],t)),pos=a[1].map((v,j)=>lerp(v,b[1][j],t));
-      const k=cam.aspect<1?1.7:1; // portrait : on recule
-      cam.position.set(look[0]+(pos[0]-look[0])*k,look[1]+(pos[1]-look[1])*k,look[2]+(pos[2]-look[2])*k);cam.lookAt(look[0],look[1],look[2]);
+let targetX = 0;
+let targetY = 0;
+
+
+if(!touch){
+
+    addEventListener(
+        "mousemove",
+        event => {
+
+            targetX =
+                event.clientX;
+
+            targetY =
+                event.clientY;
+
+        }
+    );
+
+
+    (
+        function animateGlow(){
+
+            gx +=
+                (targetX - gx)
+                * .1;
+
+            gy +=
+                (targetY - gy)
+                * .1;
+
+
+            glow.style.transform =
+                `translate(${gx}px,${gy}px)`;
+
+
+            requestAnimationFrame(
+                animateGlow
+            );
+
+        }
+    )();
+
+}
+
+
+/* =========================================================
+   SCROLL BAR + HEADER
+========================================================= */
+
+let lastY = 0;
+
+
+addEventListener(
+    "scroll",
+    () => {
+
+        const y =
+            scrollY;
+
+
+        const height =
+            document.documentElement
+            .scrollHeight
+            -
+            innerHeight;
+
+
+        $("#bar").style.width =
+            height > 0
+            ? (y / height * 100) + "%"
+            : "0%";
+
+
+        $("#hd")
+            .classList
+            .toggle(
+                "hide",
+                y > lastY && y > 200
+            );
+
+
+        lastY = y;
+
+    },
+    {
+        passive:true
     }
+);
 
-    /* ---------- Mise à jour de la scène selon la progression ---------- */
-    const caps=[...document.querySelectorAll('.cap')],trackEl=document.getElementById('track'),rail=document.getElementById('railFill'),hint=document.getElementById('hint');
-    const tmp=V(),sv=trucks.map(()=>V());
-    function update(p){
-      const walls=sm(seg(p,.12,.38)),back=sm(seg(p,.16,.40)),fr=sm(seg(p,.2,.4));
-      wl.rotation.z=1.48*walls;wr.rotation.z=-1.48*walls;wb.rotation.x=-1.48*back;
-      front.position.y=.15-(H+.4)*fr;
-      const rf=sm(seg(p,.1,.34));
-      roofL.position.set(-W/4-.15-9*rf,H+.2+11*rf,0);roofL.rotation.z=.4*rf;
-      roofR.position.set(W/4+.15+9*rf,H+.2+11*rf,0);roofR.rotation.z=-.4*rf;
-      workers.forEach(w=>{w.g.position.x=w.x+Math.sin(p*70+w.i*2)*.6;w.g.position.z=w.z+Math.cos(p*55+w.i)*.45;w.g.rotation.y=Math.sin(p*70+w.i*2)>0?1.57:-1.57});
 
-      let sats=sm(seg(p,.64,.72));
-      trucks.forEach((t,i)=>{
-        const u=sm(seg(p,.58+i*.03,.94+i*.0)) ;
-        const pt=routes[i].getPointAt(u),tg=routes[i].getTangentAt(Math.min(u,.999));
-        t.position.copy(pt);t.position.y=0;
-        t.lookAt(pt.x+tg.x,0,pt.z+tg.z);
-        const drop=1-sm(seg(p,.44+i*.02,.56));
-        const d=t.userData;d.bc.position.y=2.75+drop*7;
-        const ph=(p*45+i*.3)%1;
-        d.ring.scale.setScalar(1+ph*9);d.ring.material.opacity=(1-drop)*.8*(1-ph);
-        d.led.material.color.set(((p*60)%1)>.5?0xffffff:0xff6a2b);
-        // tracé
-        const cnt=prog[i].index.count;prog[i].setDrawRange(0,Math.floor(cnt*u/3)*3);
-        // faisceau satellite
-        d.bc.getWorldPosition(tmp);
-        const pos=beams[i].geometry.attributes.position;pos.setXYZ(0,sat.position.x,sat.position.y,sat.position.z);pos.setXYZ(1,tmp.x,tmp.y,tmp.z);pos.needsUpdate=true;
-        beams[i].material.opacity=sats*.7;
-        // villes
-        pins[i].g.visible=p>.55;const ps=(p*30+i*.4)%1;pins[i].rg.scale.setScalar(1+ps*4);pins[i].rg.material.opacity=.8*(1-ps);
-        // HUD
-        const pc=Math.round(u*100);
-        document.getElementById('b'+i).style.width=pc+'%';
-        document.getElementById('s'+i).textContent=u<=0?'Au quai':u>=.995?'Livré ✔':pc+'% · '+(78+i*4)+' km/h';
-      });
-      sat.rotation.y=p*3;sat.visible=p>.55;
+/* =========================================================
+   CONTACT FORM
+========================================================= */
 
-      const ci=p<.12?0:p<.44?1:p<.7?2:3;
-      caps.forEach((c,i)=>c.classList.toggle('on',i===ci));
-      trackEl.classList.toggle('on',p>.6);
-      rail.style.height=(p*100)+'%';hint.style.opacity=p<.03?1:0;
-      camAt(p);
+$("#form").addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+        $("#ok").style.display =
+            "block";
+
+        event.target.reset();
+
     }
+);
 
-    /* ---------- Boucle : ne rend que si la progression change ---------- */
-    let target=0,cur=-1,dirty=true;
-    function progress(){const r=sec.getBoundingClientRect();return clamp(-r.top/Math.max(1,r.height-innerHeight))}
-    addEventListener('scroll',()=>{target=progress()},{passive:true});
-    function resize(){const w=cv.clientWidth,h=cv.clientHeight;ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();dirty=true}
-    addEventListener('resize',resize);resize();target=progress();
-    (function loop(){
-      requestAnimationFrame(loop);
-      const r=sec.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
-      const nc=cur<0?target:cur+(target-cur)*.1;
-      if(Math.abs(nc-cur)>.00005||dirty){cur=Math.abs(target-nc)<.0002?target:nc;dirty=false;update(cur);ren.render(scene,cam)}
-    })();
-  }
+
 })();
+
 </script>
+
+
+<!-- =======================================================
+     THREE.JS — GREEN NETWORK GLOBE
+======================================================= -->
+
+<script>
+
+(() => {
+
+"use strict";
+
+
+function loadThree(urls, callback){
+
+    if(window.THREE){
+
+        callback();
+
+        return;
+    }
+
+
+    if(!urls.length){
+
+        return;
+    }
+
+
+    const script =
+        document.createElement("script");
+
+
+    script.src =
+        urls.shift();
+
+
+    script.onload =
+        callback;
+
+
+    script.onerror =
+        () =>
+        loadThree(
+            urls,
+            callback
+        );
+
+
+    document.head
+        .appendChild(script);
+
+}
+
+
+loadThree(
+
+    [
+        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+        "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"
+    ],
+
+    () => {
+
+        try{
+
+            initScene();
+
+        }
+
+        catch(error){
+
+            console.warn(
+                "Animation 3D indisponible",
+                error
+            );
+
+            const canvas =
+                document.getElementById("bg");
+
+            if(canvas){
+
+                canvas.style.display =
+                    "none";
+
+            }
+
+        }
+
+    }
+
+);
+
+
+function initScene(){
+
+    const canvas =
+        document.getElementById("bg");
+
+
+    const mobile =
+        innerWidth < 768;
+
+
+    const reducedMotion =
+        matchMedia(
+            "(prefers-reduced-motion:reduce)"
+        ).matches;
+
+
+    const renderer =
+        new THREE.WebGLRenderer({
+
+            canvas,
+
+            antialias:
+                !mobile,
+
+            alpha:true
+
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            devicePixelRatio,
+            mobile ? 1.5 : 2
+        )
+    );
+
+
+    const scene =
+        new THREE.Scene();
+
+
+    const camera =
+        new THREE.PerspectiveCamera(
+            50,
+            1,
+            .1,
+            100
+        );
+
+
+    camera.position.z =
+        7.5;
+
+
+    const globe =
+        new THREE.Group();
+
+
+    scene.add(globe);
+
+
+    const radius =
+        2.2;
+
+
+    const green =
+        0x08783f;
+
+
+    const lightGreen =
+        0x0fa45b;
+
+
+/* =========================================================
+   GLOBE
+========================================================= */
+
+    const sphere =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                radius * .985,
+                48,
+                48
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:
+                    0xf4fbf7,
+
+                transparent:true,
+
+                opacity:.92
+
+            })
+
+        );
+
+
+    globe.add(sphere);
+
+
+/* =========================================================
+   POINTS
+========================================================= */
+
+    const number =
+        mobile
+        ? 900
+        : 1800;
+
+
+    const positions =
+        new Float32Array(
+            number * 3
+        );
+
+
+    for(
+        let i=0;
+        i<number;
+        i++
+    ){
+
+        const y =
+            1 -
+            2 *
+            (i + .5)
+            / number;
+
+
+        const r =
+            Math.sqrt(
+                1 - y * y
+            );
+
+
+        const angle =
+            i * 2.399963;
+
+
+        positions.set(
+
+            [
+                radius *
+                r *
+                Math.cos(angle),
+
+                radius * y,
+
+                radius *
+                r *
+                Math.sin(angle)
+
+            ],
+
+            i * 3
+
+        );
+
+    }
+
+
+    const geometry =
+        new THREE.BufferGeometry();
+
+
+    geometry.setAttribute(
+
+        "position",
+
+        new THREE.BufferAttribute(
+            positions,
+            3
+        )
+
+    );
+
+
+    globe.add(
+
+        new THREE.Points(
+
+            geometry,
+
+            new THREE.PointsMaterial({
+
+                color:green,
+
+                size:.018,
+
+                transparent:true,
+
+                opacity:.45
+
+            })
+
+        )
+
+    );
+
+
+/* =========================================================
+   HUBS
+========================================================= */
+
+    const locations = [
+
+        [48.73,2.37],
+        [40.7,-74],
+        [35.7,139.7],
+        [-23.5,-46.6],
+        [30,31.2],
+        [1.3,103.8],
+        [51.5,0],
+        [25.2,55.3],
+        [36.7,3],
+        [-33.9,18.4]
+
+    ];
+
+
+    const convert =
+        (lat,lon,r=radius) => {
+
+            const phi =
+                (90-lat)
+                * Math.PI
+                / 180;
+
+
+            const theta =
+                (lon+180)
+                * Math.PI
+                / 180;
+
+
+            return new THREE.Vector3(
+
+                -r *
+                Math.sin(phi) *
+                Math.cos(theta),
+
+                r *
+                Math.cos(phi),
+
+                r *
+                Math.sin(phi) *
+                Math.sin(theta)
+
+            );
+
+        };
+
+
+    const points =
+        locations.map(
+            location =>
+            convert(
+                location[0],
+                location[1]
+            )
+        );
+
+
+    points.forEach(
+        (point,index) => {
+
+            const marker =
+                new THREE.Mesh(
+
+                    new THREE.SphereGeometry(
+                        index === 0
+                        ? .07
+                        : .035,
+
+                        10,
+                        10
+                    ),
+
+                    new THREE.MeshBasicMaterial({
+
+                        color:
+                            index === 0
+                            ? lightGreen
+                            : green
+
+                    })
+
+                );
+
+
+            marker.position.copy(
+                point
+            );
+
+
+            globe.add(marker);
+
+        }
+    );
+
+
+/* =========================================================
+   CONNECTIONS
+========================================================= */
+
+    const curves = [];
+
+
+    const createArc =
+        (a,b) => {
+
+            const distance =
+                a.distanceTo(b);
+
+
+            const middle =
+                a.clone()
+                .add(b)
+                .multiplyScalar(.5)
+                .normalize()
+                .multiplyScalar(
+                    radius +
+                    distance * .32
+                );
+
+
+            const curve =
+                new THREE
+                .QuadraticBezierCurve3(
+                    a,
+                    middle,
+                    b
+                );
+
+
+            curves.push(curve);
+
+
+            const line =
+                new THREE.Line(
+
+                    new THREE
+                    .BufferGeometry()
+                    .setFromPoints(
+                        curve.getPoints(50)
+                    ),
+
+                    new THREE.LineBasicMaterial({
+
+                        color:green,
+
+                        transparent:true,
+
+                        opacity:.15
+
+                    })
+
+                );
+
+
+            globe.add(line);
+
+        };
+
+
+    for(
+        let i=1;
+        i<points.length;
+        i++
+    ){
+
+        createArc(
+            points[0],
+            points[i]
+        );
+
+    }
+
+
+/* =========================================================
+   MOVING PACKETS
+========================================================= */
+
+    const packets =
+        curves.map(curve => {
+
+            const packet =
+                new THREE.Mesh(
+
+                    new THREE.SphereGeometry(
+                        .035,
+                        8,
+                        8
+                    ),
+
+                    new THREE.MeshBasicMaterial({
+
+                        color:
+                            lightGreen
+
+                    })
+
+                );
+
+
+            globe.add(packet);
+
+
+            return {
+
+                mesh:packet,
+
+                curve:curve,
+
+                progress:
+                    Math.random(),
+
+                speed:
+                    .002 +
+                    Math.random() * .002
+
+            };
+
+        });
+
+
+/* =========================================================
+   MOUSE + SCROLL
+========================================================= */
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    let scrollProgress = 0;
+
+
+    addEventListener(
+        "mousemove",
+        event => {
+
+            mouseX =
+                event.clientX
+                / innerWidth
+                -.5;
+
+
+            mouseY =
+                event.clientY
+                / innerHeight
+                -.5;
+
+        }
+    );
+
+
+    addEventListener(
+        "scroll",
+        () => {
+
+            scrollProgress =
+                scrollY /
+                Math.max(
+                    1,
+                    document.documentElement
+                    .scrollHeight
+                    -
+                    innerHeight
+                );
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+    const resize =
+        () => {
+
+            renderer.setSize(
+                innerWidth,
+                innerHeight,
+                false
+            );
+
+
+            camera.aspect =
+                innerWidth /
+                innerHeight;
+
+
+            camera.updateProjectionMatrix();
+
+        };
+
+
+    addEventListener(
+        "resize",
+        resize
+    );
+
+
+    resize();
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+    const clock =
+        new THREE.Clock();
+
+
+    function animate(){
+
+        requestAnimationFrame(
+            animate
+        );
+
+
+        const time =
+            clock.getElapsedTime();
+
+
+        const motion =
+            reducedMotion
+            ? 0
+            : 1;
+
+
+        globe.rotation.y =
+            time *
+            .08 *
+            motion;
+
+
+        globe.rotation.x =
+            .18;
+
+
+        globe.position.x =
+            Math.sin(
+                scrollProgress *
+                Math.PI *
+                2
+            )
+            * 2.4;
+
+
+        globe.position.y =
+            Math.cos(
+                scrollProgress *
+                Math.PI *
+                2
+            )
+            * .6;
+
+
+        globe.scale.setScalar(
+
+            mobile
+            ? .65
+            : 1
+
+        );
+
+
+        camera.position.x +=
+            (
+                mouseX * .6
+                -
+                camera.position.x
+            )
+            * .03;
+
+
+        camera.position.y +=
+            (
+                -mouseY * .4
+                -
+                camera.position.y
+            )
+            * .03;
+
+
+        camera.lookAt(
+            0,
+            0,
+            0
+        );
+
+
+        packets.forEach(
+            packet => {
+
+                packet.progress +=
+                    packet.speed *
+                    motion;
+
+
+                if(
+                    packet.progress > 1
+                ){
+
+                    packet.progress = 0;
+
+                }
+
+
+                packet.mesh.position.copy(
+
+                    packet.curve.getPoint(
+                        packet.progress
+                    )
+
+                );
+
+            }
+        );
+
+
+        renderer.render(
+            scene,
+            camera
+        );
+
+    }
+
+
+    animate();
+
+}
+
+})();
+
+</script>
+
+
 </body>
 </html>
+```
