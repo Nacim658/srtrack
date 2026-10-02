@@ -3,3926 +3,2880 @@
 <html lang="fr">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>S.R.Tech — Transport connecté & sécurisé</title>
-
-<style>
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-:root{
-    --green:#08783f;
-    --green2:#0fa45b;
-    --green-light:#e9f7ef;
-    --green-pale:#f4fbf7;
-
-    --white:#ffffff;
-    --text:#123b2a;
-    --muted:#527263;
-
-    --border:rgba(8,120,63,.13);
-
-    --shadow:0 15px 45px rgba(8,120,63,.10);
-    --shadow-hover:0 25px 60px rgba(8,120,63,.17);
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+    <title>S.R.TRACK — Transport connecté & sécurisé</title>
 
-    color:var(--text);
-    background:#ffffff;
-    line-height:1.6;
-    overflow-x:hidden;
-}
+    <style>
 
-a{
-    text-decoration:none;
-    color:inherit;
-}
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
 
-ul{
-    list-style:none;
-}
+        :root {
+            --green: #087f4e;
+            --green-dark: #05643e;
+            --green-light: #eaf8f1;
+            --green-soft: #d9f1e5;
 
+            --white: #ffffff;
+            --black: #10231b;
+            --gray: #60736a;
+            --gray-light: #f5f9f7;
 
-/* =========================================================
-   BACKGROUND
-========================================================= */
+            --radius: 24px;
 
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
+            --shadow:
+                0 15px 45px rgba(8, 127, 78, 0.10);
+        }
 
-    background:
-        radial-gradient(
-            circle at 85% 10%,
-            rgba(8,120,63,.06),
-            transparent 30%
-        ),
 
-        radial-gradient(
-            circle at 10% 85%,
-            rgba(15,164,91,.05),
-            transparent 30%
-        );
-}
+        /* =====================================================
+           RESET
+        ===================================================== */
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* =========================================================
-   3D CANVAS
-========================================================= */
+        html {
+            scroll-behavior: smooth;
+        }
 
-#bg{
-    position:fixed;
-    inset:0;
+        body {
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
 
-    width:100%;
-    height:100%;
+            color: var(--black);
+            background: var(--white);
 
-    z-index:0;
-    pointer-events:none;
+            overflow-x: hidden;
+        }
 
-    opacity:.38;
-}
+        img {
+            width: 100%;
+            display: block;
+        }
 
-main,
-header,
-footer{
-    position:relative;
-    z-index:2;
-}
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
 
-/* =========================================================
-   LOADER
-========================================================= */
+        /* =====================================================
+           ANIMATION TRANSPORT / GPS
+        ===================================================== */
 
-#loader{
-    position:fixed;
-    inset:0;
+        #transportScene {
+            position: fixed;
 
-    z-index:9999;
+            inset: 0;
 
-    background:#ffffff;
+            width: 100%;
+            height: 100%;
 
-    display:grid;
-    place-items:center;
+            pointer-events: none;
 
-    transition:
-        opacity .8s,
-        visibility .8s;
-}
+            z-index: -1;
 
-#loader.off{
-    opacity:0;
-    visibility:hidden;
-}
+            opacity: 0.55;
+        }
 
-#loader div{
-    font-size:28px;
-    font-weight:900;
 
-    color:var(--green);
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
-    letter-spacing:6px;
+        .header {
+            position: fixed;
 
-    animation:pulse 1.2s infinite;
-}
+            top: 0;
+            left: 0;
 
-@keyframes pulse{
-    50%{
-        opacity:.35;
-        transform:scale(.96);
-    }
-}
+            width: 100%;
 
+            height: 92px;
 
-/* =========================================================
-   PROGRESS BAR
-========================================================= */
+            display: flex;
 
-#bar{
-    position:fixed;
+            align-items: center;
+            justify-content: space-between;
 
-    top:0;
-    left:0;
+            padding: 0 5%;
 
-    height:3px;
-    width:0;
+            background: rgba(255, 255, 255, 0.94);
 
-    z-index:2000;
+            backdrop-filter: blur(15px);
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--green),
-            var(--green2)
-        );
-}
+            border-bottom: 1px solid rgba(8, 127, 78, 0.08);
 
+            z-index: 100;
+        }
 
-/* =========================================================
-   CURSOR GLOW
-========================================================= */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
 
-.glow{
-    position:fixed;
+        .logo img {
+            width: 80px;
+            height: auto;
+        }
 
-    width:420px;
-    height:420px;
+        .nav {
+            display: flex;
 
-    margin:-210px 0 0 -210px;
+            align-items: center;
 
-    border-radius:50%;
+            gap: 46px;
+        }
 
-    z-index:1;
-    pointer-events:none;
+        .nav a {
+            position: relative;
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(15,164,91,.08),
-            transparent 65%
-        );
+            font-size: 16px;
 
-    will-change:transform;
-}
+            color: var(--green-dark);
 
+            font-weight: 500;
 
-/* =========================================================
-   HEADER
-========================================================= */
+            transition: 0.3s ease;
+        }
 
-header{
-    display:flex;
+        .nav a::after {
+            content: "";
 
-    justify-content:space-between;
-    align-items:center;
+            position: absolute;
 
-    padding:18px 50px;
+            left: 0;
+            bottom: -7px;
 
-    position:fixed;
+            width: 0;
+            height: 2px;
 
-    top:0;
-    left:0;
-    right:0;
+            background: var(--green);
 
-    z-index:1000;
+            transition: 0.3s ease;
+        }
 
-    background:rgba(255,255,255,.92);
+        .nav a:hover {
+            color: var(--green);
+        }
 
-    backdrop-filter:blur(14px);
+        .nav a:hover::after {
+            width: 100%;
+        }
 
-    border-bottom:
-        1px solid rgba(8,120,63,.10);
 
-    box-shadow:
-        0 4px 20px rgba(0,0,0,.04);
+        /* =====================================================
+           HERO
+        ===================================================== */
 
-    transition:
-        transform .4s;
-}
+        .hero {
+            position: relative;
 
-header.hide{
-    transform:translateY(-100%);
-}
+            min-height: 900px;
 
+            padding:
+                170px 8%
+                100px;
 
-/* LOGO */
+            display: grid;
 
-.logo{
-    font-weight:900;
-    font-size:23px;
+            grid-template-columns:
+                minmax(0, 1.1fr)
+                minmax(350px, 0.8fr);
 
-    letter-spacing:1px;
+            align-items: center;
 
-    color:var(--text);
-}
+            gap: 80px;
+        }
 
-.logo b{
-    color:var(--green);
-}
+        .hero::before {
+            content: "";
 
+            position: absolute;
 
-/* NAVIGATION */
+            width: 600px;
+            height: 600px;
 
-nav ul{
-    display:flex;
-    gap:34px;
-}
+            top: 100px;
+            left: -300px;
 
-nav a{
-    font-weight:600;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(8, 127, 78, 0.08),
+                    transparent 70%
+                );
 
-    position:relative;
+            pointer-events: none;
+        }
 
-    color:#176044;
 
-    transition:
-        color .3s;
-}
+        /* =====================================================
+           HERO CONTENT
+        ===================================================== */
 
-nav a::after{
-    content:"";
+        .hero-content {
+            position: relative;
 
-    position:absolute;
+            max-width: 760px;
 
-    left:0;
-    bottom:-7px;
+            z-index: 2;
+        }
 
-    height:2px;
-    width:0;
+        .hero-label {
+            display: inline-flex;
 
-    background:var(--green);
+            padding: 9px 16px;
 
-    transition:
-        width .3s;
-}
+            border-radius: 50px;
 
-nav a:hover{
-    color:var(--green);
-}
+            background: var(--green-light);
 
-nav a:hover::after{
-    width:100%;
-}
+            color: var(--green);
 
+            font-size: 12px;
 
-/* =========================================================
-   HERO
-========================================================= */
+            font-weight: 700;
 
-.hero{
-    min-height:100vh;
+            letter-spacing: 1.4px;
 
-    display:flex;
-    flex-direction:column;
+            margin-bottom: 25px;
+        }
 
-    justify-content:center;
+        .hero h1 {
+            font-size: clamp(55px, 7vw, 100px);
 
-    padding:
-        150px 80px
-        100px;
+            line-height: 0.98;
 
-    position:relative;
-}
+            letter-spacing: -5px;
 
-.eyebrow{
-    display:inline-flex;
+            font-weight: 800;
 
-    align-items:center;
+            color: var(--black);
 
-    gap:10px;
+            margin-bottom: 35px;
+        }
 
-    color:var(--green);
+        .hero h1 span {
+            color: var(--green);
+        }
 
-    font-weight:700;
+        .hero p {
+            max-width: 650px;
 
-    letter-spacing:3px;
+            font-size: 20px;
 
-    font-size:13px;
+            line-height: 1.7;
 
-    text-transform:uppercase;
+            color: var(--gray);
 
-    margin-bottom:24px;
-}
+            margin-bottom: 40px;
+        }
 
-.eyebrow i{
-    width:9px;
-    height:9px;
 
-    border-radius:50%;
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
 
-    background:var(--green2);
+        .hero-buttons {
+            display: flex;
 
-    box-shadow:
-        0 0 0 0 rgba(15,164,91,.4);
+            gap: 15px;
 
-    animation:ping 1.8s infinite;
-}
+            flex-wrap: wrap;
+        }
 
-@keyframes ping{
-    to{
-        box-shadow:
-            0 0 0 14px transparent;
-    }
-}
+        .btn {
+            display: inline-flex;
 
+            align-items: center;
+            justify-content: center;
 
-.hero-titles{
-    display:grid;
+            min-height: 54px;
 
-    max-width:850px;
+            padding: 0 28px;
 
-    perspective:900px;
-}
+            border-radius: 100px;
 
-.hero-title{
-    grid-area:1/1;
+            font-size: 15px;
 
-    font-size:
-        clamp(40px,5.4vw,76px);
+            font-weight: 700;
 
-    font-weight:900;
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+        }
 
-    line-height:1.06;
+        .btn:hover {
+            transform: translateY(-3px);
+        }
 
-    color:#0b5f35;
+        .btn-primary {
+            background: var(--green);
 
-    pointer-events:none;
-}
+            color: white;
 
-.hero-title.active{
-    pointer-events:auto;
-}
+            box-shadow:
+                0 12px 30px rgba(8, 127, 78, 0.20);
+        }
 
-.hero-title .w{
-    display:inline-block;
+        .btn-primary:hover {
+            background: var(--green-dark);
+        }
 
-    overflow:hidden;
+        .btn-secondary {
+            color: var(--green);
 
-    vertical-align:top;
+            border: 1px solid rgba(8, 127, 78, 0.25);
 
-    padding-bottom:.12em;
-}
+            background: white;
+        }
 
-.hero-title .w>span{
-    display:inline-block;
 
-    transform:
-        translateY(110%)
-        rotateX(-70deg);
+        /* =====================================================
+           GPS CARD
+        ===================================================== */
 
-    opacity:0;
+        .gps-card {
+            position: relative;
 
-    transition:
-        transform .9s cubic-bezier(.2,.8,.2,1),
-        opacity .6s;
+            width: 100%;
 
-    transition-delay:
-        var(--d);
-}
+            max-width: 480px;
 
-.hero-title.active .w>span{
-    transform:none;
-    opacity:1;
-}
+            justify-self: center;
 
-.hero-title:not(.active) .w>span{
-    transition-delay:0s;
+            background: rgba(255, 255, 255, 0.95);
 
-    transform:
-        translateY(-110%);
-}
+            border: 1px solid rgba(8, 127, 78, 0.13);
 
-.hero-title em{
-    font-style:normal;
+            border-radius: 30px;
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--green),
-            var(--green2)
-        );
+            padding: 20px;
 
-    -webkit-background-clip:text;
-    background-clip:text;
+            box-shadow:
+                0 30px 70px rgba(8, 127, 78, 0.12);
 
-    color:transparent;
-}
+            animation: floating 5s ease-in-out infinite;
+        }
 
-.hero p.lead{
-    max-width:650px;
+        @keyframes floating {
 
-    color:var(--muted);
+            0%,
+            100% {
+                transform: translateY(0);
+            }
 
-    font-size:20px;
+            50% {
+                transform: translateY(-12px);
+            }
+        }
 
-    margin:
-        28px 0 38px;
-}
+        .gps-top {
+            display: flex;
 
+            align-items: center;
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+            gap: 10px;
 
-.btns{
-    display:flex;
+            color: var(--green-dark);
 
-    gap:16px;
+            font-weight: 700;
 
-    flex-wrap:wrap;
+            margin-bottom: 15px;
+        }
 
-    align-items:center;
-}
+        .gps-status {
+            width: 9px;
+            height: 9px;
 
-.btn{
-    display:inline-block;
+            border-radius: 50%;
 
-    padding:
-        15px 34px;
+            background: #18b86d;
 
-    border-radius:50px;
+            box-shadow:
+                0 0 0 5px rgba(24, 184, 109, 0.12);
+        }
 
-    font-weight:700;
+        .gps-map {
+            position: relative;
 
-    font-size:16px;
+            height: 300px;
 
-    border:none;
+            overflow: hidden;
 
-    cursor:pointer;
+            border-radius: 20px;
 
-    transition:
-        transform .2s,
-        box-shadow .3s;
-}
+            background:
+                linear-gradient(
+                    140deg,
+                    #edf9f3,
+                    #d9f1e5
+                );
+        }
 
-.btn-p{
-    background:
-        linear-gradient(
-            135deg,
-            var(--green),
-            var(--green2)
-        );
+        .gps-map::before,
+        .gps-map::after {
+            content: "";
 
-    color:#ffffff;
+            position: absolute;
 
-    box-shadow:
-        0 10px 30px
-        rgba(8,120,63,.22);
-}
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0 20px,
+                    rgba(8, 127, 78, 0.15) 21px 23px
+                );
 
-.btn-p:hover{
-    box-shadow:
-        0 15px 40px
-        rgba(8,120,63,.30);
-}
+            transform: rotate(-25deg);
 
-.btn-o{
-    border:
-        1px solid var(--green);
+            width: 150%;
+            height: 60px;
+        }
 
-    color:var(--green);
+        .gps-map::before {
+            top: 70px;
+            left: -20%;
+        }
 
-    background:#ffffff;
-}
+        .gps-map::after {
+            top: 190px;
+            left: -20%;
+        }
 
-.btn-o:hover{
-    background:var(--green-light);
-}
+        .route {
+            position: absolute;
 
-#pauseBtn{
-    width:44px;
-    height:44px;
+            height: 4px;
 
-    border-radius:50%;
+            border-top: 3px dashed var(--green);
 
-    border:
-        1px solid var(--border);
+            opacity: 0.7;
 
-    background:#ffffff;
+            transform-origin: left;
+        }
 
-    color:var(--green);
+        .route-1 {
+            width: 320px;
 
-    cursor:pointer;
+            top: 120px;
+            left: 50px;
 
-    font-size:14px;
+            transform: rotate(15deg);
+        }
 
-    box-shadow:
-        0 5px 20px rgba(8,120,63,.08);
-}
+        .route-2 {
+            width: 260px;
 
+            top: 210px;
+            left: 120px;
 
-/* =========================================================
-   SCROLL HINT
-========================================================= */
+            transform: rotate(-30deg);
+        }
 
-.scroll-hint{
-    position:absolute;
+        .gps-point {
+            position: absolute;
 
-    bottom:30px;
-    left:80px;
+            width: 13px;
+            height: 13px;
 
-    color:var(--muted);
+            background: var(--green);
 
-    font-size:12px;
+            border-radius: 50%;
 
-    letter-spacing:3px;
+            box-shadow:
+                0 0 0 7px rgba(8, 127, 78, 0.12);
 
-    display:flex;
+            z-index: 2;
+        }
 
-    align-items:center;
+        .point-1 {
+            top: 75px;
+            left: 75px;
+        }
 
-    gap:12px;
-}
+        .point-2 {
+            top: 180px;
+            right: 70px;
+        }
 
-.scroll-hint span{
-    width:1px;
-    height:46px;
+        .point-3 {
+            bottom: 35px;
+            left: 180px;
+        }
 
-    background:
-        linear-gradient(
-            var(--green),
-            transparent
-        );
+        .truck-marker {
+            position: absolute;
 
-    animation:drip 2s infinite;
-}
+            top: 120px;
+            left: 190px;
 
-@keyframes drip{
+            width: 55px;
+            height: 55px;
 
-    0%{
-        transform:scaleY(0);
-        transform-origin:top;
-    }
+            display: flex;
 
-    50%{
-        transform:scaleY(1);
-        transform-origin:top;
-    }
+            align-items: center;
+            justify-content: center;
 
-    51%{
-        transform-origin:bottom;
-    }
+            border-radius: 50%;
 
-    100%{
-        transform:scaleY(0);
-        transform-origin:bottom;
-    }
-}
+            background: white;
 
+            font-size: 27px;
 
-/* =========================================================
-   MARQUEE
-========================================================= */
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.12);
 
-.marquee{
-    overflow:hidden;
+            animation:
+                truckMove 5s ease-in-out infinite;
+        }
 
-    border-block:
-        1px solid var(--border);
+        @keyframes truckMove {
 
-    background:#f8fcfa;
+            0% {
+                transform: translate(0, 0);
+            }
 
-    padding:18px 0;
-}
+            50% {
+                transform: translate(55px, 25px);
+            }
 
-.marquee div{
-    display:flex;
+            100% {
+                transform: translate(0, 0);
+            }
+        }
 
-    gap:60px;
+        .gps-bottom {
+            display: flex;
 
-    width:max-content;
+            justify-content: space-between;
 
-    animation:
-        mq 28s linear infinite;
+            align-items: center;
 
-    color:var(--green);
+            padding-top: 18px;
+        }
 
-    font-weight:800;
+        .gps-bottom strong {
+            color: var(--black);
+        }
 
-    letter-spacing:4px;
+        .gps-bottom span {
+            font-size: 13px;
 
-    font-size:14px;
+            color: var(--gray);
+        }
 
-    text-transform:uppercase;
-}
 
-@keyframes mq{
-    to{
-        transform:translateX(-50%);
-    }
-}
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
 
+        section {
+            position: relative;
 
-/* =========================================================
-   GENERAL LAYOUT
-========================================================= */
+            padding: 120px 7%;
+        }
 
-.container{
-    padding:
-        100px 80px;
-}
+        .section-heading {
+            max-width: 800px;
 
-.section-title{
-    font-size:
-        clamp(30px,3.6vw,48px);
+            margin: 0 auto 70px;
 
-    font-weight:900;
+            text-align: center;
+        }
 
-    color:#0b5f35;
+        .section-heading.left {
+            margin-left: 0;
 
-    margin-bottom:46px;
-}
+            text-align: left;
+        }
 
-.section-title::after{
-    content:"";
+        .section-heading > span,
+        .group-content > span,
+        .contact-section > div > span {
+            display: block;
 
-    display:block;
+            margin-bottom: 15px;
 
-    width:70px;
-    height:4px;
+            color: var(--green);
 
-    margin-top:14px;
+            font-size: 13px;
 
-    border-radius:4px;
+            font-weight: 800;
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--green),
-            var(--green2)
-        );
-}
+            letter-spacing: 2px;
+        }
 
-.grid-2,
-.grid-3,
-.grid-4{
-    display:grid;
+        .section-heading h2,
+        .group-content h2,
+        .contact-section h2 {
+            font-size: clamp(40px, 5vw, 68px);
 
-    gap:28px;
-}
+            line-height: 1.05;
 
-.grid-2{
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(340px,1fr)
-        );
-}
+            letter-spacing: -3px;
 
-.grid-3{
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px,1fr)
-        );
-}
+            margin-bottom: 25px;
+        }
 
-.grid-4{
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(220px,1fr)
-        );
-}
+        .section-heading h2 strong,
+        .group-content h2 strong,
+        .contact-section h2 strong {
+            color: var(--green);
+        }
 
+        .section-heading p,
+        .group-content p,
+        .contact-section p {
+            color: var(--gray);
 
-/* =========================================================
-   REVEAL
-========================================================= */
+            font-size: 18px;
 
-.reveal{
-    opacity:0;
+            line-height: 1.7;
+        }
 
-    transform:
-        translateY(50px);
 
-    transition:
-        opacity .9s,
-        transform .9s
-        cubic-bezier(.2,.8,.2,1);
-}
+        /* =====================================================
+           EXPERTISE
+        ===================================================== */
 
-.reveal.visible{
-    opacity:1;
+        .intro-section {
+            background:
+                linear-gradient(
+                    180deg,
+                    white 0%,
+                    #f5fbf8 100%
+                );
+        }
 
-    transform:none;
-}
+        .expertise-grid {
+            max-width: 1400px;
 
-.reveal .grid-2>*,
-.reveal .grid-3>*,
-.reveal .grid-4>*{
-    opacity:0;
+            margin: auto;
 
-    transform:
-        translateY(40px)
-        scale(.96);
+            display: grid;
 
-    transition:
-        opacity .7s,
-        transform .7s
-        cubic-bezier(.2,.8,.2,1);
+            grid-template-columns:
+                repeat(3, 1fr);
 
-    transition-delay:
-        calc(var(--i)*.12s + .15s);
-}
+            gap: 30px;
+        }
 
-.reveal.visible .grid-2>*,
-.reveal.visible .grid-3>*,
-.reveal.visible .grid-4>*{
-    opacity:1;
+        .expertise-card {
+            background: white;
 
-    transform:none;
-}
+            border: 1px solid rgba(8, 127, 78, 0.09);
 
+            border-radius: var(--radius);
 
-/* =========================================================
-   INTRO
-========================================================= */
+            overflow: hidden;
 
-.intro-card{
-    max-width:1000px;
+            box-shadow: var(--shadow);
 
-    margin:0 auto;
+            transition:
+                transform 0.35s ease,
+                box-shadow 0.35s ease;
+        }
 
-    text-align:center;
+        .expertise-card:hover {
+            transform: translateY(-10px);
 
-    padding:
-        50px 60px;
+            box-shadow:
+                0 25px 55px rgba(8, 127, 78, 0.16);
+        }
 
-    border-radius:35px;
+        .card-image {
+            height: 260px;
 
-    background:#ffffff;
+            overflow: hidden;
+        }
 
-    border:
-        1px solid var(--border);
+        .card-image img {
+            height: 100%;
 
-    box-shadow:var(--shadow);
-}
+            object-fit: cover;
 
-.intro-card p{
-    font-size:21px;
+            transition: transform 0.6s ease;
+        }
 
-    color:var(--muted);
+        .expertise-card:hover .card-image img {
+            transform: scale(1.06);
+        }
 
-    margin-bottom:14px;
-}
+        .card-content {
+            padding: 30px;
+        }
 
-.intro-card strong{
-    color:var(--green);
-}
+        .card-number {
+            color: var(--green);
 
+            font-size: 13px;
 
-/* =========================================================
-   CARDS
-========================================================= */
+            font-weight: 800;
+        }
 
-.tilt{
-    --rx:0deg;
-    --ry:0deg;
-    --mx:50%;
-    --my:50%;
+        .card-content h3 {
+            font-size: 28px;
 
-    position:relative;
+            color: var(--green-dark);
 
-    border-radius:22px;
+            margin: 10px 0 15px;
+        }
 
-    background:#ffffff;
+        .card-content p {
+            color: var(--gray);
 
-    border:
-        1px solid var(--border);
+            font-size: 16px;
 
-    overflow:hidden;
+            line-height: 1.7;
+        }
 
-    transform:
-        perspective(900px)
-        rotateX(var(--rx))
-        rotateY(var(--ry));
 
-    transition:
-        transform .15s ease-out,
-        border-color .3s,
-        box-shadow .3s;
+        /* =====================================================
+           MISSION
+        ===================================================== */
 
-    will-change:transform;
+        .mission-section {
+            background: white;
+        }
 
-    box-shadow:var(--shadow);
-}
+        .mission-grid {
+            max-width: 1450px;
 
-.tilt:hover{
-    border-color:
-        rgba(8,120,63,.35);
+            margin: auto;
 
-    box-shadow:
-        var(--shadow-hover);
-}
+            display: grid;
 
-.tilt::after{
-    content:"";
+            grid-template-columns:
+                repeat(3, 1fr);
 
-    position:absolute;
+            gap: 30px;
+        }
 
-    inset:0;
+        .mission-card {
+            overflow: hidden;
 
-    pointer-events:none;
+            border-radius: 25px;
 
-    opacity:0;
+            background: #f5faf7;
 
-    transition:opacity .3s;
+            border: 1px solid rgba(8, 127, 78, 0.08);
+        }
 
-    background:
-        radial-gradient(
-            circle at var(--mx) var(--my),
-            rgba(15,164,91,.08),
-            transparent 45%
-        );
-}
+        .mission-image {
+            height: 320px;
 
-.tilt:hover::after{
-    opacity:1;
-}
+            overflow: hidden;
+        }
 
+        .mission-image img {
+            height: 100%;
 
-/* =========================================================
-   IMAGE CARDS
-========================================================= */
+            object-fit: cover;
 
-.card-img{
-    height:250px;
+            transition: transform 0.6s ease;
+        }
 
-    position:relative;
+        .mission-card:hover img {
+            transform: scale(1.05);
+        }
 
-    overflow:hidden;
+        .mission-text {
+            padding: 30px;
+        }
 
-    background:
-        linear-gradient(
-            135deg,
-            #e9f7ef,
-            #bce8cf
-        );
-}
+        .mission-text > span {
+            display: inline-flex;
 
-.card-img img{
-    width:100%;
-    height:100%;
+            width: 35px;
+            height: 35px;
 
-    object-fit:cover;
+            align-items: center;
+            justify-content: center;
 
-    display:block;
+            border-radius: 50%;
 
-    transition:
-        transform .8s;
-}
+            color: white;
 
-.tilt:hover .card-img img{
-    transform:scale(1.07);
-}
+            background: var(--green);
 
-.card-body{
-    padding:28px;
-}
+            font-size: 12px;
 
-.card-body h3,
-.sc h3{
-    font-size:22px;
+            font-weight: 800;
 
-    color:var(--green);
+            margin-bottom: 20px;
+        }
 
-    margin-bottom:10px;
-}
+        .mission-text p {
+            color: var(--green-dark);
 
-.card-body p,
-.sc p{
-    color:var(--muted);
-}
+            font-size: 20px;
 
+            line-height: 1.6;
+        }
 
-/* =========================================================
-   STATS
-========================================================= */
+        .mission-text strong {
+            color: var(--green);
+        }
 
-.stats{
-    display:grid;
 
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(200px,1fr)
-        );
+        /* =====================================================
+           GROUP
+        ===================================================== */
 
-    gap:20px;
+        .group-section {
+            display: grid;
 
-    padding:
-        0 80px 20px;
-}
+            grid-template-columns:
+                1fr 1fr;
 
-.stat{
-    text-align:center;
+            gap: 100px;
 
-    padding:
-        34px 10px;
+            align-items: center;
 
-    border-radius:20px;
+            background:
+                var(--green-light);
+        }
 
-    background:#ffffff;
+        .group-content {
+            max-width: 650px;
 
-    border:
-        1px solid var(--border);
+            margin-left: auto;
+        }
 
-    box-shadow:var(--shadow);
-}
+        .stats {
+            display: flex;
 
-.stat b{
-    display:block;
+            gap: 20px;
 
-    font-size:
-        clamp(38px,5vw,60px);
+            margin-top: 45px;
+        }
 
-    font-weight:900;
+        .stats div {
+            min-width: 140px;
 
-    color:var(--green);
+            padding: 20px;
 
-    line-height:1;
-}
+            background: white;
 
-.stat span{
-    color:var(--muted);
+            border-radius: 18px;
 
-    font-size:15px;
-}
+            box-shadow:
+                0 10px 30px rgba(8, 127, 78, 0.08);
+        }
 
+        .stats strong {
+            display: block;
 
-/* =========================================================
-   SERVICES
-========================================================= */
+            color: var(--green);
 
-.services-section{
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #f4fbf7 50%,
-            #ffffff 100%
-        );
-}
+            font-size: 28px;
 
+            margin-bottom: 5px;
+        }
 
-/* SERVICE CARD */
+        .stats span {
+            color: var(--gray);
 
-.service-card{
-    padding:0 !important;
+            font-size: 13px;
+        }
 
-    overflow:hidden;
 
-    background:#ffffff;
+        /* =====================================================
+           RADAR
+        ===================================================== */
 
-    border:
-        1px solid var(--border);
+        .group-visual {
+            display: flex;
 
-    box-shadow:var(--shadow);
-}
+            align-items: center;
+            justify-content: center;
+        }
 
+        .radar {
+            position: relative;
 
-/* SERVICE IMAGE */
+            width: 420px;
+            height: 420px;
 
-.service-img{
-    width:100%;
+            border-radius: 50%;
 
-    height:230px;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(8, 127, 78, 0.13),
+                    rgba(8, 127, 78, 0.04) 60%,
+                    transparent 61%
+                );
 
-    overflow:hidden;
+            border: 1px solid rgba(8, 127, 78, 0.15);
 
-    position:relative;
+            overflow: hidden;
+        }
 
-    background:
-        linear-gradient(
-            135deg,
-            #e9f7ef,
-            #c7ecd7
-        );
-}
+        .radar-circle {
+            position: absolute;
 
-.service-img::after{
-    content:"";
+            border: 1px solid rgba(8, 127, 78, 0.15);
 
-    position:absolute;
+            border-radius: 50%;
 
-    inset:0;
+            top: 50%;
+            left: 50%;
 
-    background:
-        linear-gradient(
-            180deg,
-            transparent 45%,
-            rgba(8,120,63,.18)
-        );
-}
+            transform: translate(-50%, -50%);
+        }
 
-.service-img img{
-    width:100%;
-    height:100%;
+        .circle-1 {
+            width: 130px;
+            height: 130px;
+        }
 
-    object-fit:cover;
+        .circle-2 {
+            width: 260px;
+            height: 260px;
+        }
 
-    display:block;
+        .circle-3 {
+            width: 390px;
+            height: 390px;
+        }
 
-    transition:
-        transform .7s ease;
-}
+        .radar-line {
+            position: absolute;
 
-.service-card:hover .service-img img{
-    transform:scale(1.08);
-}
+            width: 50%;
 
+            height: 2px;
 
-/* SERVICE CONTENT */
+            top: 50%;
+            left: 50%;
 
-.service-content{
-    padding:28px;
-}
+            transform-origin: left center;
 
-.service-content h3{
-    color:var(--green);
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--green),
+                    transparent
+                );
 
-    font-size:22px;
+            animation:
+                radarRotate 4s linear infinite;
+        }
 
-    margin-bottom:10px;
-}
+        @keyframes radarRotate {
 
-.service-content p{
-    color:var(--muted);
+            from {
+                transform: rotate(0);
+            }
 
-    line-height:1.7;
-}
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
+        .radar-point {
+            position: absolute;
 
-/* SERVICE ICON */
+            width: 10px;
+            height: 10px;
 
-.service-icon{
-    width:48px;
-    height:48px;
+            background: var(--green);
 
-    border-radius:14px;
+            border-radius: 50%;
 
-    display:grid;
+            box-shadow:
+                0 0 0 7px rgba(8, 127, 78, 0.13);
+        }
 
-    place-items:center;
+        .p1 {
+            top: 25%;
+            left: 30%;
+        }
 
-    margin-bottom:16px;
+        .p2 {
+            top: 60%;
+            left: 72%;
+        }
 
-    font-size:22px;
+        .p3 {
+            top: 75%;
+            left: 35%;
+        }
 
-    background:var(--green-light);
+        .radar-truck {
+            position: absolute;
 
-    border:
-        1px solid var(--border);
-}
+            top: 50%;
+            left: 50%;
 
+            transform: translate(-50%, -50%);
 
-/* =========================================================
-   SMALL CARDS
-========================================================= */
+            width: 75px;
+            height: 75px;
 
-.sc{
-    padding:30px;
-}
+            display: flex;
 
-.sc .ico{
-    width:46px;
-    height:46px;
+            align-items: center;
+            justify-content: center;
 
-    border-radius:14px;
+            background: white;
 
-    display:grid;
+            border-radius: 50%;
 
-    place-items:center;
+            font-size: 35px;
 
-    margin-bottom:18px;
+            box-shadow:
+                0 15px 40px rgba(8, 127, 78, 0.18);
+        }
 
-    font-size:22px;
 
-    background:var(--green-light);
+        /* =====================================================
+           SERVICES
+        ===================================================== */
 
-    border:
-        1px solid var(--border);
-}
+        .services-section {
+            background: #f8fbfa;
+        }
 
+        .services-grid {
+            max-width: 1400px;
 
-/* =========================================================
-   GROUP
-========================================================= */
+            margin: auto;
 
-.sub-brand{
-    border-left:
-        4px solid var(--green);
+            display: grid;
 
-    padding:
-        8px 0 8px 22px;
+            grid-template-columns:
+                repeat(3, 1fr);
 
-    margin-bottom:26px;
+            gap: 30px;
+        }
 
-    transition:
-        transform .3s;
+        .service-card {
+            position: relative;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(8,120,63,.04),
-            transparent
-        );
-}
+            min-height: 430px;
 
-.sub-brand:hover{
-    transform:
-        translateX(10px);
-}
+            overflow: hidden;
 
-.sub-brand h3{
-    font-size:24px;
+            border-radius: 25px;
 
-    color:var(--green);
-}
+            background: white;
 
-.sub-brand p{
-    color:var(--muted);
-}
+            box-shadow:
+                0 15px 40px rgba(8, 127, 78, 0.09);
 
-.group-lead{
-    margin-bottom:34px;
+            border: 1px solid rgba(8, 127, 78, 0.08);
 
-    font-size:19px;
+            transition: 0.35s ease;
+        }
 
-    color:var(--muted);
+        .service-card:hover {
+            transform: translateY(-8px);
+        }
 
-    max-width:800px;
-}
+        .service-card > img {
+            height: 250px;
 
+            object-fit: cover;
 
-/* =========================================================
-   CONTACT
-========================================================= */
+            transition: 0.5s ease;
+        }
 
-.contact-container{
-    display:grid;
+        .service-card:hover > img {
+            transform: scale(1.06);
+        }
 
-    grid-template-columns:
-        1fr 1fr;
+        .service-card > div {
+            padding: 28px;
+        }
 
-    gap:60px;
+        .service-card h3 {
+            color: var(--green-dark);
 
-    margin:
-        0 80px;
+            font-size: 24px;
 
-    padding:60px;
+            margin-bottom: 10px;
+        }
 
-    border-radius:30px;
+        .service-card p {
+            color: var(--gray);
 
-    background:#ffffff;
+            line-height: 1.6;
+        }
 
-    border:
-        1px solid var(--border);
 
-    box-shadow:var(--shadow);
-}
+        /* =====================================================
+           CONTACT
+        ===================================================== */
 
-.contact-info h2{
-    font-size:
-        clamp(32px,4vw,48px);
+        .contact-section {
+            margin: 60px 7%;
 
-    color:var(--green);
+            padding: 80px;
 
-    margin-bottom:20px;
-}
+            border-radius: 35px;
 
-.contact-info p{
-    color:var(--muted);
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green-dark),
+                    var(--green)
+                );
 
-.form-row{
-    display:flex;
+            color: white;
 
-    gap:20px;
-}
+            display: flex;
 
-.form-group{
-    margin-bottom:20px;
+            align-items: center;
+            justify-content: space-between;
 
-    flex:1;
-}
+            gap: 50px;
+        }
 
-label{
-    display:block;
+        .contact-section > div {
+            max-width: 700px;
+        }
 
-    margin-bottom:8px;
+        .contact-section > div > span {
+            color: #bcefd5;
+        }
 
-    font-weight:600;
+        .contact-section h2 {
+            color: white;
+        }
 
-    color:var(--green);
+        .contact-section h2 strong {
+            color: #bcefd5;
+        }
 
-    font-size:14px;
-}
+        .contact-section p {
+            color: rgba(255, 255, 255, 0.82);
+        }
 
-input{
-    width:100%;
+        .contact-section .btn-primary {
+            background: white;
 
-    padding:14px;
+            color: var(--green);
 
-    border:
-        1px solid var(--border);
+            flex-shrink: 0;
+        }
 
-    border-radius:12px;
 
-    font-size:15px;
+        /* =====================================================
+           FOOTER
+        ===================================================== */
 
-    background:#f8fcfa;
+        footer {
+            min-height: 130px;
 
-    color:var(--text);
+            padding: 35px 7%;
 
-    transition:
-        border-color .3s,
-        box-shadow .3s;
-}
+            display: flex;
 
-input:focus{
-    outline:none;
+            align-items: center;
+            justify-content: space-between;
 
-    border-color:var(--green);
+            gap: 30px;
 
-    box-shadow:
-        0 0 0 4px
-        rgba(8,120,63,.10);
-}
+            border-top: 1px solid rgba(8, 127, 78, 0.1);
+        }
 
-#ok{
-    display:none;
+        .footer-logo img {
+            width: 70px;
+        }
 
-    margin-top:16px;
+        footer p {
+            color: var(--gray);
 
-    color:var(--green);
+            font-size: 13px;
+        }
 
-    font-weight:600;
-}
+        footer > div:last-child {
+            display: flex;
 
+            gap: 25px;
+        }
 
-/* =========================================================
-   FOOTER
-========================================================= */
+        footer a {
+            color: var(--green);
 
-footer{
-    margin-top:100px;
+            font-size: 13px;
+        }
 
-    padding:
-        60px 80px;
 
-    display:grid;
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
 
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(200px,1fr)
-        );
+        @media (max-width: 1100px) {
 
-    gap:40px;
+            .hero {
+                grid-template-columns: 1fr;
 
-    background:#073b25;
+                padding-top: 150px;
 
-    border-top:
-        1px solid rgba(8,120,63,.15);
-}
+                text-align: center;
+            }
 
-footer h4{
-    font-size:20px;
+            .hero-content {
+                margin: auto;
+            }
 
-    color:#7ee2ae;
+            .hero-buttons {
+                justify-content: center;
+            }
 
-    margin-bottom:18px;
-}
+            .gps-card {
+                margin: auto;
+            }
 
-footer li{
-    margin-bottom:10px;
-}
+            .expertise-grid,
+            .services-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
 
-footer a,
-footer p{
-    color:#d4eee0;
-}
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
 
-footer a:hover{
-    color:#ffffff;
-}
+            .group-section {
+                grid-template-columns: 1fr;
 
+                gap: 60px;
+            }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+            .group-content {
+                margin: auto;
+            }
+        }
 
-@media(max-width:768px){
 
-    header{
-        padding:
-            16px 20px;
-    }
+        @media (max-width: 700px) {
 
-    header,
-    .hero,
-    .container,
-    .stats,
-    footer{
-        padding-left:20px;
-        padding-right:20px;
-    }
+            .header {
+                height: 75px;
 
-    nav ul{
-        gap:14px;
+                padding: 0 20px;
+            }
 
-        font-size:13px;
-    }
+            .logo img {
+                width: 60px;
+            }
 
-    .hero{
-        padding-top:120px;
-    }
+            .nav {
+                gap: 15px;
+            }
 
-    .hero-title{
-        font-size:
-            clamp(34px,10vw,52px);
-    }
+            .nav a {
+                font-size: 12px;
+            }
 
-    .hero p.lead{
-        font-size:17px;
-    }
+            section {
+                padding: 80px 20px;
+            }
 
-    .scroll-hint{
-        left:20px;
-    }
+            .hero {
+                min-height: auto;
 
-    .container{
-        padding-top:70px;
-        padding-bottom:70px;
-    }
+                padding:
+                    130px 20px
+                    80px;
+            }
 
-    .contact-container{
-        grid-template-columns:1fr;
+            .hero h1 {
+                font-size: 55px;
 
-        margin:
-            0 20px;
+                letter-spacing: -3px;
+            }
 
-        padding:
-            30px 22px;
-    }
+            .hero p {
+                font-size: 17px;
+            }
 
-    .form-row{
-        flex-direction:column;
+            .expertise-grid,
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
 
-        gap:0;
-    }
+            .section-heading h2,
+            .group-content h2,
+            .contact-section h2 {
+                font-size: 40px;
+            }
 
-    .intro-card{
-        padding:
-            30px 22px;
-    }
+            .stats {
+                flex-direction: column;
+            }
 
-    .glow{
-        display:none;
-    }
+            .radar {
+                width: 300px;
+                height: 300px;
+            }
 
-    .service-img{
-        height:200px;
-    }
+            .circle-3 {
+                width: 280px;
+                height: 280px;
+            }
 
-    .card-img{
-        height:210px;
-    }
+            .contact-section {
+                margin: 30px 20px;
 
-    #bg{
-        opacity:.18;
-    }
-}
+                padding: 45px 25px;
 
+                flex-direction: column;
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
+                align-items: flex-start;
+            }
 
-@media(prefers-reduced-motion:reduce){
+            footer {
+                flex-direction: column;
 
-    *{
-        animation:none !important;
+                text-align: center;
+            }
 
-        transition-duration:.01s !important;
-    }
-}
+            footer > div:last-child {
+                justify-content: center;
+            }
+        }
 
-</style>
+    </style>
 </head>
 
 
 <body>
 
 
-<!-- =======================================================
-     LOADER
-======================================================= -->
+    <!-- =====================================================
+         ANIMATION CAMIONS / GPS
+    ====================================================== -->
 
-<div id="loader">
-    <div>S.R.TECH</div>
-</div>
-
-<div id="bar"></div>
-
-<div class="glow" id="glow"></div>
-
-<canvas id="bg"></canvas>
+    <canvas id="transportScene"></canvas>
 
 
-<!-- =======================================================
-     HEADER
-======================================================= -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-<header id="hd">
+    <header class="header">
 
-    <a href="#" class="logo">
-        S.R.<b>Tech</b>
-    </a>
+        <a href="#accueil" class="logo">
 
-    <nav>
+            <!-- Remplace cette image par ton logo si nécessaire -->
+            <img
+                src="https://via.placeholder.com/160x80/ffffff/087f4e?text=S.R.Track"
+                alt="S.R.Track"
+            >
 
-        <ul>
-
-            <li>
-                <a href="#histoire">
-                    Histoire
-                </a>
-            </li>
-
-            <li>
-                <a href="#groupe">
-                    Notre groupe
-                </a>
-            </li>
-
-            <li>
-                <a href="#services">
-                    Services
-                </a>
-            </li>
-
-            <li>
-                <a href="#contact">
-                    Contact
-                </a>
-            </li>
-
-        </ul>
-
-    </nav>
-
-</header>
-
-
-<!-- =======================================================
-     MAIN
-======================================================= -->
-
-<main>
-
-
-<!-- =======================================================
-     HERO
-======================================================= -->
-
-<section class="hero">
-
-    <div class="eyebrow">
-
-        <i></i>
-
-        Transport · IoT · Sécurité
-
-    </div>
-
-
-    <div class="hero-titles">
-
-        <h1 class="hero-title active">
-
-            Sécuriser,
-            Géolocaliser,
-
-            <em>
-                Solutions IoT
-            </em>
-
-            pour le transport.
-
-        </h1>
-
-
-        <h1 class="hero-title">
-
-            La sécurité ne doit
-
-            <em>
-                jamais
-            </em>
-
-            être une option.
-
-        </h1>
-
-    </div>
-
-
-    <p class="lead">
-
-        Surveillance en temps réel de vos
-        véhicules et conteneurs,
-        partout, 24h/24.
-
-    </p>
-
-
-    <div class="btns">
-
-        <a
-            href="#services"
-            class="btn btn-p mag"
-        >
-            Découvrir nos services
         </a>
 
 
-        <a
-            href="#contact"
-            class="btn btn-o mag"
-        >
-            Nous contacter
-        </a>
+        <nav class="nav">
 
+            <a href="#histoire">
+                Histoire
+            </a>
 
-        <button
-            id="pauseBtn"
-            aria-label="Pause"
-        >
-            ❚❚
-        </button>
+            <a href="#groupe">
+                Notre groupe
+            </a>
 
-    </div>
+            <a href="#services">
+                Services
+            </a>
 
+            <a href="#contact">
+                Contact
+            </a>
 
-    <div class="scroll-hint">
+        </nav>
 
-        <span></span>
+    </header>
 
-        SCROLL
 
-    </div>
+    <main>
 
-</section>
 
+        <!-- =================================================
+             HERO
+        ================================================== -->
 
-<!-- =======================================================
-     MARQUEE
-======================================================= -->
+        <section id="accueil" class="hero">
 
-<div class="marquee">
+            <div class="hero-content">
 
-    <div id="mq">
+                <span class="hero-label">
+                    TRANSPORT CONNECTÉ • GPS • SÉCURITÉ
+                </span>
 
-        <i>Géolocalisation</i>
 
-        <i>Sécurisation 24/7</i>
+                <h1>
+                    Sécuriser votre
+                    <span>transport</span>
+                </h1>
 
-        <i>IoT</i>
-
-        <i>Télésurveillance</i>
-
-        <i>Supply chain</i>
-
-        <i>RGPD</i>
-
-        <i>Hébergement France</i>
-
-        <i>Conteneurs</i>
-
-    </div>
-
-</div>
-
-
-<!-- =======================================================
-     HISTOIRE
-======================================================= -->
-
-<section
-    class="container reveal"
-    id="histoire"
->
-
-    <div class="intro-card">
-
-        <p>
-
-            Depuis plus de
-
-            <strong>
-                15 ans
-            </strong>
-
-            , SRTech dispose d’une large gamme
-            d’
-
-            <strong>
-                équipements sécuritaires
-            </strong>
-
-            répondant ainsi aux cahiers des
-            charges les plus poussés.
-
-        </p>
-
-
-        <p>
-
-            Son service R&D associé aux
-            nouvelles technologies, lui permet
-            d’être leader de sa profession.
-
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     STATS
-======================================================= -->
-
-<div class="stats reveal">
-
-    <div class="stat">
-
-        <b
-            data-count="15"
-            data-suf="+"
-        >
-            0
-        </b>
-
-        <span>
-            années d'expertise
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <b
-            data-count="2500"
-            data-suf="+"
-        >
-            0
-        </b>
-
-        <span>
-            camions équipés
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <b
-            data-count="24"
-            data-suf="/7"
-        >
-            0
-        </b>
-
-        <span>
-            surveillance
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <b
-            data-count="100"
-            data-suf="%"
-        >
-            0
-        </b>
-
-        <span>
-            données hébergées en France
-        </span>
-
-    </div>
-
-</div>
-
-
-<!-- =======================================================
-     SUPPLY CHAIN
-======================================================= -->
-
-<section class="container reveal">
-
-    <h2 class="section-title">
-
-        Sécuriser votre supply chain
-
-    </h2>
-
-
-    <div class="grid-2">
-
-
-        <!-- Sécurisation -->
-
-        <div
-            class="tilt"
-            style="--i:0"
-        >
-
-            <div class="card-img">
-
-                <img
-                    src="images/truck.jpg"
-                    alt="Sécurisation transport routier"
-                >
-
-            </div>
-
-
-            <div class="card-body">
-
-                <h3>
-                    Sécurisation
-                </h3>
 
                 <p>
-
-                    Nous offrons un suivi continu
-                    pour protéger vos flux logistiques
-                    et véhicules routiers contre le vol
-                    et les intrusions.
-
+                    Géolocalisez vos véhicules, sécurisez vos marchandises
+                    et gardez le contrôle de vos opérations en temps réel.
                 </p>
 
-            </div>
 
-        </div>
+                <div class="hero-buttons">
 
-
-        <!-- Géolocalisation -->
-
-        <div
-            class="tilt"
-            style="--i:1"
-        >
-
-            <div class="card-img">
-
-                <img
-                    src="images/containers.jpg"
-                    alt="Géolocalisation conteneurs"
-                >
-
-            </div>
+                    <a
+                        href="#services"
+                        class="btn btn-primary"
+                    >
+                        Découvrir nos services
+                    </a>
 
 
-            <div class="card-body">
+                    <a
+                        href="#contact"
+                        class="btn btn-secondary"
+                    >
+                        Nous contacter
+                    </a>
 
-                <h3>
-                    Géolocalisation
-                </h3>
-
-                <p>
-
-                    En suivant en direct les conteneurs
-                    et marchandises à chaque étape
-                    du trajet maritime ou terrestre.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     SERVICES
-======================================================= -->
-
-<section
-    class="container services-section reveal"
-    id="services"
->
-
-    <h2 class="section-title">
-
-        Nos Services
-
-    </h2>
-
-
-    <!-- SERVICES PRINCIPAUX -->
-
-    <div class="grid-2">
-
-
-        <!-- SERVICE 1 -->
-
-        <div
-            class="tilt service-card"
-            style="--i:0"
-        >
-
-            <div class="service-img">
-
-                <img
-                    src="images/security.jpg"
-                    alt="Sécurisation et surveillance des véhicules"
-                >
+                </div>
 
             </div>
 
 
-            <div class="service-content">
+            <!-- GPS -->
 
-                <div class="service-icon">
-                    🛡️
+            <div class="gps-card">
+
+                <div class="gps-top">
+
+                    <span class="gps-status"></span>
+
+                    <span>
+                        Suivi GPS en direct
+                    </span>
+
                 </div>
 
 
-                <h3>
-                    Sécurisation 24H/24
-                </h3>
+                <div class="gps-map">
+
+                    <div class="route route-1"></div>
+
+                    <div class="route route-2"></div>
+
+                    <div class="gps-point point-1"></div>
+
+                    <div class="gps-point point-2"></div>
+
+                    <div class="gps-point point-3"></div>
+
+                    <div class="truck-marker">
+                        🚚
+                    </div>
+
+                </div>
 
 
-                <p>
+                <div class="gps-bottom">
 
                     <strong>
-                        Surveillance humaine en temps réel :
+                        Camion SR-247
                     </strong>
 
-                    nos partenaires de télésurveillance
-                    traitent directement les alertes
-                    d'ouverture de porte, intrusion
-                    ou déviation.
+                    <span>
+                        En mouvement • France
+                    </span>
 
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- SERVICE 2 -->
-
-        <div
-            class="tilt service-card"
-            style="--i:1"
-        >
-
-            <div class="service-img">
-
-                <img
-                    src="images/containers.jpg"
-                    alt="Géolocalisation des véhicules et conteneurs"
-                >
-
-            </div>
-
-
-            <div class="service-content">
-
-                <div class="service-icon">
-                    📍
                 </div>
 
+            </div>
 
-                <h3>
-                    Géolocalisation en temps réel
-                </h3>
+        </section>
 
+
+        <!-- =================================================
+             EXPERTISE
+        ================================================== -->
+
+        <section class="intro-section">
+
+            <div class="section-heading">
+
+                <span>
+                    NOTRE EXPERTISE
+                </span>
+
+                <h2>
+                    Une technologie pensée
+                    pour le <strong>transport</strong>
+                </h2>
 
                 <p>
-
-                    <strong>
-                        Suivi de flotte complet :
-                    </strong>
-
-                    visualisez la position de vos
-                    véhicules et conteneurs grâce
-                    à une plateforme web et mobile.
-
+                    S.R.TRACK accompagne les transporteurs et gestionnaires
+                    de flotte avec des solutions de géolocalisation,
+                    de sécurisation et de suivi adaptées aux réalités
+                    du terrain.
                 </p>
 
             </div>
 
-        </div>
+
+            <div class="expertise-grid">
 
 
-    </div>
+                <!-- 01 -->
+
+                <article class="expertise-card">
+
+                    <div class="card-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d8?auto=format&fit=crop&w=900&q=85"
+                            alt="Camion de transport"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            01
+                        </span>
+
+                        <h3>
+                            Sécurisation
+                        </h3>
+
+                        <p>
+                            Protégez vos véhicules et vos marchandises
+                            grâce à une surveillance continue et des
+                            alertes en temps réel.
+                        </p>
+
+                    </div>
+
+                </article>
 
 
-    <!-- AUTRES SERVICES -->
+                <!-- 02 -->
 
-    <div
-        class="grid-3"
-        style="margin-top:28px"
-    >
+                <article class="expertise-card">
+
+                    <div class="card-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=900&q=85"
+                            alt="Transport maritime de marchandises"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            02
+                        </span>
+
+                        <h3>
+                            Géolocalisation
+                        </h3>
+
+                        <p>
+                            Suivez vos véhicules et vos marchandises
+                            avec une localisation précise et actualisée.
+                        </p>
+
+                    </div>
+
+                </article>
 
 
-        <!-- SERVICE 3 -->
+                <!-- 03 -->
 
-        <div
-            class="tilt service-card"
-            style="--i:2"
-        >
+                <article class="expertise-card">
 
-            <div class="service-img">
+                    <div class="card-image">
 
-                <img
-                    src="images/truck.jpg"
-                    alt="Surveillance des véhicules"
-                >
+                        <img
+                            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=85"
+                            alt="Gestion logistique"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            03
+                        </span>
+
+                        <h3>
+                            Réactivité terrain
+                        </h3>
+
+                        <p>
+                            Une intervention rapide pour limiter les
+                            interruptions et maintenir vos opérations.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 04 -->
+
+                <article class="expertise-card">
+
+                    <div class="card-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=85"
+                            alt="Technologies connectées"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            04
+                        </span>
+
+                        <h3>
+                            Technologie éprouvée
+                        </h3>
+
+                        <p>
+                            Des solutions connectées conçues pour
+                            fonctionner dans des environnements
+                            professionnels exigeants.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 05 -->
+
+                <article class="expertise-card">
+
+                    <div class="card-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=900&q=85"
+                            alt="Camion sur la route"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            05
+                        </span>
+
+                        <h3>
+                            Adaptabilité
+                        </h3>
+
+                        <p>
+                            Une solution adaptable aux besoins des
+                            transporteurs, logisticiens et gestionnaires
+                            de flotte.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 06 -->
+
+                <article class="expertise-card">
+
+                    <div class="card-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85"
+                            alt="Service client"
+                        >
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-number">
+                            06
+                        </span>
+
+                        <h3>
+                            Service client dédié
+                        </h3>
+
+                        <p>
+                            Une équipe disponible pour vous accompagner
+                            dans le suivi quotidien de vos opérations.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MISSION
+        ================================================== -->
+
+        <section id="histoire" class="mission-section">
+
+            <div class="section-heading left">
+
+                <span>
+                    NOTRE MISSION
+                </span>
+
+                <h2>
+                    Connecter le terrain
+                    au <strong>logiciel</strong>
+                </h2>
+
+                <p>
+                    Notre objectif est de rendre les opérations de transport
+                    plus visibles, plus sécurisées et plus réactives.
+                </p>
 
             </div>
 
 
-            <div class="service-content">
+            <div class="mission-grid">
 
-                <div class="service-icon">
-                    👁️
+
+                <article class="mission-card">
+
+                    <div class="mission-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=1000&q=85"
+                            alt="Transport de marchandises"
+                        >
+
+                    </div>
+
+                    <div class="mission-text">
+
+                        <span>
+                            01
+                        </span>
+
+                        <p>
+                            Offrir une
+                            <strong>
+                                surveillance en temps réel
+                            </strong>
+                            des véhicules et conteneurs.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="mission-card">
+
+                    <div class="mission-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=1000&q=85"
+                            alt="Suivi GPS camion"
+                        >
+
+                    </div>
+
+                    <div class="mission-text">
+
+                        <span>
+                            02
+                        </span>
+
+                        <p>
+                            Réduire les
+                            <strong>
+                                délais d’intervention
+                            </strong>
+                            en cas d’alerte.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="mission-card">
+
+                    <div class="mission-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85"
+                            alt="Équipe informatique"
+                        >
+
+                    </div>
+
+                    <div class="mission-text">
+
+                        <span>
+                            03
+                        </span>
+
+                        <p>
+                            Garantir la
+                            <strong>
+                                traçabilité
+                            </strong>
+                            à chaque étape du transport.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GROUPE
+        ================================================== -->
+
+        <section id="groupe" class="group-section">
+
+            <div class="group-content">
+
+                <span>
+                    NOTRE GROUPE
+                </span>
+
+                <h2>
+                    Une vision tournée
+                    vers le <strong>transport connecté</strong>
+                </h2>
+
+                <p>
+                    Nous développons des solutions permettant de connecter
+                    les véhicules, les équipes terrain et les systèmes
+                    informatiques au sein d'un même environnement.
+                </p>
+
+
+                <div class="stats">
+
+                    <div>
+
+                        <strong>
+                            24/7
+                        </strong>
+
+                        <span>
+                            Surveillance
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            GPS
+                        </strong>
+
+                        <span>
+                            Localisation
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            100%
+                        </strong>
+
+                        <span>
+                            Connecté
+                        </span>
+
+                    </div>
+
                 </div>
 
-
-                <h3>
-                    Surveillance 24/7
-                </h3>
-
-
-                <p>
-
-                    Traitement direct des alertes
-                    véhicule et conteneur par des
-                    opérateurs qualifiés.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- SERVICE 4 -->
-
-        <div
-            class="tilt service-card"
-            style="--i:3"
-        >
-
-            <div class="service-img">
-
-                <img
-                    src="images/security.jpg"
-                    alt="Accompagnement et gestion de flotte"
-                >
-
             </div>
 
 
-            <div class="service-content">
+            <div class="group-visual">
 
-                <div class="service-icon">
-                    ⚙️
+                <div class="radar">
+
+                    <div class="radar-circle circle-1"></div>
+
+                    <div class="radar-circle circle-2"></div>
+
+                    <div class="radar-circle circle-3"></div>
+
+                    <div class="radar-line"></div>
+
+                    <div class="radar-point p1"></div>
+
+                    <div class="radar-point p2"></div>
+
+                    <div class="radar-point p3"></div>
+
+                    <div class="radar-truck">
+                        🚚
+                    </div>
+
                 </div>
 
+            </div>
 
-                <h3>
-                    Accompagnement sur mesure
-                </h3>
+        </section>
 
+
+        <!-- =================================================
+             SERVICES
+        ================================================== -->
+
+        <section id="services" class="services-section">
+
+            <div class="section-heading">
+
+                <span>
+                    NOS SERVICES
+                </span>
+
+                <h2>
+                    Des solutions pour
+                    <strong>chaque étape</strong>
+                </h2>
+
+            </div>
+
+
+            <div class="services-grid">
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&w=900&q=85"
+                        alt="Installation GPS"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Installation GPS
+                        </h3>
+
+                        <p>
+                            Installation et mise en service de solutions
+                            de géolocalisation pour vos véhicules.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=85"
+                        alt="Plateforme informatique"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Plateforme de suivi
+                        </h3>
+
+                        <p>
+                            Centralisez les informations de votre flotte
+                            dans une interface claire et accessible.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=900&q=85"
+                        alt="Cybersécurité"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Cybersécurité
+                        </h3>
+
+                        <p>
+                            Renforcez la protection de vos données et de
+                            vos infrastructures connectées.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1586528116493-da8c3f0b5b0d?auto=format&fit=crop&w=900&q=85"
+                        alt="Gestion de flotte"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Gestion de flotte
+                        </h3>
+
+                        <p>
+                            Visualisez vos véhicules et optimisez
+                            l'organisation de vos opérations.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=900&q=85"
+                        alt="Transport"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Suivi transport
+                        </h3>
+
+                        <p>
+                            Suivez les déplacements et l'état de vos
+                            opérations en temps réel.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85"
+                        alt="Support client"
+                    >
+
+                    <div>
+
+                        <h3>
+                            Support
+                        </h3>
+
+                        <p>
+                            Une assistance pour vous accompagner dans
+                            l'utilisation de votre solution.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTACT
+        ================================================== -->
+
+        <section id="contact" class="contact-section">
+
+            <div>
+
+                <span>
+                    CONTACT
+                </span>
+
+                <h2>
+                    Parlons de votre
+                    <strong>flotte</strong>
+                </h2>
 
                 <p>
-
-                    Personnalisation des paramètres,
-                    seuils d'alerte, zones de sécurité
-                    et tableaux de bord.
-
+                    Vous souhaitez sécuriser vos véhicules ou améliorer
+                    le suivi de vos opérations ?
                 </p>
 
             </div>
 
-        </div>
 
+            <a
+                href="mailto:contact@srtrack.fr"
+                class="btn btn-primary"
+            >
+                Nous contacter
+            </a>
 
-        <!-- SERVICE 5 -->
+        </section>
 
-        <div
-            class="tilt service-card"
-            style="--i:4"
-        >
 
-            <div class="service-img">
+    </main>
 
-                <img
-                    src="images/containers.jpg"
-                    alt="Infrastructure et données sécurisées"
-                >
 
-            </div>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
 
+    <footer>
 
-            <div class="service-content">
+        <div class="footer-logo">
 
-                <div class="service-icon">
-                    🇫🇷
-                </div>
-
-
-                <h3>
-                    Infrastructure française
-                </h3>
-
-
-                <p>
-
-                    Hébergement des données en France
-                    dans le respect du RGPD et des
-                    exigences de cybersécurité.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     MISSION
-======================================================= -->
-
-<section class="container reveal">
-
-    <h2 class="section-title">
-        Notre mission
-    </h2>
-
-
-    <div class="grid-3">
-
-
-        <div
-            class="tilt"
-            style="--i:0"
-        >
-
-            <div class="card-img">
-
-                <img
-                    src="images/truck.jpg"
-                    alt="Camion"
-                >
-
-            </div>
-
-
-            <div class="card-body">
-
-                <h3>
-                    Offrir une surveillance
-                    en temps réel
-                </h3>
-
-                <p>
-                    Suivi permanent des véhicules
-                    et conteneurs.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="tilt"
-            style="--i:1"
-        >
-
-            <div class="card-img">
-
-                <img
-                    src="images/security.jpg"
-                    alt="Centre de contrôle"
-                >
-
-            </div>
-
-
-            <div class="card-body">
-
-                <h3>
-                    Réduire les délais
-                </h3>
-
-                <p>
-                    Intervention immédiate en cas
-                    d'alerte détectée.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="tilt"
-            style="--i:2"
-        >
-
-            <div class="card-img">
-
-                <img
-                    src="images/containers.jpg"
-                    alt="Traçabilité"
-                >
-
-            </div>
-
-
-            <div class="card-body">
-
-                <h3>
-                    Garantir la conformité
-                </h3>
-
-                <p>
-                    Traçabilité complète à chaque
-                    étape du transport.
-                </p>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     DIFFERENCE
-======================================================= -->
-
-<section class="container reveal">
-
-    <h2 class="section-title">
-
-        Ce qui nous distingue
-
-    </h2>
-
-
-    <div class="grid-4">
-
-
-        <div
-            class="tilt sc"
-            style="--i:0"
-        >
-
-            <div class="ico">
-                🚚
-            </div>
-
-            <h3>
-                Réactivité terrain
-            </h3>
-
-            <p>
-                Interventions rapides partout
-                en France pour assurer la
-                continuité opérationnelle.
-            </p>
-
-        </div>
-
-
-        <div
-            class="tilt sc"
-            style="--i:1"
-        >
-
-            <div class="ico">
-                ⚙️
-            </div>
-
-            <h3>
-                Technologie éprouvée
-            </h3>
-
-            <p>
-                Validée sur le terrain avec
-                plus de 2 500 camions équipés
-                en activité.
-            </p>
-
-        </div>
-
-
-        <div
-            class="tilt sc"
-            style="--i:2"
-        >
-
-            <div class="ico">
-                🔧
-            </div>
-
-            <h3>
-                Adaptabilité
-            </h3>
-
-            <p>
-                Solutions configurées spécifiquement
-                pour transporteurs et logisticiens.
-            </p>
-
-        </div>
-
-
-        <div
-            class="tilt sc"
-            style="--i:3"
-        >
-
-            <div class="ico">
-                🎧
-            </div>
-
-            <h3>
-                Service client dédié
-            </h3>
-
-            <p>
-                Équipe support réactive et
-                joignable directement.
-            </p>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     GROUPE
-======================================================= -->
-
-<section
-    class="container reveal"
-    id="groupe"
->
-
-    <h2 class="section-title">
-        Notre groupe
-    </h2>
-
-
-    <p class="group-lead">
-
-        Ensemble, nous maîtrisons vos projets
-        de A à Z, en proposant des solutions
-        connectées sur mesure, de la conception
-        à la mise en service.
-
-    </p>
-
-
-    <div class="sub-brand">
-
-        <h3>
-            S.R.Track — Logiciel et réseau
-        </h3>
-
-        <p>
-            Systèmes d’exploitation cloud,
-            fabrication d’objets IoT, logiciels
-            métiers et interfaces.
-        </p>
-
-    </div>
-
-
-    <div class="sub-brand">
-
-        <h3>
-            S.R.+ — Matériel et objets connectés
-        </h3>
-
-        <p>
-            Cloud, logiciels et SAV.
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     CONTACT
-======================================================= -->
-
-<section
-    class="contact-container reveal"
-    id="contact"
->
-
-
-    <div class="contact-info">
-
-        <h2>
-            Contactez-nous.
-        </h2>
-
-        <p>
-            Vous avez une question, un projet
-            ou besoin d'assistance ?
-        </p>
-
-        <p style="margin-top:10px">
-
-            Notre équipe est à votre écoute.
-
-        </p>
-
-    </div>
-
-
-    <form
-        id="form"
-        action="#"
-        method="post"
-    >
-
-        <div class="form-row">
-
-
-            <div class="form-group">
-
-                <label for="fname">
-                    Prénom
-                </label>
-
-                <input
-                    type="text"
-                    id="fname"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="lname">
-                    Nom de famille
-                </label>
-
-                <input
-                    type="text"
-                    id="lname"
-                    required
-                >
-
-            </div>
-
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="email">
-                E-mail
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                required
+            <img
+                src="https://via.placeholder.com/160x80/ffffff/087f4e?text=S.R.Track"
+                alt="S.R.Track"
             >
 
         </div>
 
 
-        <button
-            type="submit"
-            class="btn btn-p mag"
-        >
-            Envoyer
-        </button>
+        <p>
+            © 2026 S.R.TRACK — Transport connecté & sécurisé
+        </p>
 
 
-        <div id="ok">
+        <div>
 
-            ✔ Merci ! Nous revenons vers vous rapidement.
+            <a href="#accueil">
+                Accueil
+            </a>
+
+            <a href="#services">
+                Services
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
 
         </div>
 
-    </form>
+    </footer>
 
-</section>
 
+    <!-- =====================================================
+         JAVASCRIPT
+         ANIMATION TRANSPORT / GPS
+    ====================================================== -->
 
-</main>
+    <script>
 
+        (() => {
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
+            "use strict";
 
-<footer>
 
-
-    <div>
-
-        <h4>
-            Navigation
-        </h4>
-
-        <ul>
-
-            <li>
-                <a href="#">
-                    Accueil
-                </a>
-            </li>
-
-            <li>
-                <a href="#histoire">
-                    Histoire
-                </a>
-            </li>
-
-            <li>
-                <a href="#services">
-                    Services
-                </a>
-            </li>
-
-            <li>
-                <a href="#contact">
-                    Contact
-                </a>
-            </li>
-
-        </ul>
-
-    </div>
-
-
-    <div>
-
-        <h4>
-            Légales
-        </h4>
-
-        <ul>
-
-            <li>
-                <a href="#">
-                    Mentions légales
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    Politique de confidentialité
-                </a>
-            </li>
-
-        </ul>
-
-    </div>
-
-
-    <div>
-
-        <h4>
-            Contact
-        </h4>
-
-        <p>
-            <strong>
-                S.R.Tech
-            </strong>
-        </p>
-
-        <p>
-            39 Rue de l’aviation,
-            94310 Orly
-        </p>
-
-        <p>
-            01 46 86 48 81
-        </p>
-
-    </div>
-
-
-</footer>
-
-
-<!-- =======================================================
-     JAVASCRIPT — UI
-======================================================= -->
-
-<script>
-
-(() => {
-
-"use strict";
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const $ =
-    selector =>
-    document.querySelector(selector);
-
-const $$ =
-    selector =>
-    [...document.querySelectorAll(selector)];
-
-const touch =
-    matchMedia("(hover:none)").matches;
-
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-addEventListener(
-    "load",
-    () => {
-
-        setTimeout(
-            () =>
-            $("#loader")
-            .classList
-            .add("off"),
-
-            500
-        );
-
-    }
-);
-
-
-setTimeout(
-    () =>
-    $("#loader")
-    .classList
-    .add("off"),
-
-    3500
-);
-
-
-/* =========================================================
-   MARQUEE
-========================================================= */
-
-$("#mq").innerHTML +=
-    $("#mq").innerHTML;
-
-$$(
-    "#mq i"
-).forEach(
-    i =>
-    i.style.fontStyle =
-    "normal"
-);
-
-
-/* =========================================================
-   HERO TITLES
-========================================================= */
-
-const titles =
-    $$(".hero-title");
-
-
-titles.forEach(title => {
-
-    let index = 0;
-
-
-    const walk = node => {
-
-        [
-            ...node.childNodes
-        ].forEach(child => {
-
-            if(child.nodeType === 3){
-
-                const fragment =
-                    document
-                    .createDocumentFragment();
-
-
-                child.textContent
-                    .split(/(\s+)/)
-                    .forEach(part => {
-
-                        if(!part.trim()){
-
-                            fragment.append(part);
-
-                            return;
-                        }
-
-
-                        const word =
-                            document
-                            .createElement("span");
-
-
-                        word.className =
-                            "w";
-
-
-                        word.innerHTML =
-                            `<span style="--d:${index++ * .07}s">${part}</span>`;
-
-
-                        fragment.append(word);
-
-                    });
-
-
-                child.replaceWith(fragment);
-
-            }
-
-            else{
-
-                walk(child);
-
-            }
-
-        });
-
-    };
-
-
-    walk(title);
-
-});
-
-
-let current = 0;
-
-let playing = true;
-
-let timer;
-
-
-const next = () => {
-
-    titles[current]
-        .classList
-        .remove("active");
-
-
-    current =
-        (current + 1)
-        % titles.length;
-
-
-    titles[current]
-        .classList
-        .add("active");
-
-};
-
-
-const start = () => {
-
-    clearInterval(timer);
-
-    timer =
-        setInterval(
-            next,
-            5000
-        );
-
-};
-
-
-$("#pauseBtn").onclick =
-    event => {
-
-        if(playing){
-
-            clearInterval(timer);
-
-        }
-
-        else{
-
-            start();
-
-        }
-
-
-        event.target.textContent =
-            playing
-            ? "▶"
-            : "❚❚";
-
-
-        playing =
-            !playing;
-
-    };
-
-
-start();
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
-
-const observer =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if(
-                    entry.isIntersecting
-                ){
-
-                    entry.target
-                        .classList
-                        .add("visible");
-
-
-                    entry.target
-                        .querySelectorAll(
-                            "[data-count]"
-                        )
-                        .forEach(count);
-
-
-                    observer
-                        .unobserve(
-                            entry.target
-                        );
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold:.15
-        }
-
-    );
-
-
-$$(".reveal")
-    .forEach(
-        element =>
-        observer.observe(element)
-    );
-
-
-/* =========================================================
-   COUNTERS
-========================================================= */
-
-function count(element){
-
-    const target =
-        +element.dataset.count;
-
-    const suffix =
-        element.dataset.suf || "";
-
-    const startTime =
-        performance.now();
-
-    const duration =
-        1800;
-
-
-    function animate(time){
-
-        const progress =
-            Math.min(
-                (time - startTime)
-                / duration,
-                1
-            );
-
-
-        const easing =
-            1 -
-            Math.pow(
-                1 - progress,
-                4
-            );
-
-
-        element.textContent =
-            Math.round(
-                target * easing
-            ).toLocaleString("fr-FR")
-            +
-            suffix;
-
-
-        if(progress < 1){
-
-            requestAnimationFrame(
-                animate
-            );
-
-        }
-
-    }
-
-
-    requestAnimationFrame(
-        animate
-    );
-
-}
-
-
-/* =========================================================
-   3D CARD TILT
-========================================================= */
-
-$$(".tilt").forEach(card => {
-
-    card.addEventListener(
-        "mousemove",
-        event => {
-
-            const rect =
-                card.getBoundingClientRect();
-
-
-            const x =
-                (event.clientX - rect.left)
-                / rect.width;
-
-
-            const y =
-                (event.clientY - rect.top)
-                / rect.height;
-
-
-            card.style.setProperty(
-                "--ry",
-                ((x - .5) * 10) + "deg"
-            );
-
-
-            card.style.setProperty(
-                "--rx",
-                ((.5 - y) * 10) + "deg"
-            );
-
-
-            card.style.setProperty(
-                "--mx",
-                (x * 100) + "%"
-            );
-
-
-            card.style.setProperty(
-                "--my",
-                (y * 100) + "%"
-            );
-
-        }
-    );
-
-
-    card.addEventListener(
-        "mouseleave",
-        () => {
-
-            card.style.setProperty(
-                "--rx",
-                "0deg"
-            );
-
-            card.style.setProperty(
-                "--ry",
-                "0deg"
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   MAGNETIC BUTTONS
-========================================================= */
-
-if(!touch){
-
-    $$(".mag").forEach(button => {
-
-        button.addEventListener(
-            "mousemove",
-            event => {
-
-                const rect =
-                    button.getBoundingClientRect();
-
-
-                const x =
-                    event.clientX
-                    - rect.left
-                    - rect.width / 2;
-
-
-                const y =
-                    event.clientY
-                    - rect.top
-                    - rect.height / 2;
-
-
-                button.style.transform =
-                    `translate(${x*.18}px,${y*.25}px)`;
-
-            }
-        );
-
-
-        button.addEventListener(
-            "mouseleave",
-            () => {
-
-                button.style.transform = "";
-
-            }
-        );
-
-    });
-
-}
-
-
-/* =========================================================
-   CURSOR GLOW
-========================================================= */
-
-const glow =
-    $("#glow");
-
-
-let gx = 0;
-let gy = 0;
-
-let targetX = 0;
-let targetY = 0;
-
-
-if(!touch){
-
-    addEventListener(
-        "mousemove",
-        event => {
-
-            targetX =
-                event.clientX;
-
-            targetY =
-                event.clientY;
-
-        }
-    );
-
-
-    (
-        function animateGlow(){
-
-            gx +=
-                (targetX - gx)
-                * .1;
-
-            gy +=
-                (targetY - gy)
-                * .1;
-
-
-            glow.style.transform =
-                `translate(${gx}px,${gy}px)`;
-
-
-            requestAnimationFrame(
-                animateGlow
-            );
-
-        }
-    )();
-
-}
-
-
-/* =========================================================
-   SCROLL BAR + HEADER
-========================================================= */
-
-let lastY = 0;
-
-
-addEventListener(
-    "scroll",
-    () => {
-
-        const y =
-            scrollY;
-
-
-        const height =
-            document.documentElement
-            .scrollHeight
-            -
-            innerHeight;
-
-
-        $("#bar").style.width =
-            height > 0
-            ? (y / height * 100) + "%"
-            : "0%";
-
-
-        $("#hd")
-            .classList
-            .toggle(
-                "hide",
-                y > lastY && y > 200
-            );
-
-
-        lastY = y;
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-/* =========================================================
-   CONTACT FORM
-========================================================= */
-
-$("#form").addEventListener(
-    "submit",
-    event => {
-
-        event.preventDefault();
-
-        $("#ok").style.display =
-            "block";
-
-        event.target.reset();
-
-    }
-);
-
-
-})();
-
-</script>
-
-
-<!-- =======================================================
-     THREE.JS — GREEN NETWORK GLOBE
-======================================================= -->
-
-<script>
-
-(() => {
-
-"use strict";
-
-
-function loadThree(urls, callback){
-
-    if(window.THREE){
-
-        callback();
-
-        return;
-    }
-
-
-    if(!urls.length){
-
-        return;
-    }
-
-
-    const script =
-        document.createElement("script");
-
-
-    script.src =
-        urls.shift();
-
-
-    script.onload =
-        callback;
-
-
-    script.onerror =
-        () =>
-        loadThree(
-            urls,
-            callback
-        );
-
-
-    document.head
-        .appendChild(script);
-
-}
-
-
-loadThree(
-
-    [
-        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-        "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"
-    ],
-
-    () => {
-
-        try{
-
-            initScene();
-
-        }
-
-        catch(error){
-
-            console.warn(
-                "Animation 3D indisponible",
-                error
-            );
+            /* =================================================
+               CANVAS
+            ================================================= */
 
             const canvas =
-                document.getElementById("bg");
+                document.getElementById(
+                    "transportScene"
+                );
 
-            if(canvas){
+            if (!canvas) {
 
-                canvas.style.display =
-                    "none";
+                console.error(
+                    "Canvas transportScene introuvable."
+                );
 
+                return;
             }
 
-        }
 
-    }
-
-);
+            const ctx =
+                canvas.getContext("2d");
 
 
-function initScene(){
+            let width = 0;
+            let height = 0;
 
-    const canvas =
-        document.getElementById("bg");
-
-
-    const mobile =
-        innerWidth < 768;
+            let animationFrame;
 
 
-    const reducedMotion =
-        matchMedia(
-            "(prefers-reduced-motion:reduce)"
-        ).matches;
+            const trucks = [];
+            const gpsPoints = [];
+            const roadLines = [];
 
 
-    const renderer =
-        new THREE.WebGLRenderer({
+            /* =================================================
+               RESIZE
+            ================================================= */
 
-            canvas,
+            function resize() {
 
-            antialias:
-                !mobile,
-
-            alpha:true
-
-        });
-
-
-    renderer.setPixelRatio(
-        Math.min(
-            devicePixelRatio,
-            mobile ? 1.5 : 2
-        )
-    );
+                const ratio =
+                    Math.min(
+                        window.devicePixelRatio || 1,
+                        2
+                    );
 
 
-    const scene =
-        new THREE.Scene();
+                width =
+                    window.innerWidth;
+
+                height =
+                    window.innerHeight;
 
 
-    const camera =
-        new THREE.PerspectiveCamera(
-            50,
-            1,
-            .1,
-            100
-        );
+                canvas.width =
+                    width * ratio;
+
+                canvas.height =
+                    height * ratio;
 
 
-    camera.position.z =
-        7.5;
+                canvas.style.width =
+                    width + "px";
+
+                canvas.style.height =
+                    height + "px";
 
 
-    const globe =
-        new THREE.Group();
+                ctx.setTransform(
+                    ratio,
+                    0,
+                    0,
+                    ratio,
+                    0,
+                    0
+                );
 
 
-    scene.add(globe);
+                createObjects();
+            }
 
 
-    const radius =
-        2.2;
-
-
-    const green =
-        0x08783f;
-
-
-    const lightGreen =
-        0x0fa45b;
-
-
-/* =========================================================
-   GLOBE
-========================================================= */
-
-    const sphere =
-        new THREE.Mesh(
-
-            new THREE.SphereGeometry(
-                radius * .985,
-                48,
-                48
-            ),
-
-            new THREE.MeshBasicMaterial({
-
-                color:
-                    0xf4fbf7,
-
-                transparent:true,
-
-                opacity:.92
-
-            })
-
-        );
-
-
-    globe.add(sphere);
-
-
-/* =========================================================
-   POINTS
-========================================================= */
-
-    const number =
-        mobile
-        ? 900
-        : 1800;
-
-
-    const positions =
-        new Float32Array(
-            number * 3
-        );
-
-
-    for(
-        let i=0;
-        i<number;
-        i++
-    ){
-
-        const y =
-            1 -
-            2 *
-            (i + .5)
-            / number;
-
-
-        const r =
-            Math.sqrt(
-                1 - y * y
+            window.addEventListener(
+                "resize",
+                resize
             );
 
 
-        const angle =
-            i * 2.399963;
+            /* =================================================
+               CAMIONS
+            ================================================= */
 
+            class Truck {
 
-        positions.set(
+                constructor() {
 
-            [
-                radius *
-                r *
-                Math.cos(angle),
+                    this.reset(true);
+                }
 
-                radius * y,
 
-                radius *
-                r *
-                Math.sin(angle)
+                reset(initial = false) {
 
-            ],
+                    this.x =
+                        initial
+                            ? Math.random() * width
+                            : -100;
 
-            i * 3
 
-        );
+                    this.y =
+                        height *
+                        (
+                            0.15 +
+                            Math.random() * 0.75
+                        );
 
-    }
 
+                    this.speed =
+                        0.25 +
+                        Math.random() * 0.55;
 
-    const geometry =
-        new THREE.BufferGeometry();
 
+                    this.size =
+                        18 +
+                        Math.random() * 12;
 
-    geometry.setAttribute(
 
-        "position",
+                    this.opacity =
+                        0.06 +
+                        Math.random() * 0.12;
+                }
 
-        new THREE.BufferAttribute(
-            positions,
-            3
-        )
 
-    );
+                update() {
 
+                    this.x +=
+                        this.speed;
 
-    globe.add(
 
-        new THREE.Points(
+                    if (
+                        this.x >
+                        width + 100
+                    ) {
 
-            geometry,
+                        this.reset();
 
-            new THREE.PointsMaterial({
-
-                color:green,
-
-                size:.018,
-
-                transparent:true,
-
-                opacity:.45
-
-            })
-
-        )
-
-    );
-
-
-/* =========================================================
-   HUBS
-========================================================= */
-
-    const locations = [
-
-        [48.73,2.37],
-        [40.7,-74],
-        [35.7,139.7],
-        [-23.5,-46.6],
-        [30,31.2],
-        [1.3,103.8],
-        [51.5,0],
-        [25.2,55.3],
-        [36.7,3],
-        [-33.9,18.4]
-
-    ];
-
-
-    const convert =
-        (lat,lon,r=radius) => {
-
-            const phi =
-                (90-lat)
-                * Math.PI
-                / 180;
-
-
-            const theta =
-                (lon+180)
-                * Math.PI
-                / 180;
-
-
-            return new THREE.Vector3(
-
-                -r *
-                Math.sin(phi) *
-                Math.cos(theta),
-
-                r *
-                Math.cos(phi),
-
-                r *
-                Math.sin(phi) *
-                Math.sin(theta)
-
-            );
-
-        };
-
-
-    const points =
-        locations.map(
-            location =>
-            convert(
-                location[0],
-                location[1]
-            )
-        );
-
-
-    points.forEach(
-        (point,index) => {
-
-            const marker =
-                new THREE.Mesh(
-
-                    new THREE.SphereGeometry(
-                        index === 0
-                        ? .07
-                        : .035,
-
-                        10,
-                        10
-                    ),
-
-                    new THREE.MeshBasicMaterial({
-
-                        color:
-                            index === 0
-                            ? lightGreen
-                            : green
-
-                    })
-
-                );
-
-
-            marker.position.copy(
-                point
-            );
-
-
-            globe.add(marker);
-
-        }
-    );
-
-
-/* =========================================================
-   CONNECTIONS
-========================================================= */
-
-    const curves = [];
-
-
-    const createArc =
-        (a,b) => {
-
-            const distance =
-                a.distanceTo(b);
-
-
-            const middle =
-                a.clone()
-                .add(b)
-                .multiplyScalar(.5)
-                .normalize()
-                .multiplyScalar(
-                    radius +
-                    distance * .32
-                );
-
-
-            const curve =
-                new THREE
-                .QuadraticBezierCurve3(
-                    a,
-                    middle,
-                    b
-                );
-
-
-            curves.push(curve);
-
-
-            const line =
-                new THREE.Line(
-
-                    new THREE
-                    .BufferGeometry()
-                    .setFromPoints(
-                        curve.getPoints(50)
-                    ),
-
-                    new THREE.LineBasicMaterial({
-
-                        color:green,
-
-                        transparent:true,
-
-                        opacity:.15
-
-                    })
-
-                );
-
-
-            globe.add(line);
-
-        };
-
-
-    for(
-        let i=1;
-        i<points.length;
-        i++
-    ){
-
-        createArc(
-            points[0],
-            points[i]
-        );
-
-    }
-
-
-/* =========================================================
-   MOVING PACKETS
-========================================================= */
-
-    const packets =
-        curves.map(curve => {
-
-            const packet =
-                new THREE.Mesh(
-
-                    new THREE.SphereGeometry(
-                        .035,
-                        8,
-                        8
-                    ),
-
-                    new THREE.MeshBasicMaterial({
-
-                        color:
-                            lightGreen
-
-                    })
-
-                );
-
-
-            globe.add(packet);
-
-
-            return {
-
-                mesh:packet,
-
-                curve:curve,
-
-                progress:
-                    Math.random(),
-
-                speed:
-                    .002 +
-                    Math.random() * .002
-
-            };
-
-        });
-
-
-/* =========================================================
-   MOUSE + SCROLL
-========================================================= */
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    let scrollProgress = 0;
-
-
-    addEventListener(
-        "mousemove",
-        event => {
-
-            mouseX =
-                event.clientX
-                / innerWidth
-                -.5;
-
-
-            mouseY =
-                event.clientY
-                / innerHeight
-                -.5;
-
-        }
-    );
-
-
-    addEventListener(
-        "scroll",
-        () => {
-
-            scrollProgress =
-                scrollY /
-                Math.max(
-                    1,
-                    document.documentElement
-                    .scrollHeight
-                    -
-                    innerHeight
-                );
-
-        },
-        {
-            passive:true
-        }
-    );
-
-
-/* =========================================================
-   RESIZE
-========================================================= */
-
-    const resize =
-        () => {
-
-            renderer.setSize(
-                innerWidth,
-                innerHeight,
-                false
-            );
-
-
-            camera.aspect =
-                innerWidth /
-                innerHeight;
-
-
-            camera.updateProjectionMatrix();
-
-        };
-
-
-    addEventListener(
-        "resize",
-        resize
-    );
-
-
-    resize();
-
-
-/* =========================================================
-   ANIMATION
-========================================================= */
-
-    const clock =
-        new THREE.Clock();
-
-
-    function animate(){
-
-        requestAnimationFrame(
-            animate
-        );
-
-
-        const time =
-            clock.getElapsedTime();
-
-
-        const motion =
-            reducedMotion
-            ? 0
-            : 1;
-
-
-        globe.rotation.y =
-            time *
-            .08 *
-            motion;
-
-
-        globe.rotation.x =
-            .18;
-
-
-        globe.position.x =
-            Math.sin(
-                scrollProgress *
-                Math.PI *
-                2
-            )
-            * 2.4;
-
-
-        globe.position.y =
-            Math.cos(
-                scrollProgress *
-                Math.PI *
-                2
-            )
-            * .6;
-
-
-        globe.scale.setScalar(
-
-            mobile
-            ? .65
-            : 1
-
-        );
-
-
-        camera.position.x +=
-            (
-                mouseX * .6
-                -
-                camera.position.x
-            )
-            * .03;
-
-
-        camera.position.y +=
-            (
-                -mouseY * .4
-                -
-                camera.position.y
-            )
-            * .03;
-
-
-        camera.lookAt(
-            0,
-            0,
-            0
-        );
-
-
-        packets.forEach(
-            packet => {
-
-                packet.progress +=
-                    packet.speed *
-                    motion;
-
-
-                if(
-                    packet.progress > 1
-                ){
-
-                    packet.progress = 0;
+                    }
 
                 }
 
 
-                packet.mesh.position.copy(
+                draw() {
 
-                    packet.curve.getPoint(
-                        packet.progress
-                    )
+                    ctx.save();
 
-                );
+
+                    ctx.globalAlpha =
+                        this.opacity;
+
+
+                    ctx.translate(
+                        this.x,
+                        this.y
+                    );
+
+
+                    /* Camion */
+
+                    ctx.fillStyle =
+                        "#087f4e";
+
+
+                    ctx.beginPath();
+
+
+                    ctx.roundRect(
+                        -this.size,
+                        -this.size * 0.45,
+                        this.size * 1.4,
+                        this.size * 0.65,
+                        4
+                    );
+
+
+                    ctx.fill();
+
+
+                    /* Cabine */
+
+                    ctx.beginPath();
+
+
+                    ctx.roundRect(
+                        this.size * 0.4,
+                        -this.size * 0.45,
+                        this.size * 0.6,
+                        this.size * 0.65,
+                        4
+                    );
+
+
+                    ctx.fill();
+
+
+                    /* Vitre */
+
+                    ctx.fillStyle =
+                        "rgba(255,255,255,0.8)";
+
+
+                    ctx.fillRect(
+                        this.size * 0.52,
+                        -this.size * 0.32,
+                        this.size * 0.32,
+                        this.size * 0.22
+                    );
+
+
+                    /* Roue */
+
+                    ctx.fillStyle =
+                        "#10231b";
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        -this.size * 0.5,
+                        this.size * 0.25,
+                        this.size * 0.18,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fill();
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        this.size * 0.7,
+                        this.size * 0.25,
+                        this.size * 0.18,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fill();
+
+
+                    ctx.restore();
+
+                }
 
             }
-        );
 
 
-        renderer.render(
-            scene,
-            camera
-        );
+            /* =================================================
+               GPS POINT
+            ================================================= */
 
-    }
+            class GPSPoint {
+
+                constructor() {
+
+                    this.x =
+                        Math.random() * width;
+
+                    this.y =
+                        Math.random() * height;
+
+                    this.radius =
+                        3 +
+                        Math.random() * 3;
+
+                    this.pulse =
+                        Math.random() *
+                        Math.PI *
+                        2;
+                }
 
 
-    animate();
+                update() {
 
-}
+                    this.pulse +=
+                        0.025;
+                }
 
-})();
 
-</script>
+                draw() {
 
+                    const pulse =
+                        Math.sin(
+                            this.pulse
+                        ) * 4 + 8;
+
+
+                    ctx.save();
+
+
+                    ctx.strokeStyle =
+                        "rgba(8,127,78,0.13)";
+
+
+                    ctx.lineWidth = 1;
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        this.x,
+                        this.y,
+                        pulse,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.stroke();
+
+
+                    ctx.fillStyle =
+                        "rgba(8,127,78,0.35)";
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        this.x,
+                        this.y,
+                        this.radius,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fill();
+
+
+                    ctx.restore();
+
+                }
+
+            }
+
+
+            /* =================================================
+               ROUTES
+            ================================================= */
+
+            class RoadLine {
+
+                constructor() {
+
+                    this.x =
+                        Math.random() * width;
+
+                    this.y =
+                        Math.random() * height;
+
+                    this.length =
+                        30 +
+                        Math.random() * 80;
+
+                    this.angle =
+                        -0.15 +
+                        Math.random() * 0.3;
+                }
+
+
+                draw() {
+
+                    ctx.save();
+
+
+                    ctx.translate(
+                        this.x,
+                        this.y
+                    );
+
+
+                    ctx.rotate(
+                        this.angle
+                    );
+
+
+                    ctx.strokeStyle =
+                        "rgba(8,127,78,0.045)";
+
+
+                    ctx.lineWidth = 2;
+
+
+                    ctx.setLineDash([
+                        10,
+                        12
+                    ]);
+
+
+                    ctx.beginPath();
+
+
+                    ctx.moveTo(
+                        0,
+                        0
+                    );
+
+
+                    ctx.lineTo(
+                        this.length,
+                        0
+                    );
+
+
+                    ctx.stroke();
+
+
+                    ctx.restore();
+
+                }
+
+            }
+
+
+            /* =================================================
+               CRÉATION
+            ================================================= */
+
+            function createObjects() {
+
+                trucks.length = 0;
+                gpsPoints.length = 0;
+                roadLines.length = 0;
+
+
+                for (
+                    let i = 0;
+                    i < 7;
+                    i++
+                ) {
+
+                    trucks.push(
+                        new Truck()
+                    );
+
+                }
+
+
+                for (
+                    let i = 0;
+                    i < 18;
+                    i++
+                ) {
+
+                    gpsPoints.push(
+                        new GPSPoint()
+                    );
+
+                }
+
+
+                for (
+                    let i = 0;
+                    i < 35;
+                    i++
+                ) {
+
+                    roadLines.push(
+                        new RoadLine()
+                    );
+
+                }
+
+            }
+
+
+            /* =================================================
+               CONNEXIONS GPS
+            ================================================= */
+
+            function drawConnections() {
+
+                for (
+                    let i = 0;
+                    i < gpsPoints.length;
+                    i++
+                ) {
+
+                    for (
+                        let j = i + 1;
+                        j < gpsPoints.length;
+                        j++
+                    ) {
+
+                        const a =
+                            gpsPoints[i];
+
+                        const b =
+                            gpsPoints[j];
+
+
+                        const dx =
+                            a.x - b.x;
+
+                        const dy =
+                            a.y - b.y;
+
+
+                        const distance =
+                            Math.sqrt(
+                                dx * dx +
+                                dy * dy
+                            );
+
+
+                        if (
+                            distance < 180
+                        ) {
+
+                            const opacity =
+                                (
+                                    1 -
+                                    distance / 180
+                                ) * 0.05;
+
+
+                            ctx.strokeStyle =
+                                `rgba(8,127,78,${opacity})`;
+
+
+                            ctx.lineWidth = 1;
+
+
+                            ctx.beginPath();
+
+
+                            ctx.moveTo(
+                                a.x,
+                                a.y
+                            );
+
+
+                            ctx.lineTo(
+                                b.x,
+                                b.y
+                            );
+
+
+                            ctx.stroke();
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+            /* =================================================
+               ANIMATION
+            ================================================= */
+
+            function animate() {
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+
+                roadLines.forEach(
+                    road => road.draw()
+                );
+
+
+                gpsPoints.forEach(
+                    point => {
+
+                        point.update();
+
+                        point.draw();
+
+                    }
+                );
+
+
+                drawConnections();
+
+
+                trucks.forEach(
+                    truck => {
+
+                        truck.update();
+
+                        truck.draw();
+
+                    }
+                );
+
+
+                animationFrame =
+                    requestAnimationFrame(
+                        animate
+                    );
+
+            }
+
+
+            /* =================================================
+               DÉMARRAGE
+            ================================================= */
+
+            resize();
+
+            animate();
+
+
+            /* =================================================
+               OPTIMISATION
+            ================================================= */
+
+            document.addEventListener(
+                "visibilitychange",
+                () => {
+
+                    if (
+                        document.hidden
+                    ) {
+
+                        cancelAnimationFrame(
+                            animationFrame
+                        );
+
+                    } else {
+
+                        animate();
+
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
 
 </body>
+
 </html>
 ```
