@@ -5,1281 +5,558 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --primary: #0066ff;
-    --primary-dark: #0044cc;
-    --secondary: #7b2ff7;
-    --accent: #ff3d71;
-    --dark: #0f172a;
-    --gray: #64748b;
-    --light-gray: #f1f5f9;
-    --white: #ffffff;
-    --text: #1e293b;
-    --text-light: #475569;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: var(--text);
-    line-height: 1.6;
-    background: var(--white);
-    overflow-x: hidden;
-  }
-
-  a { text-decoration: none; color: inherit; }
-  ul { list-style: none; }
-  img { max-width: 100%; display: block; }
-
-  /* ===================== HEADER ===================== */
-  header {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    padding: 18px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 102, 255, 0.08);
-    transition: all 0.4s ease;
-  }
-
-  header.scrolled {
-    padding: 12px 5%;
-    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
-  }
-
-  .logo {
-    font-size: 1.7rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-  }
-
-  nav ul {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-  }
-
-  nav a {
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--text);
-    position: relative;
-    padding: 5px 0;
-    transition: color 0.3s;
-  }
-
-  nav a:not(.cta-btn)::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.3s ease;
-  }
-
-  nav a:not(.cta-btn):hover { color: var(--primary); }
-  nav a:not(.cta-btn):hover::before { width: 100%; }
-
-  .cta-btn {
-    padding: 11px 24px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 50px;
-    color: white !important;
-    font-weight: 600;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
-    transition: all 0.3s;
-    display: inline-block;
-  }
-
-  .cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.45);
-  }
-
-  .menu-toggle {
-    display: none;
-    font-size: 1.6rem;
-    background: none;
-    border: none;
-    color: var(--primary);
-    cursor: pointer;
-  }
-
-  /* ===================== HERO ===================== */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    align-items: center;
-    gap: 60px;
-    padding: 130px 5% 80px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
-  }
-
-  #bg-canvas {
-    position: absolute;
-    top: 0; right: 0;
-    width: 50%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 640px;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 18px;
-    background: rgba(0, 102, 255, 0.08);
-    border: 1px solid rgba(0, 102, 255, 0.2);
-    border-radius: 50px;
-    font-size: 0.85rem;
-    color: var(--primary);
-    margin-bottom: 25px;
-    font-weight: 500;
-    opacity: 0;
-    animation: fadeInUp 0.8s 0.2s forwards;
-  }
-
-  .dot {
-    width: 8px; height: 8px;
-    background: var(--primary);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.6); }
-    50% { box-shadow: 0 0 0 8px rgba(0, 102, 255, 0); }
-  }
-
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -2px;
-    color: var(--dark);
-    margin-bottom: 22px;
-    opacity: 0;
-    animation: fadeInUp 0.8s 0.4s forwards;
-  }
-
-  .gradient {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .hero p {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    margin-bottom: 35px;
-    max-width: 560px;
-    opacity: 0;
-    animation: fadeInUp 0.8s 0.6s forwards;
-  }
-
-  .hero-buttons {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeInUp 0.8s 0.8s forwards;
-  }
-
-  .btn-primary {
-    padding: 15px 32px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 50px;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s;
-    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.25);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0, 102, 255, 0.4);
-  }
-
-  .btn-secondary {
-    padding: 15px 32px;
-    background: white;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 50px;
-    font-weight: 600;
-    color: var(--text);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-    transform: translateY(-3px);
-  }
-
-  .hero-image {
-    position: relative;
-    z-index: 2;
-    opacity: 0;
-    animation: fadeInRight 1s 0.6s forwards;
-  }
-
-  .hero-image-wrapper {
-    position: relative;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.2);
-    transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
-    transition: transform 0.6s ease;
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .hero-image-wrapper:hover {
-    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
-  }
-
-  @keyframes float {
-    0%, 100% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(0); }
-    50% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(-15px); }
-  }
-
-  .hero-image-wrapper img {
-    width: 100%;
-    height: 480px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .floating-card {
-    position: absolute;
-    background: white;
-    border-radius: 16px;
-    padding: 14px 18px;
-    box-shadow: 0 15px 40px rgba(0, 102, 255, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 3;
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .floating-card.card-1 { top: 30px; left: -30px; animation-delay: 0.5s; }
-  .floating-card.card-2 { bottom: 40px; right: -30px; animation-delay: 1.2s; }
-
-  .floating-card-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.2rem;
-  }
-
-  .floating-card-text strong {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--dark);
-  }
-
-  .floating-card-text span {
-    font-size: 0.75rem;
-    color: var(--gray);
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(40px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  /* ===================== SECTIONS ===================== */
-  section {
-    padding: 100px 5%;
-    position: relative;
-  }
-
-  .section-header {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto 70px;
-  }
-
-  .section-tag {
-    display: inline-block;
-    padding: 6px 16px;
-    background: rgba(0, 102, 255, 0.08);
-    border-radius: 50px;
-    font-size: 0.8rem;
-    color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 18px;
-    font-weight: 600;
-  }
-
-  .section-header h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.7rem);
-    font-weight: 800;
-    letter-spacing: -1px;
-    color: var(--dark);
-    margin-bottom: 18px;
-    line-height: 1.2;
-  }
-
-  .section-header p {
-    color: var(--text-light);
-    font-size: 1.05rem;
-  }
-
-  /* ===================== SERVICES ===================== */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 28px;
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-
-  .service-card {
-    background: white;
-    border: 1px solid #e9eef7;
-    border-radius: 20px;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-  }
-
-  .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(0, 102, 255, 0.15);
-    border-color: rgba(0, 102, 255, 0.3);
-  }
-
-  .service-image {
-    height: 200px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .service-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-
-  .service-card:hover .service-image img {
-    transform: scale(1.1);
-  }
-
-  .service-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(0, 102, 255, 0.4));
-  }
-
-  .service-body {
-    padding: 28px;
-  }
-
-  .service-icon {
-    width: 55px; height: 55px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(123, 47, 247, 0.1));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-    margin-bottom: 18px;
-    transition: transform 0.4s;
-  }
-
-  .service-card:hover .service-icon {
-    transform: rotate(-8deg) scale(1.1);
-  }
-
-  .service-body h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--dark);
-  }
-
-  .service-body p {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    margin-bottom: 18px;
-  }
-
-  .service-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: gap 0.3s;
-  }
-
-  .service-card:hover .service-link { gap: 12px; }
-
-  /* ===================== STATS ===================== */
-  .stats {
-    background: linear-gradient(135deg, #f0f5ff 0%, #faf5ff 100%);
-    border-top: 1px solid rgba(0, 102, 255, 0.08);
-    border-bottom: 1px solid rgba(0, 102, 255, 0.08);
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .stat-item h3 {
-    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 8px;
-    letter-spacing: -2px;
-  }
-
-  .stat-item p {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 500;
-  }
-
-  /* ===================== ABOUT ===================== */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 70px;
-    align-items: center;
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-
-  .about-image {
-    position: relative;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.15);
-  }
-
-  .about-image img {
-    width: 100%;
-    height: 520px;
-    object-fit: cover;
-    transition: transform 0.8s ease;
-  }
-
-  .about-image:hover img {
-    transform: scale(1.05);
-  }
-
-  .about-badge {
-    position: absolute;
-    bottom: 25px;
-    left: 25px;
-    background: white;
-    padding: 18px 24px;
-    border-radius: 16px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    animation: float 5s ease-in-out infinite;
-  }
-
-  .about-badge-icon {
-    width: 50px; height: 50px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.4rem;
-  }
-
-  .about-badge-text strong {
-    display: block;
-    font-size: 1.1rem;
-    color: var(--dark);
-  }
-
-  .about-badge-text span {
-    font-size: 0.8rem;
-    color: var(--gray);
-  }
-
-  .about-content h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.7rem);
-    font-weight: 800;
-    margin-bottom: 22px;
-    letter-spacing: -1px;
-    color: var(--dark);
-    line-height: 1.2;
-  }
-
-  .about-content > p {
-    color: var(--text-light);
-    margin-bottom: 18px;
-    font-size: 1.02rem;
-  }
-
-  .about-features {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 32px;
-  }
-
-  .about-feature {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    padding: 18px;
-    background: #f8faff;
-    border-radius: 14px;
-    border: 1px solid #e9eef7;
-    transition: all 0.3s;
-  }
-
-  .about-feature:hover {
-    background: white;
-    border-color: var(--primary);
-    transform: translateX(8px);
-    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.1);
-  }
-
-  .about-feature-icon {
-    min-width: 46px; height: 46px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: white;
-  }
-
-  .about-feature h4 {
-    font-size: 1rem;
-    color: var(--dark);
-    margin-bottom: 3px;
-  }
-
-  .about-feature p {
-    font-size: 0.87rem;
-    color: var(--text-light);
-    margin: 0;
-  }
-
-  /* ===================== CTA / CONTACT ===================== */
-  .contact {
-    background: linear-gradient(135deg, #0066ff 0%, #7b2ff7 100%);
-    color: white;
-    border-radius: 32px;
-    margin: 0 5% 100px;
-    padding: 80px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .contact::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
-    animation: rotate 25s linear infinite;
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .contact-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .contact h2 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 800;
-    margin-bottom: 18px;
-    letter-spacing: -1px;
-  }
-
-  .contact p {
-    font-size: 1.1rem;
-    margin-bottom: 35px;
-    opacity: 0.9;
-  }
-
-  .contact .btn-primary {
-    background: white;
-    color: var(--primary);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  }
-
-  .contact .btn-primary:hover {
-    background: #f0f5ff;
-    transform: translateY(-3px) scale(1.03);
-  }
-
-  /* ===================== FOOTER ===================== */
-  footer {
-    padding: 70px 5% 30px;
-    background: #f8faff;
-    border-top: 1px solid #e9eef7;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 50px;
-    max-width: 1300px;
-    margin: 0 auto 50px;
-  }
-
-  .footer-brand .logo {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-    display: inline-block;
-  }
-
-  .footer-brand p {
-    color: var(--text-light);
-    font-size: 0.92rem;
-    max-width: 300px;
-  }
-
-  .footer-col h4 {
-    font-size: 1rem;
-    margin-bottom: 18px;
-    color: var(--dark);
-    font-weight: 700;
-  }
-
-  .footer-col ul li { margin-bottom: 10px; }
-
-  .footer-col a {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    transition: color 0.3s, padding-left 0.3s;
-  }
-
-  .footer-col a:hover {
-    color: var(--primary);
-    padding-left: 4px;
-  }
-
-  .footer-bottom {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding-top: 28px;
-    border-top: 1px solid #e9eef7;
-    text-align: center;
-    color: var(--gray);
-    font-size: 0.85rem;
-  }
-
-  /* ===================== REVEAL ===================== */
-  .reveal {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ===================== RESPONSIVE ===================== */
-  @media (max-width: 968px) {
-    .hero {
-      grid-template-columns: 1fr;
-      padding: 120px 5% 60px;
-      text-align: center;
-    }
-    #bg-canvas {
-      width: 100%;
-      opacity: 0.3;
-    }
-    .hero-content { margin: 0 auto; }
-    .hero-buttons { justify-content: center; }
-    .hero-image { display: none; }
-
-    nav ul {
-      display: none;
-      position: fixed;
-      top: 68px; left: 0; right: 0;
-      flex-direction: column;
-      background: white;
-      padding: 30px;
-      gap: 20px;
-      border-bottom: 1px solid #e9eef7;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    }
-    nav ul.open { display: flex; }
-    .menu-toggle { display: block; }
-
-    .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .about-image img { height: 350px; }
-
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-
-    .contact { padding: 60px 30px; margin: 0 5% 60px; }
-  }
-
-  @media (max-width: 600px) {
-    section { padding: 70px 5%; }
-    .hero-buttons { flex-direction: column; width: 100%; }
-    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-    .footer-grid { grid-template-columns: 1fr; }
-    .floating-card { display: none; }
-  }
+:root{--ink:#0b1b3a;--bg:#f4f7fb;--b:#2563ff;--b2:#5b8cff;--o:#ff6a2b;--mut:#5b6b86;--card:#fff;--bd:#e3e9f3;--sh:0 10px 40px rgba(20,40,90,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}ul{list-style:none}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:2000;background:linear-gradient(90deg,var(--b),var(--o))}
+
+/* Header */
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 80px;position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.75);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);transition:transform .4s}
+header.hide{transform:translateY(-100%)}
+.logo{font-weight:900;font-size:24px;letter-spacing:.5px}.logo b{color:var(--b)}
+nav ul{display:flex;gap:32px}
+nav a{font-weight:600;font-size:15px;color:var(--mut);position:relative;transition:color .3s}
+nav a:hover{color:var(--b)}
+nav a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--o);transition:width .3s}
+nav a:hover::after{width:100%}
+
+/* Hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:130px 80px 80px;background:radial-gradient(ellipse at 85% 20%,rgba(37,99,255,.12),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(255,106,43,.08),transparent 50%)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--b);font-weight:700;letter-spacing:2.5px;font-size:12px;text-transform:uppercase;margin-bottom:22px;background:#e8efff;padding:8px 16px;border-radius:50px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--o)}
+h1{font-size:clamp(34px,4.8vw,66px);font-weight:900;line-height:1.08;letter-spacing:-1.5px}
+h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em}
+h1 .w>span{display:inline-block;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d)}
+@keyframes up{to{transform:none}}
+h1 em{font-style:normal;color:var(--b)}
+.lead{max-width:540px;color:var(--mut);font-size:19px;margin:24px 0 36px}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:15px 32px;border-radius:50px;font-weight:700;font-size:16px;border:none;cursor:pointer;transition:transform .2s,box-shadow .3s;will-change:transform}
+.btn-p{background:var(--b);color:#fff;box-shadow:0 10px 30px rgba(37,99,255,.35)}
+.btn-p:hover{box-shadow:0 14px 40px rgba(37,99,255,.5)}
+.btn-o{border:2px solid var(--ink);color:var(--ink);background:transparent}
+.btn-o:hover{background:var(--ink);color:#fff}
+
+/* Carte de suivi hero */
+.dash{perspective:1200px}
+.dash-card{background:#fff;border-radius:28px;padding:22px;box-shadow:0 40px 90px rgba(20,40,90,.18);border:1px solid var(--bd);transform:rotateY(-12deg) rotateX(6deg);transition:transform .2s ease-out}
+.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:700;font-size:14px}
+.live{color:var(--o);display:flex;align-items:center;gap:6px;font-size:12px}.live i{width:8px;height:8px;border-radius:50%;background:var(--o);animation:pl 1.6s infinite}
+@keyframes pl{50%{opacity:.25}}
+.map{border-radius:18px;background:#eef3fb;overflow:hidden}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.chip{background:#f4f7fb;border-radius:12px;padding:10px 12px;font-size:12px;color:var(--mut)}.chip b{display:block;color:var(--ink);font-size:15px}
+
+/* Layout */
+.container{padding:100px 80px}
+.section-title{font-size:clamp(28px,3.4vw,44px);font-weight:900;letter-spacing:-1px;margin-bottom:44px}
+.section-title::after{content:"";display:block;width:60px;height:5px;margin-top:14px;border-radius:5px;background:var(--o)}
+.grid-2,.grid-3,.grid-4{display:grid;gap:26px}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.grid-3{margin-top:26px}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal .grid-2>*,.reveal .grid-3>*,.reveal .grid-4>*{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*.12s + .15s)}
+.reveal.visible .grid-2>*,.reveal.visible .grid-3>*,.reveal.visible .grid-4>*{opacity:1;transform:none}
+
+.intro-card{max-width:1000px;margin:0 auto;text-align:center;padding:54px 60px;border-radius:36px;background:linear-gradient(135deg,var(--b),#1b3fb8);color:#fff;box-shadow:0 30px 70px rgba(37,99,255,.3)}
+.intro-card p{font-size:21px;opacity:.92;margin-bottom:14px}.intro-card strong{color:#ffd2bd}
+
+/* Cartes 3D */
+.tilt{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;border-radius:22px;background:var(--card);border:1px solid var(--bd);box-shadow:var(--sh);overflow:hidden;transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .15s ease-out,box-shadow .3s,border-color .3s;will-change:transform}
+.tilt:hover{box-shadow:0 30px 70px rgba(20,40,90,.16);border-color:var(--b2)}
+.tilt::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.55),transparent 45%)}
+.tilt:hover::after{opacity:1}
+.card-img{height:220px;overflow:hidden;background:linear-gradient(135deg,#dbe7ff,#aac2ff)}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.tilt:hover .card-img img{transform:scale(1.08)}
+.card-body{padding:26px}
+.card-body h3,.sc h3{font-size:20px;margin-bottom:10px}
+.card-body p,.sc p{color:var(--mut)}
+.sc{padding:30px}
+.ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;font-size:22px;background:#e8efff}
+.sc:hover .ico{background:var(--o)}
+
+/* ===== Section 3D épinglée ===== */
+#story{height:560vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden}
+#c3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cap-wrap{position:absolute;left:80px;top:50%;transform:translateY(-50%);width:min(420px,40vw);z-index:3}
+.cap{position:absolute;top:50%;left:0;right:0;transform:translateY(-35%);background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:24px;padding:30px;box-shadow:var(--sh);opacity:0;transition:opacity .6s,transform .6s;pointer-events:none}
+.cap.on{opacity:1;transform:translateY(-50%)}
+.cap small{display:inline-block;color:#fff;background:var(--o);font-weight:800;padding:3px 12px;border-radius:50px;font-size:12px;letter-spacing:1px;margin-bottom:12px}
+.cap h3{font-size:26px;letter-spacing:-.5px;margin-bottom:8px}.cap p{color:var(--mut)}
+.rail{position:absolute;right:40px;top:20%;bottom:20%;width:3px;background:#d6dfee;border-radius:3px;z-index:3}
+.rail i{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(var(--b),var(--o));border-radius:3px}
+.track{position:absolute;right:80px;bottom:40px;width:300px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:20px;padding:18px;box-shadow:var(--sh);z-index:3;opacity:0;transform:translateY(20px);transition:.5s}
+.track.on{opacity:1;transform:none}
+.track h4{font-size:13px;color:var(--o);letter-spacing:1.5px;margin-bottom:10px}
+.tr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:13px;margin-bottom:12px}
+.tr b{font-size:14px}.tr span{color:var(--mut);text-align:right}
+.tr div{grid-column:1/3;height:6px;background:#e6ecf6;border-radius:6px;overflow:hidden}
+.tr div i{display:block;height:100%;width:0;background:var(--b);border-radius:6px}
+.hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:3px;color:var(--mut);z-index:3;transition:opacity .4s}
+.nogl{height:auto!important}
+.nogl .stage{position:relative;height:auto;padding:80px}
+.nogl #c3d,.nogl .rail,.nogl .track,.nogl .hint{display:none}
+.nogl .cap-wrap{position:static;transform:none;width:auto}
+.nogl .cap{position:static;opacity:1;transform:none;margin-bottom:20px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 80px 20px}
+.stat{text-align:center;padding:34px 10px;border-radius:22px;background:#fff;border:1px solid var(--bd);box-shadow:var(--sh)}
+.stat b{display:block;font-size:clamp(38px,5vw,58px);font-weight:900;color:var(--b);line-height:1.1}
+.stat span{color:var(--mut);font-size:15px}
+
+.services-section{background:#fff}
+.sub-brand{border-left:5px solid var(--o);padding:6px 0 6px 22px;margin-bottom:26px;transition:transform .3s}
+.sub-brand:hover{transform:translateX(10px)}
+.sub-brand h3{font-size:24px;color:var(--b)}.sub-brand p{color:var(--mut)}
+.group-lead{margin-bottom:34px;font-size:19px;color:var(--mut);max-width:800px}
+
+.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin:0 80px;padding:60px;border-radius:32px;background:#fff;border:1px solid var(--bd);box-shadow:var(--sh)}
+.contact-info h2{font-size:clamp(32px,4vw,48px);color:var(--b);margin-bottom:20px;letter-spacing:-1px}
+.contact-info p{color:var(--mut)}
+.form-row{display:flex;gap:20px}.form-group{margin-bottom:20px;flex:1}
+label{display:block;margin-bottom:8px;font-weight:600;font-size:14px}
+input{width:100%;padding:14px;border:1px solid var(--bd);border-radius:12px;font-size:15px;background:#f8fafd;transition:border-color .3s,box-shadow .3s}
+input:focus{outline:none;border-color:var(--b);box-shadow:0 0 0 4px rgba(37,99,255,.12)}
+#ok{display:none;margin-top:16px;color:var(--b);font-weight:700}
+
+footer{margin-top:100px;padding:60px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;background:var(--ink);color:#c8d3e8}
+footer h4{font-size:19px;color:#fff;margin-bottom:18px}
+footer li{margin-bottom:10px}footer a:hover{color:var(--o)}
+
+@media(max-width:900px){
+.hero{grid-template-columns:1fr;padding-top:120px}.dash{display:none}
+}
+@media(max-width:768px){
+header,.hero,.container,.stats,footer{padding-left:20px;padding-right:20px}
+.container{padding-top:70px;padding-bottom:70px}nav ul{gap:14px;font-size:14px}
+.contact-container{grid-template-columns:1fr;margin:0 20px;padding:30px 22px}.form-row{flex-direction:column;gap:0}
+.cap-wrap{left:16px;right:16px;top:auto;bottom:70px;transform:none;width:auto}
+.cap{top:auto;bottom:0;transform:translateY(20px);padding:20px}.cap.on{transform:none}
+.cap h3{font-size:20px}.track{display:none}.rail{right:10px}.intro-card{padding:32px 22px}
+}
+@media(prefers-reduced-motion:reduce){h1 .w>span{animation-duration:.01s}}
 </style>
 </head>
 <body>
+<div id="bar"></div>
 
-<!-- ===================== HEADER ===================== -->
-<header id="header">
-  <a href="#" class="logo">SRTech</a>
-  <nav>
-    <ul id="navMenu">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">À propos</a></li>
-      <li><a href="#stats">Chiffres</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#contact" class="cta-btn">Demander une démo</a></li>
-    </ul>
-  </nav>
-  <button class="menu-toggle" id="menuToggle">☰</button>
+<header id="hd">
+  <a href="#" class="logo">S.R.<b>Tech</b></a>
+  <nav><ul>
+    <li><a href="#histoire">Histoire</a></li>
+    <li><a href="#groupe">Notre groupe</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul></nav>
 </header>
 
-<!-- ===================== HERO ===================== -->
+<main>
 <section class="hero">
-  <canvas id="bg-canvas"></canvas>
-
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span class="dot"></span>
-      Solutions IoT nouvelle génération
-    </div>
-    <h1>
-      Sécurisez, <span class="gradient">géolocalisez</span>, maîtrisez votre flotte
-    </h1>
-    <p>
-      SRTech révolutionne le transport avec des solutions IoT intelligentes :
-      géolocalisation temps réel, sécurité avancée et analyse prédictive
-      pour optimiser chaque trajet.
-    </p>
-    <div class="hero-buttons">
-      <a href="#contact" class="btn-primary">Démarrer maintenant →</a>
-      <a href="#services" class="btn-secondary">Découvrir nos solutions</a>
+  <div>
+    <div class="eyebrow"><i></i>Transport · IoT · Sécurité</div>
+    <h1>Sécuriser, Géolocaliser, <em>Solutions IoT</em> pour le transport.</h1>
+    <p class="lead">La sécurité ne doit jamais être une option. Suivez vos véhicules et conteneurs en temps réel, 24h/24.</p>
+    <div class="btns">
+      <a href="#story" class="btn btn-p mag">Voir comment ça marche</a>
+      <a href="#contact" class="btn btn-o mag">Nous contacter</a>
     </div>
   </div>
-
-  <div class="hero-image">
-    <div class="hero-image-wrapper">
-      <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=80" alt="Camion transport">
-      <div class="floating-card card-1">
-        <div class="floating-card-icon">📍</div>
-        <div class="floating-card-text">
-          <strong>GPS Actif</strong>
-          <span>Temps réel</span>
-        </div>
+  <div class="dash" id="dash">
+    <div class="dash-card" id="dashCard">
+      <div class="dash-top"><span>S.R.Track · Flotte</span><span class="live"><i></i>EN DIRECT</span></div>
+      <div class="map">
+        <svg viewBox="0 0 400 250" width="100%">
+          <defs><pattern id="g" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#dbe4f2"/></pattern></defs>
+          <rect width="400" height="250" fill="url(#g)"/>
+          <rect x="60" y="40" width="70" height="45" rx="6" fill="#e1e9f6"/><rect x="250" y="150" width="90" height="55" rx="6" fill="#e1e9f6"/><rect x="290" y="30" width="60" height="60" rx="6" fill="#e1e9f6"/>
+          <path id="rt" d="M30 210 C110 200 120 110 200 120 S300 190 370 60" fill="none" stroke="#2563ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 10"/>
+          <circle cx="30" cy="210" r="7" fill="#0b1b3a"/>
+          <g><circle r="16" fill="#ff6a2b" opacity=".2"/><circle r="8" fill="#ff6a2b"/><animateMotion dur="9s" repeatCount="indefinite"><mpath href="#rt"/></animateMotion></g>
+          <g transform="translate(370 60)"><path d="M0 0l-9-18a10 10 0 1 1 18 0z" fill="#2563ff"/><circle cy="-22" r="4" fill="#fff"/></g>
+        </svg>
       </div>
-      <div class="floating-card card-2">
-        <div class="floating-card-icon">🔒</div>
-        <div class="floating-card-text">
-          <strong>100% Sécurisé</strong>
-          <span>24/7</span>
-        </div>
-      </div>
+      <div class="chips"><div class="chip">Porte<b>Fermée ✔</b></div><div class="chip">Position<b>Live</b></div><div class="chip">Alertes<b>0</b></div></div>
     </div>
   </div>
 </section>
 
-<!-- ===================== SERVICES ===================== -->
-<section id="services">
-  <div class="section-header reveal">
-    <div class="section-tag">Nos Services</div>
-    <h2>Solutions IoT <span class="gradient">complètes</span></h2>
-    <p>Une suite technologique pensée pour les professionnels du transport et de la logistique.</p>
-  </div>
-
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&q=80" alt="GPS">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">🛰️</div>
-        <h3>Géolocalisation GPS</h3>
-        <p>Suivi en temps réel de vos véhicules avec une précision centimétrique et des alertes intelligentes.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
-
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80" alt="Sécurité">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">🔒</div>
-        <h3>Sécurité Avancée</h3>
-        <p>Protection anti-vol, détection d'intrusion et surveillance 24/7 pour votre tranquillité d'esprit.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
-
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Analytics">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">📊</div>
-        <h3>Analytics & IoT</h3>
-        <p>Analyse prédictive, rapports détaillés et tableaux de bord personnalisés pour optimiser vos opérations.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
-
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" alt="Maintenance">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">⚡</div>
-        <h3>Maintenance Prédictive</h3>
-        <p>Anticipez les pannes grâce à nos capteurs intelligents et réduisez vos coûts d'exploitation.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
-
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80" alt="Cloud">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">🌐</div>
-        <h3>Plateforme Cloud</h3>
-        <p>Accédez à vos données depuis n'importe où avec une interface moderne et sécurisée.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
-
-    <div class="service-card reveal">
-      <div class="service-image">
-        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80" alt="IA">
-      </div>
-      <div class="service-body">
-        <div class="service-icon">🤖</div>
-        <h3>Intelligence Artificielle</h3>
-        <p>Optimisation des tournées, prédiction des comportements et assistance au conducteur.</p>
-        <a href="#" class="service-link">En savoir plus →</a>
-      </div>
-    </div>
+<section class="container reveal" id="histoire">
+  <div class="intro-card">
+    <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
+    <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
   </div>
 </section>
 
-<!-- ===================== STATS ===================== -->
-<section class="stats" id="stats">
-  <div class="stats-grid">
-    <div class="stat-item reveal">
-      <h3 data-count="15000">0</h3>
-      <p>Véhicules connectés</p>
+<!-- ===== SECTION 3D : l'entreprise qui se désosse ===== -->
+<section id="story">
+  <div class="stage">
+    <canvas id="c3d"></canvas>
+    <div class="cap-wrap">
+      <div class="cap on"><small>01</small><h3>Un site, une équipe</h3><p>Voici l’entrepôt S.R.Tech d’Orly : le point de départ de chaque livraison sécurisée.</p></div>
+      <div class="cap"><small>02</small><h3>On ouvre le bâtiment</h3><p>Toit, murs, façade : tout s’écarte pour révéler le stockage, les quais et les équipes qui préparent chaque commande.</p></div>
+      <div class="cap"><small>03</small><h3>Balises GPS installées</h3><p>Avant le départ, chaque camion reçoit sa balise S.R.Track : position, ouverture de porte, alertes en temps réel.</p></div>
+      <div class="cap"><small>04</small><h3>Livraison suivie en direct</h3><p>Les camions rejoignent leurs clients, reliés par satellite à notre plateforme et surveillés 24h/24.</p></div>
     </div>
-    <div class="stat-item reveal">
-      <h3 data-count="99">0</h3>
-      <p>% Disponibilité</p>
+    <div class="rail"><i id="railFill"></i></div>
+    <div class="track" id="track">
+      <h4>SUIVI EN DIRECT</h4>
+      <div class="tr"><b>SR-01 → Bordeaux</b><span id="s0">Au quai</span><div><i id="b0"></i></div></div>
+      <div class="tr"><b>SR-02 → Marseille</b><span id="s1">Au quai</span><div><i id="b1"></i></div></div>
+      <div class="tr"><b>SR-03 → Lyon</b><span id="s2">Au quai</span><div><i id="b2"></i></div></div>
     </div>
-    <div class="stat-item reveal">
-      <h3 data-count="45">0</h3>
-      <p>Pays couverts</p>
-    </div>
-    <div class="stat-item reveal">
-      <h3 data-count="24">0</h3>
-      <p>Support / 7j</p>
-    </div>
+    <div class="hint" id="hint">FAITES DÉFILER ↓</div>
   </div>
 </section>
 
-<!-- ===================== ABOUT ===================== -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-image reveal">
-      <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80" alt="Équipe SRTech">
-      <div class="about-badge">
-        <div class="about-badge-icon">🏆</div>
-        <div class="about-badge-text">
-          <strong>+10 ans</strong>
-          <span>d'expertise</span>
-        </div>
-      </div>
-    </div>
+<div class="stats reveal" style="margin-top:80px">
+  <div class="stat"><b data-count="15" data-suf="+">0</b><span>années d'expertise</span></div>
+  <div class="stat"><b data-count="2500" data-suf="+">0</b><span>camions équipés</span></div>
+  <div class="stat"><b data-count="24" data-suf="/7">0</b><span>surveillance</span></div>
+  <div class="stat"><b data-count="100" data-suf="%">0</b><span>données hébergées en France</span></div>
+</div>
 
-    <div class="about-content reveal">
-      <div class="section-tag">À propos</div>
-      <h2>L'innovation au service du <span class="gradient">transport</span></h2>
-      <p>
-        Depuis notre création, SRTech développe des solutions IoT de pointe pour les acteurs
-        du transport et de la logistique. Notre mission : rendre chaque trajet plus sûr,
-        plus efficace et plus intelligent.
-      </p>
-
-      <div class="about-features">
-        <div class="about-feature">
-          <div class="about-feature-icon">🎯</div>
-          <div>
-            <h4>Précision maximale</h4>
-            <p>Technologies GPS de dernière génération</p>
-          </div>
-        </div>
-        <div class="about-feature">
-          <div class="about-feature-icon">🔧</div>
-          <div>
-            <h4>Support dédié</h4>
-            <p>Équipe d'experts disponible 24/7</p>
-          </div>
-        </div>
-        <div class="about-feature">
-          <div class="about-feature-icon">🚀</div>
-          <div>
-            <h4>Déploiement rapide</h4>
-            <p>Installation en moins de 48h</p>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="container reveal">
+  <h2 class="section-title">Sécuriser votre supply chain</h2>
+  <div class="grid-2">
+    <div class="tilt" style="--i:0"><div class="card-img"><img src="images/truck.jpg" alt="Sécurisation transport routier" onerror="this.style.display='none'"></div><div class="card-body"><h3>Sécurisation</h3><p>Nous offrons un suivi continu pour protéger vos flux logistiques et véhicules routiers contre le vol et les intrusions.</p></div></div>
+    <div class="tilt" style="--i:1"><div class="card-img"><img src="images/containers.jpg" alt="Géolocalisation conteneurs" onerror="this.style.display='none'"></div><div class="card-body"><h3>Géolocalisation</h3><p>En suivant en direct les conteneurs et marchandises à chaque étape du trajet maritime ou terrestre.</p></div></div>
   </div>
 </section>
 
-<!-- ===================== CONTACT ===================== -->
-<section id="contact" style="padding: 0;">
-  <div class="contact reveal">
-    <div class="contact-content">
-      <h2>Prêt à transformer votre flotte ?</h2>
-      <p>Demandez une démonstration gratuite et découvrez comment SRTech peut révolutionner vos opérations.</p>
-      <a href="mailto:contact@srtech.com" class="btn-primary">Demander une démo →</a>
-    </div>
+<section class="container services-section reveal" id="services">
+  <h2 class="section-title">Nos Services</h2>
+  <div class="grid-2">
+    <div class="tilt sc" style="--i:0"><div class="ico">🛡️</div><h3>Sécurisation 24H/24</h3><p><strong>Surveillance humaine en temps réel :</strong> Nos partenaires de télésurveillance traitent en direct les alertes (ouverture de porte, intrusion, déviation). Les opérateurs agissent immédiatement selon vos consignes.</p></div>
+    <div class="tilt sc" style="--i:1"><div class="ico">📍</div><h3>Géolocalisation en temps réel</h3><p><strong>Suivi de flotte complet :</strong> Suivez la position exacte de vos véhicules et conteneurs via notre plateforme web/mobile. Vue cartographique dynamique et historique des trajets disponibles 24h/24.</p></div>
+  </div>
+  <div class="grid-3">
+    <div class="tilt sc" style="--i:2"><div class="ico">👁️</div><h3>Surveillance 24/7</h3><p>Traitement direct des alertes véhicule et conteneur par des opérateurs qualifiés.</p></div>
+    <div class="tilt sc" style="--i:3"><div class="ico">⚙️</div><h3>Accompagnement sur mesure</h3><p>Personnalisation des paramètres, seuils d'alerte, zones de sécurité et tableaux de bord.</p></div>
+    <div class="tilt sc" style="--i:4"><div class="ico">🇫🇷</div><h3>Infrastructure française</h3><p>Hébergement des données en France dans le strict respect du RGPD et des normes de cybersécurité.</p></div>
   </div>
 </section>
 
-<!-- ===================== FOOTER ===================== -->
+<section class="container reveal">
+  <h2 class="section-title">Notre mission</h2>
+  <div class="grid-3" style="margin-top:0">
+    <div class="tilt" style="--i:0"><div class="card-img"><img src="images/truck.jpg" alt="Camion" onerror="this.style.display='none'"></div><div class="card-body"><h3>Offrir une surveillance en temps réel</h3><p>Suivi permanent des véhicules et conteneurs.</p></div></div>
+    <div class="tilt" style="--i:1"><div class="card-img"><img src="images/security.jpg" alt="Centre de contrôle" onerror="this.style.display='none'"></div><div class="card-body"><h3>Réduire les délais</h3><p>Intervention immédiate en cas d'alerte détectée.</p></div></div>
+    <div class="tilt" style="--i:2"><div class="card-img"><img src="images/containers.jpg" alt="Traçabilité" onerror="this.style.display='none'"></div><div class="card-body"><h3>Garantir la conformité</h3><p>Traçabilité complète à chaque étape du transport.</p></div></div>
+  </div>
+</section>
+
+<section class="container reveal" style="background:#fff">
+  <h2 class="section-title">Ce qui nous distingue</h2>
+  <div class="grid-4">
+    <div class="tilt sc" style="--i:0"><h3>Réactivité terrain</h3><p>Interventions rapides partout en France pour assurer la continuité opérationnelle.</p></div>
+    <div class="tilt sc" style="--i:1"><h3>Technologie éprouvée</h3><p>Validée sur le terrain avec plus de 2 500 camions équipés en activité.</p></div>
+    <div class="tilt sc" style="--i:2"><h3>Adaptabilité</h3><p>Solutions configurées spécifiquement pour transporteurs et logisticiens.</p></div>
+    <div class="tilt sc" style="--i:3"><h3>Service client dédié</h3><p>Équipe support réactive et joignable directement sans intermédiaire.</p></div>
+  </div>
+</section>
+
+<section class="container reveal" id="groupe">
+  <h2 class="section-title">Notre groupe.</h2>
+  <p class="group-lead">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
+  <div class="sub-brand"><h3>S.R.Track - Logiciel et réseau</h3><p>Systèmes d’exploitation cloud, fabrication d’objets IoT, logiciels métiers et interfaces.</p></div>
+  <div class="sub-brand"><h3>S.R.+ – Matériel et objets Connectés</h3><p>Cloud, logiciels et SAV.</p></div>
+</section>
+
+<section class="contact-container reveal" id="contact">
+  <div class="contact-info">
+    <h2>Contactez-nous.</h2>
+    <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
+    <p style="margin-top:10px">Notre équipe est à votre écoute.</p>
+  </div>
+  <form id="form" action="#" method="post">
+    <div class="form-row">
+      <div class="form-group"><label for="fname">Prénom (obligatoire)</label><input type="text" id="fname" required></div>
+      <div class="form-group"><label for="lname">Nom de famille (obligatoire)</label><input type="text" id="lname" required></div>
+    </div>
+    <div class="form-group"><label for="email">E-mail (obligatoire)</label><input type="email" id="email" required></div>
+    <button type="submit" class="btn btn-p mag">Envoyer</button>
+    <div id="ok">✔ Merci ! Nous revenons vers vous rapidement.</div>
+  </form>
+</section>
+</main>
+
 <footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="logo">SRTech</div>
-      <p>Sécuriser, géolocaliser et optimiser votre flotte grâce à nos solutions IoT innovantes.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Produits</h4>
-      <ul>
-        <li><a href="#">GPS Tracking</a></li>
-        <li><a href="#">Sécurité</a></li>
-        <li><a href="#">Analytics</a></li>
-        <li><a href="#">API</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Entreprise</h4>
-      <ul>
-        <li><a href="#">À propos</a></li>
-        <li><a href="#">Carrières</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Presse</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="#">Documentation</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Statut</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    © 2025 SRTech. Tous droits réservés. Conçu avec passion pour l'innovation.
-  </div>
+  <div><h4>Navigation</h4><ul><li><a href="#">Accueil</a></li><li><a href="#histoire">Histoire</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
+  <div><h4>Légales</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Politique de confidentialité</a></li></ul></div>
+  <div><h4>Contact</h4><p><strong>S.R.Tech</strong></p><p>39 Rue de l’aviation, 94310 Orly</p><p>01 46 86 48 81</p></div>
 </footer>
 
-<!-- ===================== THREE.JS ===================== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ========== 3D BACKGROUND (Hero) ========== */
-(function() {
-  const canvas = document.getElementById('bg-canvas');
-  const scene = new THREE.Scene();
+/* ================= UI ================= */
+(()=>{
+  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+  const touch=matchMedia('(hover:none)').matches;
 
-  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-  camera.position.z = 6;
+  // Titre : découpe en mots animés
+  const h=$('h1');let k=0;
+  (function walk(n){[...n.childNodes].forEach(c=>{
+    if(c.nodeType===3){const f=document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach(p=>{if(!p.trim()){f.append(p);return}
+        const w=document.createElement('span');w.className='w';w.innerHTML='<span style="--d:'+(.15+k++*.07)+'s">'+p+'</span>';f.append(w)});
+      c.replaceWith(f)}else walk(c)})})(h);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // Reveal + compteurs
+  function count(el){const to=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now();
+    (function f(t){const p=Math.min((t-t0)/1800,1),e=1-Math.pow(1-p,4);
+      el.textContent=Math.round(to*e).toLocaleString('fr-FR')+suf;if(p<1)requestAnimationFrame(f)})(t0)}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);
+    e.target.querySelectorAll('[data-count]').forEach(count)}}),{threshold:.15});
+  $$('.reveal').forEach(el=>io.observe(el));
 
-  // Particules / réseau de points
-  const particlesGeo = new THREE.BufferGeometry();
-  const count = 600;
-  const positions = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 14;
-  }
-  particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-  const particlesMat = new THREE.PointsMaterial({
-    color: 0x0066ff,
-    size: 0.06,
-    transparent: true,
-    opacity: 0.7,
-    sizeAttenuation: true
+  // Tilt 3D des cartes
+  $$('.tilt').forEach(c=>{
+    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      c.style.setProperty('--ry',((x-.5)*12)+'deg');c.style.setProperty('--rx',((.5-y)*12)+'deg');
+      c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%')});
+    c.addEventListener('mouseleave',()=>{c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')});
   });
 
-  const particles = new THREE.Points(particlesGeo, particlesMat);
-  scene.add(particles);
+  // Carte hero : suit la souris
+  const dc=$('#dashCard');
+  if(!touch)addEventListener('mousemove',e=>{
+    const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
+    dc.style.transform='rotateY('+(-12+x*10)+'deg) rotateX('+(6-y*8)+'deg)'});
 
-  // Sphère filaire (globe)
-  const sphereGeo = new THREE.IcosahedronGeometry(2.2, 2);
-  const sphereMat = new THREE.MeshBasicMaterial({
-    color: 0x7b2ff7,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.18
-  });
-  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
-  scene.add(sphere);
+  // Boutons magnétiques
+  if(!touch)$$('.mag').forEach(b=>{
+    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
+      b.style.transform='translate('+(e.clientX-r.left-r.width/2)*.2+'px,'+(e.clientY-r.top-r.height/2)*.3+'px)'});
+    b.addEventListener('mouseleave',()=>b.style.transform='')});
 
-  // Sphère interne
-  const innerSphereGeo = new THREE.SphereGeometry(1.6, 32, 32);
-  const innerSphereMat = new THREE.MeshBasicMaterial({
-    color: 0x0066ff,
-    transparent: true,
-    opacity: 0.06
-  });
-  const innerSphere = new THREE.Mesh(innerSphereGeo, innerSphereMat);
-  scene.add(innerSphere);
+  // Progression + header
+  let ly=0;
+  addEventListener('scroll',()=>{const y=scrollY,hh=document.documentElement.scrollHeight-innerHeight;
+    $('#bar').style.width=(y/hh*100)+'%';
+    const inStory=$('#story').getBoundingClientRect();
+    $('#hd').classList.toggle('hide',y>ly&&y>200||(inStory.top<0&&inStory.bottom>innerHeight));ly=y},{passive:true});
 
-  // Anneaux orbitaux
-  const ringGeo = new THREE.TorusGeometry(3, 0.02, 16, 100);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0x0066ff, transparent: true, opacity: 0.3 });
-  const ring1 = new THREE.Mesh(ringGeo, ringMat);
-  ring1.rotation.x = Math.PI / 2.5;
-  scene.add(ring1);
-
-  const ring2 = new THREE.Mesh(ringGeo, ringMat.clone());
-  ring2.material.color.set(0x7b2ff7);
-  ring2.rotation.x = -Math.PI / 3;
-  ring2.rotation.y = Math.PI / 4;
-  ring2.scale.set(1.15, 1.15, 1.15);
-  scene.add(ring2);
-
-  // Petits satellites
-  const satellites = [];
-  const colors = [0x0066ff, 0x7b2ff7, 0xff3d71];
-  for (let i = 0; i < 8; i++) {
-    const satGeo = new THREE.SphereGeometry(0.08, 12, 12);
-    const satMat = new THREE.MeshBasicMaterial({ color: colors[i % 3] });
-    const sat = new THREE.Mesh(satGeo, satMat);
-    sat.userData = {
-      angle: (i / 8) * Math.PI * 2,
-      radius: 2.8 + Math.random() * 1.2,
-      speed: 0.003 + Math.random() * 0.004,
-      yOffset: (Math.random() - 0.5) * 2
-    };
-    scene.add(sat);
-    satellites.push(sat);
-  }
-
-  // Souris (parallaxe uniquement, pas de curseur custom)
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  // Animation
-  let t = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    t += 0.01;
-
-    particles.rotation.y += 0.001;
-    particles.rotation.x += 0.0005;
-
-    sphere.rotation.y += 0.003;
-    sphere.rotation.x += 0.001;
-
-    innerSphere.rotation.y -= 0.002;
-
-    ring1.rotation.z += 0.005;
-    ring2.rotation.z -= 0.004;
-
-    satellites.forEach(sat => {
-      sat.userData.angle += sat.userData.speed;
-      const { angle, radius, yOffset } = sat.userData;
-      sat.position.x = Math.cos(angle) * radius;
-      sat.position.z = Math.sin(angle) * radius;
-      sat.position.y = yOffset + Math.sin(t + angle) * 0.5;
-    });
-
-    camera.position.x += (mouseX * 0.8 - camera.position.x) * 0.05;
-    camera.position.y += (-mouseY * 0.8 - camera.position.y) * 0.05;
-    camera.lookAt(scene.position);
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  });
+  $('#form').addEventListener('submit',e=>{e.preventDefault();$('#ok').style.display='block';e.target.reset()});
 })();
 
-/* ========== HEADER SCROLL ========== */
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-/* ========== MOBILE MENU ========== */
-document.getElementById('menuToggle').addEventListener('click', () => {
-  document.getElementById('navMenu').classList.toggle('open');
-});
-
-document.querySelectorAll('#navMenu a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('navMenu').classList.remove('open'));
-});
-
-/* ========== REVEAL ON SCROLL ========== */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('active'), i * 80);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ========== COUNTERS ========== */
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = +el.dataset.count;
-      let current = 0;
-      const step = target / 60;
-      const update = () => {
-        current += step;
-        if (current < target) {
-          el.textContent = Math.floor(current).toLocaleString('fr-FR');
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = target.toLocaleString('fr-FR') + (target === 99 || target === 24 ? '' : '+');
-        }
-      };
-      update();
-      counterObserver.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
-
-/* ========== 3D TILT ON CARDS ========== */
-document.querySelectorAll('.service-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.transform = `translateY(-8px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-});
-
-/* ========== PARALLAX HERO IMAGE ========== */
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  const heroImg = document.querySelector('.hero-image-wrapper');
-  if (heroImg && scrolled < window.innerHeight) {
-    heroImg.style.transform = `perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(${scrolled * 0.15}px)`;
+/* ================= SCÈNE 3D ================= */
+(()=>{
+  const sec=document.getElementById('story'),cv=document.getElementById('c3d');
+  const fail=()=>sec.classList.add('nogl');
+  function load(u,cb){
+    if(window.THREE)return cb();
+    if(!u.length)return fail();
+    const s=document.createElement('script');s.src=u.shift();s.onload=cb;s.onerror=()=>load(u,cb);document.head.appendChild(s);
   }
-});
+  load(['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js'],
+    ()=>{try{init()}catch(e){console.warn('3D indisponible',e);fail()}});
+
+  function init(){
+    const mob=innerWidth<768;
+    const ren=new THREE.WebGLRenderer({canvas:cv,antialias:!mob});
+    ren.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
+    ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
+    const SKY=0xe9eff8;
+    const scene=new THREE.Scene();scene.background=new THREE.Color(SKY);scene.fog=new THREE.Fog(SKY,70,170);
+    const cam=new THREE.PerspectiveCamera(42,1,.5,300);
+
+    // Lumières
+    scene.add(new THREE.HemisphereLight(0xffffff,0xb7c3d8,.95));
+    const sun=new THREE.DirectionalLight(0xfff1dc,.85);sun.position.set(20,32,24);sun.castShadow=true;
+    sun.shadow.mapSize.set(mob?1024:2048,mob?1024:2048);
+    Object.assign(sun.shadow.camera,{left:-30,right:30,top:30,bottom:-30,near:1,far:100});sun.shadow.bias=-.0004;scene.add(sun);
+
+    // Helpers
+    const M=(c,r=.75,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+    const B=(w,h,d,c,x,y,z,p=scene,sh=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);m.castShadow=sh;m.receiveShadow=true;p.add(m);return m};
+    const tex=(w,h,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t};
+    const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),sm=t=>t*t*(3-2*t),seg=(p,a,b)=>clamp((p-a)/(b-a));
+    const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+
+    // Sol + quadrillage "carte"
+    const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),M(0xdde5f0,1));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+    const grid=new THREE.GridHelper(500,125,0xcbd5e4,0xd3dcea);grid.position.y=.02;scene.add(grid);
+    B(34,.06,20,0xa7b1c1,0,.03,13,scene,false); // cour bitumée
+
+    /* ---------- Bâtiment ---------- */
+    const W=12,D=8,H=4.2,T=.3;
+    const WALL=0xf8fafc,BAND=0x2563ff;
+    B(W+.6,.2,D+.6,0xbfc8d6,0,.1,0);                 // dalle
+    B(W-.2,.12,D-.2,0xd4dbe6,0,.22,0,scene,false);   // sol intérieur
+
+    function pivotWall(px,pz,w,d,vx){ // groupe pivot + mur blanc + bandeau bleu
+      const g=new THREE.Group();g.position.set(px,.15,pz);scene.add(g);
+      B(w,H,d,WALL,0,H/2,0,g);B(w+.02,.45,d+.02,BAND,0,H-.7,0,g);return g}
+    const wl=pivotWall(-W/2,0,T,D),wr=pivotWall(W/2,0,T,D),wb=pivotWall(0,-D/2,W,T);
+
+    // Façade avant : piliers + linteau + enseigne (s'enfonce dans le sol)
+    const front=new THREE.Group();front.position.set(0,.15,D/2);scene.add(front);
+    [-5.75,5.75].forEach(x=>B(.5,H,T,WALL,x,H/2,0,front));
+    [-2,2].forEach(x=>B(1,H,T,WALL,x,H/2,0,front));
+    B(W,1.2,T,WALL,0,H-.6,0,front);
+    const signT=tex(1024,128,(c,w,h)=>{c.fillStyle='#0b1b3a';c.fillRect(0,0,w,h);c.fillStyle='#fff';c.font='900 78px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText('S.R.TECH',w/2-40,h/2+4);c.fillStyle='#ff6a2b';c.beginPath();c.arc(w/2+205,h/2+4,16,0,7);c.fill()});
+    const sign=new THREE.Mesh(new THREE.PlaneGeometry(7.5,.95),new THREE.MeshBasicMaterial({map:signT}));sign.position.set(0,H-.6,T/2+.01);front.add(sign);
+    [-4,0,4].forEach(x=>B(3.1,.5,.12,0xdfe6f0,x,2.75,T/2-.02,front)); // volets de quai relevés
+
+    // Toit en deux moitiés
+    const roofL=B(W/2+.3,.28,D+.5,0xe6ebf3,0,0,0),roofR=B(W/2+.3,.28,D+.5,0xe6ebf3,0,0,0);
+    B(.01,.01,.01,0,0,0,scene,false).visible=false;
+
+    /* ---------- Intérieur : racks, palettes, équipes ---------- */
+    const pal=[0xc9a06a,0xb88b52,0xe2e2e2,0x7fa6ff];
+    function rack(z,w){
+      const g=new THREE.Group();g.position.set(0,.2,z);scene.add(g);
+      [-w/2,w/2].forEach(x=>[-.4,.4].forEach(dz=>B(.1,3.4,.1,BAND,x,1.7,dz,g)));
+      for(let l=0;l<3;l++){const y=.45+l*1.1;
+        [-.4,.4].forEach(dz=>B(w,.1,.1,0xff6a2b,0,y,dz,g));
+        for(let x=-w/2+.7;x<w/2-.5;x+=1.25){const hh=.5+Math.random()*.28;
+          B(1,hh,.7,pal[(Math.random()*pal.length)|0],x,y+.05+hh/2,0,g,false)}}
+    }
+    rack(-3.1,10.4);rack(-1.3,10.4);
+    [-4,0,4].forEach(x=>{ // palettes devant chaque quai
+      B(1.4,.14,1.2,0x9a7348,x,.3,2.5);B(1.2,.8,1,0xc9a06a,x,.78,2.5);B(1.1,.5,.9,0x7fa6ff,x,1.43,2.5);
+    });
+    B(.12,.01,7,0xffc400,-2,.29,0,scene,false);B(.12,.01,7,0xffc400,2,.29,0,scene,false); // marquage
+
+    const workers=[[-3,3.1],[-1,3.4],[2,3],[4.6,3.5]].map((a,i)=>{
+      const g=new THREE.Group();
+      const body=new THREE.Mesh(new THREE.CylinderGeometry(.2,.22,.7,10),M(0xff6a2b));body.position.y=1.15;
+      const leg=new THREE.Mesh(new THREE.CylinderGeometry(.17,.15,.8,10),M(0x1d2b4a));leg.position.y=.6;
+      const head=new THREE.Mesh(new THREE.SphereGeometry(.16,14,12),M(0xe2b48c));head.position.y=1.7;
+      const helm=new THREE.Mesh(new THREE.SphereGeometry(.18,14,8,0,6.3,0,1.5),M(0xffffff));helm.position.y=1.74;
+      [body,leg,head,helm].forEach(m=>{m.castShadow=true;g.add(m)});g.position.set(a[0],0,a[1]);scene.add(g);return{g,x:a[0],z:a[1],i}});
+
+    /* ---------- Camions ---------- */
+    const logoT=tex(512,128,(c,w,h)=>{c.fillStyle='#fff';c.fillRect(0,0,w,h);c.fillStyle='#2563ff';c.fillRect(0,h-26,w,26);c.fillStyle='#0b1b3a';c.font='900 70px Arial';c.textBaseline='middle';c.fillText('S.R.TECH',24,50);c.fillStyle='#ff6a2b';c.beginPath();c.arc(w-60,50,16,0,7);c.fill()});
+    function truck(){
+      const g=new THREE.Group();
+      B(2.1,2.4,5.6,0xffffff,0,1.85,2.8,g);               // remorque
+      B(1.9,.3,7.6,0x1d2b4a,0,.55,3.7,g);                 // châssis
+      B(2.1,2.0,1.5,0x2563ff,0,1.6,6.5,g);                // cabine
+      B(1.9,.75,.06,0x0e1a33,0,2.15,7.27,g,false);        // pare-brise
+      B(1.7,.6,.4,0x1d2b4a,0,1.0,7.3,g);                  // pare-chocs
+      [[.95,.9],[.95,2.0],[.95,6.3],[-.95,.9],[-.95,2.0],[-.95,6.3]].forEach(a=>{
+        const w=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.32,20),M(0x111827,.9));w.rotation.z=Math.PI/2;w.position.set(a[0],.5,a[1]);w.castShadow=true;g.add(w)});
+      [1,-1].forEach(s=>{const p=new THREE.Mesh(new THREE.PlaneGeometry(5.4,1.35),new THREE.MeshBasicMaterial({map:logoT}));
+        p.position.set(s*1.06,2.2,2.8);p.rotation.y=s*Math.PI/2;g.add(p)});
+      // Balise GPS
+      const bc=new THREE.Group();bc.position.set(0,2.75,6.4);g.add(bc);
+      B(.4,.2,.4,0xff6a2b,0,0,0,bc,false);
+      const led=new THREE.Mesh(new THREE.SphereGeometry(.09,12,12),new THREE.MeshBasicMaterial({color:0xffffff}));led.position.y=.18;bc.add(led);
+      const ring=new THREE.Mesh(new THREE.RingGeometry(.3,.36,40),new THREE.MeshBasicMaterial({color:0xff6a2b,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
+      ring.rotation.x=-Math.PI/2;ring.position.y=.2;bc.add(ring);
+      g.userData={bc,ring,led};return g}
+
+    const bx=[-4,0,4],dest=[[-42,44,'Bordeaux'],[6,60,'Marseille'],[44,42,'Lyon']];
+    const routes=dest.map((d,i)=>new THREE.CatmullRomCurve3([[bx[i],.05,4.3],[bx[i],.05,14],[bx[i]*2+(i-1)*6,.05,21],[d[0]*.55,.05,d[1]*.55],[d[0],.05,d[1]]].map(a=>V(...a))));
+    const trucks=routes.map((r,i)=>{const t=truck();t.position.set(bx[i],0,4.3);scene.add(t);return t});
+
+    // Routes : route grise + tracé bleu progressif
+    const prog=routes.map(r=>{
+      const road=new THREE.Mesh(new THREE.TubeGeometry(r,150,1.1,8),M(0x8793a6,1));road.scale.y=.03;road.receiveShadow=true;scene.add(road);
+      const g=new THREE.TubeGeometry(r,150,.14,6),m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0x2563ff}));m.position.y=.14;scene.add(m);
+      g.setDrawRange(0,0);return g});
+
+    // Villes de destination
+    function label(txt){const t=tex(256,64,(c,w,h)=>{c.fillStyle='#fff';c.beginPath();c.roundRect?c.roundRect(4,4,w-8,h-8,24):c.rect(4,4,w-8,h-8);c.fill();c.strokeStyle='#2563ff';c.lineWidth=4;c.stroke();c.fillStyle='#0b1b3a';c.font='800 30px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(txt,w/2,h/2+2)});
+      const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false}));s.scale.set(8,2,1);s.renderOrder=10;return s}
+    const pins=dest.map(d=>{
+      const g=new THREE.Group();g.position.set(d[0],0,d[1]);scene.add(g);
+      const cone=new THREE.Mesh(new THREE.ConeGeometry(.7,2.2,16),M(0xff6a2b));cone.rotation.x=Math.PI;cone.position.y=1.1;cone.castShadow=true;g.add(cone);
+      const ball=new THREE.Mesh(new THREE.SphereGeometry(.8,18,14),M(0xff6a2b));ball.position.y=2.6;g.add(ball);
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(.3,12,10),new THREE.MeshBasicMaterial({color:0xffffff}));dot.position.y=2.6;g.add(dot);
+      const rg=new THREE.Mesh(new THREE.RingGeometry(1,1.15,40),new THREE.MeshBasicMaterial({color:0xff6a2b,transparent:true,side:THREE.DoubleSide,depthWrite:false}));rg.rotation.x=-Math.PI/2;rg.position.y=.1;g.add(rg);
+      const lb=label(d[2]);lb.position.y=5.2;g.add(lb);
+      for(let k=0;k<14;k++){const a=Math.random()*6.28,r=5+Math.random()*9,w=1.5+Math.random()*2,h=1+Math.random()*5;
+        B(w,h,w,k%2?0xd3dcea:0xc3cfe1,Math.cos(a)*r,h/2,Math.sin(a)*r,g)}
+      g.visible=false;return{g,rg}});
+
+    // Satellite + faisceaux
+    const sat=new THREE.Group();sat.position.set(8,42,22);scene.add(sat);
+    B(1.8,1.2,1.2,0xdfe6f0,0,0,0,sat,false);
+    [-2.4,2.4].forEach(x=>B(3,.06,1.5,0x2563ff,x,0,0,sat,false));
+    B(.1,.1,1,0xff6a2b,0,.8,0,sat,false);
+    sat.scale.setScalar(1.6);
+    const beams=trucks.map(()=>{const g=new THREE.BufferGeometry().setFromPoints([V(),V()]);
+      const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xff6a2b,transparent:true,opacity:0}));scene.add(l);return l});
+
+    /* ---------- Caméra : plan par plan ---------- */
+    const K=[[0,[17,7,21],[0,2,2]],[.16,[-13,7.5,19],[0,2,2]],[.38,[0,16,12],[0,1,2]],[.55,[9,6.5,16],[0,1.5,5]],[.74,[24,20,28],[10,0,16]],[1,[36,36,44],[4,0,28]]];
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    function camAt(p){
+      let i=0;while(i<K.length-2&&p>K[i+1][0])i++;
+      const a=K[i],b=K[i+1],t=sm(clamp((p-a[0])/(b[0]-a[0])));
+      const look=a[2].map((v,j)=>lerp(v,b[2][j],t)),pos=a[1].map((v,j)=>lerp(v,b[1][j],t));
+      const k=cam.aspect<1?1.7:1; // portrait : on recule
+      cam.position.set(look[0]+(pos[0]-look[0])*k,look[1]+(pos[1]-look[1])*k,look[2]+(pos[2]-look[2])*k);cam.lookAt(look[0],look[1],look[2]);
+    }
+
+    /* ---------- Mise à jour de la scène selon la progression ---------- */
+    const caps=[...document.querySelectorAll('.cap')],trackEl=document.getElementById('track'),rail=document.getElementById('railFill'),hint=document.getElementById('hint');
+    const tmp=V(),sv=trucks.map(()=>V());
+    function update(p){
+      const walls=sm(seg(p,.12,.38)),back=sm(seg(p,.16,.40)),fr=sm(seg(p,.2,.4));
+      wl.rotation.z=1.48*walls;wr.rotation.z=-1.48*walls;wb.rotation.x=-1.48*back;
+      front.position.y=.15-(H+.4)*fr;
+      const rf=sm(seg(p,.1,.34));
+      roofL.position.set(-W/4-.15-9*rf,H+.2+11*rf,0);roofL.rotation.z=.4*rf;
+      roofR.position.set(W/4+.15+9*rf,H+.2+11*rf,0);roofR.rotation.z=-.4*rf;
+      workers.forEach(w=>{w.g.position.x=w.x+Math.sin(p*70+w.i*2)*.6;w.g.position.z=w.z+Math.cos(p*55+w.i)*.45;w.g.rotation.y=Math.sin(p*70+w.i*2)>0?1.57:-1.57});
+
+      let sats=sm(seg(p,.64,.72));
+      trucks.forEach((t,i)=>{
+        const u=sm(seg(p,.58+i*.03,.94+i*.0)) ;
+        const pt=routes[i].getPointAt(u),tg=routes[i].getTangentAt(Math.min(u,.999));
+        t.position.copy(pt);t.position.y=0;
+        t.lookAt(pt.x+tg.x,0,pt.z+tg.z);
+        const drop=1-sm(seg(p,.44+i*.02,.56));
+        const d=t.userData;d.bc.position.y=2.75+drop*7;
+        const ph=(p*45+i*.3)%1;
+        d.ring.scale.setScalar(1+ph*9);d.ring.material.opacity=(1-drop)*.8*(1-ph);
+        d.led.material.color.set(((p*60)%1)>.5?0xffffff:0xff6a2b);
+        // tracé
+        const cnt=prog[i].index.count;prog[i].setDrawRange(0,Math.floor(cnt*u/3)*3);
+        // faisceau satellite
+        d.bc.getWorldPosition(tmp);
+        const pos=beams[i].geometry.attributes.position;pos.setXYZ(0,sat.position.x,sat.position.y,sat.position.z);pos.setXYZ(1,tmp.x,tmp.y,tmp.z);pos.needsUpdate=true;
+        beams[i].material.opacity=sats*.7;
+        // villes
+        pins[i].g.visible=p>.55;const ps=(p*30+i*.4)%1;pins[i].rg.scale.setScalar(1+ps*4);pins[i].rg.material.opacity=.8*(1-ps);
+        // HUD
+        const pc=Math.round(u*100);
+        document.getElementById('b'+i).style.width=pc+'%';
+        document.getElementById('s'+i).textContent=u<=0?'Au quai':u>=.995?'Livré ✔':pc+'% · '+(78+i*4)+' km/h';
+      });
+      sat.rotation.y=p*3;sat.visible=p>.55;
+
+      const ci=p<.12?0:p<.44?1:p<.7?2:3;
+      caps.forEach((c,i)=>c.classList.toggle('on',i===ci));
+      trackEl.classList.toggle('on',p>.6);
+      rail.style.height=(p*100)+'%';hint.style.opacity=p<.03?1:0;
+      camAt(p);
+    }
+
+    /* ---------- Boucle : ne rend que si la progression change ---------- */
+    let target=0,cur=-1,dirty=true;
+    function progress(){const r=sec.getBoundingClientRect();return clamp(-r.top/Math.max(1,r.height-innerHeight))}
+    addEventListener('scroll',()=>{target=progress()},{passive:true});
+    function resize(){const w=cv.clientWidth,h=cv.clientHeight;ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();dirty=true}
+    addEventListener('resize',resize);resize();target=progress();
+    (function loop(){
+      requestAnimationFrame(loop);
+      const r=sec.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+      const nc=cur<0?target:cur+(target-cur)*.1;
+      if(Math.abs(nc-cur)>.00005||dirty){cur=Math.abs(target-nc)<.0002?target:nc;dirty=false;update(cur);ren.render(scene,cam)}
+    })();
+  }
+})();
 </script>
 </body>
 </html>
