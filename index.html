@@ -1,98 +1,425 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.R.TRACK — Transport connecté & sécurisé</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
+  <style>
+    /* Styles généraux */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #333333;
+      line-height: 1.6;
+      background-color: #ffffff;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+
+    /* En-tête / Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 80px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 24px;
+      color: #107c41;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    nav ul {
+      display: flex;
+      gap: 32px;
+    }
+    nav a {
+      font-weight: 500;
+      font-size: 16px;
+      color: #333333;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #107c41;
+    }
+
+    /* Bannière Hero */
+    .hero {
+      background-color: #0f6e38;
+      color: #ffffff;
+      padding: 100px 80px;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.2;
+      max-width: 800px;
+    }
+    .pause-btn {
+      position: absolute;
+      right: 40px;
+      bottom: 30px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Section Présentation / Carte arrondie */
+    .intro-section {
+      padding: 60px 80px;
+      display: flex;
+      justify-content: center;
+    }
+    .intro-card {
+      background-color: #e8f5e9;
+      border-radius: 50px;
+      padding: 50px;
+      max-width: 1000px;
+      text-align: center;
+    }
+    .intro-card p {
+      font-size: 20px;
+      color: #0f6e38;
+      margin-bottom: 20px;
+    }
+    .intro-card p strong {
+      font-weight: 700;
+    }
+
+    /* Sections Générales */
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #0f6e38;
+      margin-bottom: 40px;
+    }
+    .container {
+      padding: 60px 80px;
+    }
+
+    /* Grilles de cartes */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: #f9f9f9;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .card h3 {
+      font-size: 20px;
+      color: #0f6e38;
+      margin-bottom: 15px;
+    }
+    .card p {
+      color: #555555;
+      font-size: 15px;
+    }
+
+    /* Groupe & Filiales */
+    .group-section {
+      background-color: #f4f6f8;
+      padding: 60px 80px;
+    }
+    .sub-brand {
+      border-left: 4px solid #0f6e38;
+      padding-left: 20px;
+      margin-bottom: 30px;
+    }
+    .sub-brand h3 {
+      font-size: 22px;
+      color: #0f6e38;
+    }
+
+    /* Formulaire de Contact */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      padding: 60px 80px;
+    }
+    .contact-info h2 {
+      font-size: 42px;
+      color: #0f6e38;
+      margin-bottom: 20px;
+    }
+    .contact-info p {
+      font-size: 20px;
+      color: #0f6e38;
+      font-weight: 600;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+    .form-row .form-group {
+      flex: 1;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #0f6e38;
+    }
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      font-size: 15px;
+    }
+    .btn-submit {
+      background-color: #0f6e38;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover {
+      background-color: #0b5229;
+    }
+
+    /* Pied de page (Footer) */
+    footer {
+      background-color: #ffffff;
+      border-top: 1px solid #eeeeee;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+    footer h4 {
+      font-size: 24px;
+      color: #0f6e38;
+      margin-bottom: 20px;
+    }
+    footer ul li {
+      margin-bottom: 12px;
+    }
+    footer a {
+      color: #333333;
+      text-decoration: underline;
+    }
+    footer a:hover {
+      color: #0f6e38;
+    }
+
+    /* Responsive mobile */
+    @media (max-width: 768px) {
+      header, .hero, .intro-section, .container, .group-section, .contact-container, footer {
+        padding: 30px 20px;
+      }
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Canvas de fond -->
-    <canvas id="scene"></canvas>
-
-    <!-- Barre de progression -->
-    <div id="progress"></div>
-
-    <!-- En-tête -->
-    <header>
-        <div class="logo">S.R.<span>TRACK</span></div>
-        <div class="header-right">Transport · IoT · Logiciels · Sécurité</div>
-    </header>
-
-    <!-- Sections de texte (Scroll) -->
-    <div id="scroll-container">
-        <section class="scene-text center active" data-start="0" data-end="0.1">
-            <div class="kicker">Technologie connectée pour le transport</div>
-            <h1>S.R.TRACK</h1>
-            <p>Sécuriser les véhicules. Géolocaliser les opérations. Connecter le terrain au logiciel.</p>
-            <div class="scroll-hint">DÉFILEZ POUR ENTRER</div>
-        </section>
-
-        <section class="scene-text" data-start="0.1" data-end="0.25">
-            <div class="kicker">01 · L'entreprise</div>
-            <h2>Une entreprise pensée autour du véhicule connecté.</h2>
-            <p>S.R.TRACK associe la géolocalisation, les technologies IoT, les logiciels métiers et les outils de supervision.</p>
-            <div class="tags">
-                <span class="tag">IoT</span>
-                <span class="tag">Cloud</span>
-                <span class="tag">GPS</span>
-                <span class="tag">Logiciels</span>
-            </div>
-        </section>
-
-        <section class="scene-text" data-start="0.25" data-end="0.4">
-            <div class="kicker">02 · Flotte connectée</div>
-            <h2>Chaque véhicule devient une source d'information.</h2>
-            <p>Les fourgons circulent sur le site et transmettent leur position. Les équipes peuvent visualiser les déplacements et les événements importants.</p>
-            <div class="status">
-                <span class="status-dot"></span> GPS · POSITION · ALERTES
-            </div>
-        </section>
-
-        <section class="scene-text" data-start="0.4" data-end="0.55">
-            <div class="kicker">03 · Atelier technique</div>
-            <h2>Installation et maintenance directement sur les véhicules.</h2>
-            <p>Les techniciens travaillent sur les fourgons, installent les équipements de géolocalisation et réalisent les tests.</p>
-            <div class="status">
-                <span class="status-dot"></span> INSTALLATION · DIAGNOSTIC · TEST
-            </div>
-        </section>
-
-        <section class="scene-text" data-start="0.55" data-end="0.7">
-            <div class="kicker">04 · Logiciels & Cloud</div>
-            <h2>Le terrain est piloté par des logiciels.</h2>
-            <p>Des développeurs travaillent sur les interfaces, les données de flotte, les services cloud et les applications utilisées par les équipes.</p>
-            <div class="tags">
-                <span class="tag">API</span>
-                <span class="tag">Cloud</span>
-                <span class="tag">Applications</span>
-                <span class="tag">Data</span>
-            </div>
-        </section>
-
-        <section class="scene-text" data-start="0.7" data-end="0.85">
-            <div class="kicker">05 · Cybersécurité</div>
-            <h2>Une supervision permanente des infrastructures.</h2>
-            <p>Une équipe dédiée surveille les réseaux, les systèmes, les accès et les événements de sécurité.</p>
-            <div class="status">
-                <span class="status-dot"></span> RÉSEAU · SURVEILLANCE · ALERTES
-            </div>
-        </section>
-
-        <section class="scene-text center" data-start="0.85" data-end="1">
-            <div class="kicker">S.R.TRACK</div>
-            <h2>Du véhicule connecté au logiciel métier.</h2>
-            <p>Une technologie pensée pour rapprocher les opérations physiques et le monde numérique.</p>
-            <div class="tags">
-                <span class="tag">Transport connecté</span>
-                <span class="tag">IoT</span>
-                <span class="tag">GPS</span>
-            </div>
-        </section>
+  <!-- Navigation -->
+  <header>
+    <div class="logo">
+      <span>S.R.Tech</span>
     </div>
+    <nav>
+      <ul>
+        <li><a href="#histoire">Histoire</a></li>
+        <li><a href="#groupe">Notre groupe</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Script -->
-    <script src="script.js" defer></script>
+  <!-- Section Hero -->
+  <section class="hero">
+    <h1>La sécurité ne doit jamais être une option.</h1>
+    <div class="pause-btn">||</div>
+  </section>
+
+  <!-- Section Présentation -->
+  <section class="intro-section" id="histoire">
+    <div class="intro-card">
+      <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
+      <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
+    </div>
+  </section>
+
+  <!-- Section Notre Mission -->
+  <section class="container">
+    <h2 class="section-title">Notre mission</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Surveillance temps réel</h3>
+        <p>Offrir une surveillance en temps réel des véhicules et conteneurs.</p>
+      </div>
+      <div class="card">
+        <h3>Réactivité alerte</h3>
+        <p>Réduire les délais d’intervention en cas d’alerte.</p>
+      </div>
+      <div class="card">
+        <h3>Traçabilité garantie</h3>
+        <p>Garantir la conformité et la traçabilité à chaque étape du transport.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Ce qui nous distingue -->
+  <section class="container" style="background-color: #fafafa;">
+    <h2 class="section-title">Ce qui nous distingue</h2>
+    <div class="grid-4">
+      <div class="card">
+        <h3>Réactivité terrain</h3>
+        <p>Nos équipes terrain interviennent rapidement partout en France pour garantir la continuité de vos opérations.</p>
+      </div>
+      <div class="card">
+        <h3>Technologie éprouvée</h3>
+        <p>Notre solution repose sur une technologie robuste, testée et validée sur le terrain par plus de 2 500 camions en activité.</p>
+      </div>
+      <div class="card">
+        <h3>Adaptabilité</h3>
+        <p>Que vous soyez transporteur, logisticien ou gestionnaire de flotte, nous personnalisons notre technologie pour répondre à vos besoins.</p>
+      </div>
+      <div class="card">
+        <h3>Service client dédié</h3>
+        <p>Notre équipe support vous accompagne au quotidien avec un service client réactif, à l’écoute et entièrement dédié à vos enjeux.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Groupe -->
+  <section class="group-section" id="groupe">
+    <h2 class="section-title">Notre groupe.</h2>
+    <p style="margin-bottom: 30px; font-size: 18px;">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
+    
+    <div class="sub-brand">
+      <h3>S.R.Track - Logiciel et réseau</h3>
+      <p>Systèmes d’exploitation cloud, fabrication d’objets IoT, logiciels métiers et interfaces.</p>
+    </div>
+    
+    <div class="sub-brand">
+      <h3>S.R.+ – Matériel et objets Connectés</h3>
+      <p>Cloud, logiciels et SAV.</p>
+    </div>
+    
+    <p style="margin-top: 20px; font-weight: 600;">S.R.Tech, c’est un accompagnement global et agile pour vos projets IoT, avec une équipe experte et engagée.</p>
+  </section>
+
+  <!-- Section Services / Géolocalisation & Sécurisation -->
+  <section class="container" id="services">
+    <h2 class="section-title">Sécurisation 24H/24 & Géolocalisation</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Surveillance humaine 24h/24, 7j/7</h3>
+        <p>Nos partenaires de télésurveillance traitent en direct les alertes provenant des véhicules ou conteneurs. En cas d’intrusion ou de déviation, nos opérateurs agissent immédiatement.</p>
+      </div>
+      <div class="card">
+        <h3>Géolocalisation en temps réel</h3>
+        <p>Nos balises GPS permettent de suivre la position exacte de chaque véhicule ou conteneur, en temps réel via une plateforme web ou mobile intuitive.</p>
+      </div>
+      <div class="card">
+        <h3>Un accompagnement sur mesure</h3>
+        <p>Nous personnalisons les paramétrages, les zones de sécurité, les seuils d’alerte et les tableaux de bord selon vos exigences.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Contact -->
+  <section class="contact-container" id="contact">
+    <div class="contact-info">
+      <h2>Contactez-nous.</h2>
+      <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
+      <p style="color: #333; font-weight: normal; margin-top: 10px;">Notre équipe est à votre écoute.</p>
+    </div>
+    <form action="#" method="post">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">Prénom (obligatoire)</label>
+          <input type="text" id="fname" name="firstname" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Nom de famille (obligatoire)</label>
+          <input type="text" id="lname" name="lastname" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail (obligatoire)</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <button type="submit" class="btn-submit">Envoyer</button>
+    </form>
+  </section>
+
+  <!-- Pied de page -->
+  <footer>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#histoire">Histoire</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Légales</h4>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p><strong>S.R.Tech</strong></p>
+      <p>39 Rue de l’aviation, 94310 Orly</p>
+      <p>01 46 86 48 81</p>
+    </div>
+  </footer>
+
 </body>
 </html>
