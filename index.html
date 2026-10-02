@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
   <style>
-    /* Styles généraux */
+    /* Reset & Styles de base */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -16,6 +16,7 @@
       color: #333333;
       line-height: 1.6;
       background-color: #ffffff;
+      overflow-x: hidden;
     }
     a {
       text-decoration: none;
@@ -32,7 +33,7 @@
       align-items: center;
       padding: 20px 80px;
       background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -40,7 +41,7 @@
     .logo {
       font-weight: bold;
       font-size: 24px;
-      color: #107c41;
+      color: #0f6e38;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -53,24 +54,35 @@
       font-weight: 500;
       font-size: 16px;
       color: #333333;
-      transition: color 0.2s;
+      transition: color 0.3s;
     }
     nav a:hover {
-      color: #107c41;
+      color: #0f6e38;
     }
 
-    /* Bannière Hero */
+    /* Bannière Hero animée */
     .hero {
       background-color: #0f6e38;
       color: #ffffff;
-      padding: 100px 80px;
+      padding: 120px 80px;
       position: relative;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
     }
-    .hero h1 {
+    .hero-title {
       font-size: 48px;
       font-weight: 800;
       line-height: 1.2;
-      max-width: 800px;
+      max-width: 850px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-in-out;
+      position: absolute;
+    }
+    .hero-title.active {
+      opacity: 1;
+      transform: translateY(0);
     }
     .pause-btn {
       position: absolute;
@@ -80,15 +92,32 @@
       border: 1px solid rgba(255,255,255,0.4);
       color: white;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      font-size: 14px;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .pause-btn:hover {
+      background: rgba(0,0,0,0.6);
     }
 
-    /* Section Présentation / Carte arrondie */
+    /* Animations au scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section Intro */
     .intro-section {
       padding: 60px 80px;
       display: flex;
@@ -96,7 +125,7 @@
     }
     .intro-card {
       background-color: #e8f5e9;
-      border-radius: 50px;
+      border-radius: 40px;
       padding: 50px;
       max-width: 1000px;
       text-align: center;
@@ -104,13 +133,10 @@
     .intro-card p {
       font-size: 20px;
       color: #0f6e38;
-      margin-bottom: 20px;
-    }
-    .intro-card p strong {
-      font-weight: 700;
+      margin-bottom: 15px;
     }
 
-    /* Sections Générales */
+    /* Grilles et Cartes avec Images */
     .section-title {
       font-size: 36px;
       font-weight: 800;
@@ -120,8 +146,6 @@
     .container {
       padding: 60px 80px;
     }
-
-    /* Grilles de cartes */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -133,22 +157,35 @@
       gap: 24px;
     }
     .card {
-      background: #f9f9f9;
+      background: #ffffff;
       border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .card h3 {
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 25px;
+    }
+    .card-body h3 {
       font-size: 20px;
       color: #0f6e38;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
-    .card p {
+    .card-body p {
       color: #555555;
       font-size: 15px;
     }
 
-    /* Groupe & Filiales */
+    /* Section Groupe */
     .group-section {
       background-color: #f4f6f8;
       padding: 60px 80px;
@@ -156,7 +193,7 @@
     .sub-brand {
       border-left: 4px solid #0f6e38;
       padding-left: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
     .sub-brand h3 {
       font-size: 22px;
@@ -204,6 +241,11 @@
       border-radius: 8px;
       background-color: #f9f9f9;
       font-size: 15px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    input:focus {
+      border-color: #0f6e38;
     }
     .btn-submit {
       background-color: #0f6e38;
@@ -214,13 +256,13 @@
       font-weight: 600;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.3s;
     }
     .btn-submit:hover {
       background-color: #0b5229;
     }
 
-    /* Pied de page (Footer) */
+    /* Footer */
     footer {
       background-color: #ffffff;
       border-top: 1px solid #eeeeee;
@@ -237,15 +279,11 @@
     footer ul li {
       margin-bottom: 12px;
     }
-    footer a {
-      color: #333333;
-      text-decoration: underline;
-    }
     footer a:hover {
       color: #0f6e38;
     }
 
-    /* Responsive mobile */
+    /* Responsive */
     @media (max-width: 768px) {
       header, .hero, .intro-section, .container, .group-section, .contact-container, footer {
         padding: 30px 20px;
@@ -253,8 +291,8 @@
       .contact-container {
         grid-template-columns: 1fr;
       }
-      .hero h1 {
-        font-size: 32px;
+      .hero-title {
+        font-size: 30px;
       }
     }
   </style>
@@ -263,9 +301,7 @@
 
   <!-- Navigation -->
   <header>
-    <div class="logo">
-      <span>S.R.Tech</span>
-    </div>
+    <div class="logo">S.R.Tech</div>
     <nav>
       <ul>
         <li><a href="#histoire">Histoire</a></li>
@@ -276,64 +312,86 @@
     </nav>
   </header>
 
-  <!-- Section Hero -->
+  <!-- Hero Slider -->
   <section class="hero">
-    <h1>La sécurité ne doit jamais être une option.</h1>
-    <div class="pause-btn">||</div>
+    <h1 class="hero-title active">Sécuriser, Géolocaliser, Solutions IoT pour le transport.</h1>
+    <h1 class="hero-title">La sécurité ne doit jamais être une option.</h1>
+    <div class="pause-btn" id="pauseBtn">❚❚</div>
   </section>
 
-  <!-- Section Présentation -->
-  <section class="intro-section" id="histoire">
+  <!-- Intro -->
+  <section class="intro-section reveal" id="histoire">
     <div class="intro-card">
       <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
       <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
     </div>
   </section>
 
-  <!-- Section Notre Mission -->
-  <section class="container">
+  <!-- Notre Mission -->
+  <section class="container reveal">
     <h2 class="section-title">Notre mission</h2>
     <div class="grid-3">
       <div class="card">
-        <h3>Surveillance temps réel</h3>
-        <p>Offrir une surveillance en temps réel des véhicules et conteneurs.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80" alt="Camion transport">
+        <div class="card-body">
+          <h3>Surveillance en temps réel</h3>
+          <p>Offrir une surveillance en temps réel des véhicules et conteneurs.</p>
+        </div>
       </div>
       <div class="card">
-        <h3>Réactivité alerte</h3>
-        <p>Réduire les délais d’intervention en cas d’alerte.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" alt="Logistique dépôt">
+        <div class="card-body">
+          <h3>Réduction des délais</h3>
+          <p>Réduire les délais d’intervention en cas d’alerte.</p>
+        </div>
       </div>
       <div class="card">
-        <h3>Traçabilité garantie</h3>
-        <p>Garantir la conformité et la traçabilité à chaque étape du transport.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Centre de contrôle">
+        <div class="card-body">
+          <h3>Conformité & Traçabilité</h3>
+          <p>Garantir la conformité et la traçabilité à chaque étape du transport.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Section Ce qui nous distingue -->
-  <section class="container" style="background-color: #fafafa;">
+  <!-- Ce qui nous distingue -->
+  <section class="container reveal" style="background-color: #fafafa;">
     <h2 class="section-title">Ce qui nous distingue</h2>
     <div class="grid-4">
       <div class="card">
-        <h3>Réactivité terrain</h3>
-        <p>Nos équipes terrain interviennent rapidement partout en France pour garantir la continuité de vos opérations.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=500&q=80" alt="Intervention">
+        <div class="card-body">
+          <h3>Réactivité terrain</h3>
+          <p>Intervention rapide partout en France pour garantir la continuité des opérations.</p>
+        </div>
       </div>
       <div class="card">
-        <h3>Technologie éprouvée</h3>
-        <p>Notre solution repose sur une technologie robuste, testée et validée sur le terrain par plus de 2 500 camions en activité.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" alt="Technologie IoT">
+        <div class="card-body">
+          <h3>Technologie éprouvée</h3>
+          <p>Validée sur le terrain par plus de 2 500 camions en activité.</p>
+        </div>
       </div>
       <div class="card">
-        <h3>Adaptabilité</h3>
-        <p>Que vous soyez transporteur, logisticien ou gestionnaire de flotte, nous personnalisons notre technologie pour répondre à vos besoins.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=500&q=80" alt="Camion route">
+        <div class="card-body">
+          <h3>Adaptabilité</h3>
+          <p>Solutions sur mesure pour transporteurs, logisticiens et gestionnaires de flotte.</p>
+        </div>
       </div>
       <div class="card">
-        <h3>Service client dédié</h3>
-        <p>Notre équipe support vous accompagne au quotidien avec un service client réactif, à l’écoute et entièrement dédié à vos enjeux.</p>
+        <img class="card-img" src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80" alt="Service client">
+        <div class="card-body">
+          <h3>Service client dédié</h3>
+          <p>Un accompagnement au quotidien avec une équipe réactive et à l'écoute.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Section Groupe -->
-  <section class="group-section" id="groupe">
+  <!-- Groupe -->
+  <section class="group-section reveal" id="groupe">
     <h2 class="section-title">Notre groupe.</h2>
     <p style="margin-bottom: 30px; font-size: 18px;">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
     
@@ -346,31 +404,10 @@
       <h3>S.R.+ – Matériel et objets Connectés</h3>
       <p>Cloud, logiciels et SAV.</p>
     </div>
-    
-    <p style="margin-top: 20px; font-weight: 600;">S.R.Tech, c’est un accompagnement global et agile pour vos projets IoT, avec une équipe experte et engagée.</p>
   </section>
 
-  <!-- Section Services / Géolocalisation & Sécurisation -->
-  <section class="container" id="services">
-    <h2 class="section-title">Sécurisation 24H/24 & Géolocalisation</h2>
-    <div class="grid-3">
-      <div class="card">
-        <h3>Surveillance humaine 24h/24, 7j/7</h3>
-        <p>Nos partenaires de télésurveillance traitent en direct les alertes provenant des véhicules ou conteneurs. En cas d’intrusion ou de déviation, nos opérateurs agissent immédiatement.</p>
-      </div>
-      <div class="card">
-        <h3>Géolocalisation en temps réel</h3>
-        <p>Nos balises GPS permettent de suivre la position exacte de chaque véhicule ou conteneur, en temps réel via une plateforme web ou mobile intuitive.</p>
-      </div>
-      <div class="card">
-        <h3>Un accompagnement sur mesure</h3>
-        <p>Nous personnalisons les paramétrages, les zones de sécurité, les seuils d’alerte et les tableaux de bord selon vos exigences.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section Contact -->
-  <section class="contact-container" id="contact">
+  <!-- Contact -->
+  <section class="contact-container reveal" id="contact">
     <div class="contact-info">
       <h2>Contactez-nous.</h2>
       <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
@@ -380,22 +417,22 @@
       <div class="form-row">
         <div class="form-group">
           <label for="fname">Prénom (obligatoire)</label>
-          <input type="text" id="fname" name="firstname" required>
+          <input type="text" id="fname" required>
         </div>
         <div class="form-group">
           <label for="lname">Nom de famille (obligatoire)</label>
-          <input type="text" id="lname" name="lastname" required>
+          <input type="text" id="lname" required>
         </div>
       </div>
       <div class="form-group">
         <label for="email">E-mail (obligatoire)</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" required>
       </div>
       <button type="submit" class="btn-submit">Envoyer</button>
     </form>
   </section>
 
-  <!-- Pied de page -->
+  <!-- Footer -->
   <footer>
     <div>
       <h4>Navigation</h4>
@@ -421,5 +458,53 @@
     </div>
   </footer>
 
+  <!-- Scripts d'animation JS -->
+  <script>
+    // 1. Carrousel Hero
+    const titles = document.querySelectorAll('.hero-title');
+    const pauseBtn = document.getElementById('pauseBtn');
+    let currentIndex = 0;
+    let isPlaying = true;
+    let slideInterval;
+
+    function nextSlide() {
+      titles[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % titles.length;
+      titles[currentIndex].classList.add('active');
+    }
+
+    function startSlider() {
+      slideInterval = setInterval(nextSlide, 4000);
+    }
+
+    pauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        clearInterval(slideInterval);
+        pauseBtn.textContent = '▶';
+      } else {
+        startSlider();
+        pauseBtn.textContent = '❚❚';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    startSlider();
+
+    // 2. Animation d'apparition au Scroll
+    const reveals = document.querySelectorAll('.reveal');
+
+    function revealOnScroll() {
+      const windowHeight = window.innerHeight;
+      reveals.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+          element.classList.add('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // Lancement initial
+  </script>
 </body>
 </html>
