@@ -3,508 +3,1005 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
+  <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT</title>
   <style>
-    /* Reset & Styles de base */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #333333;
-      line-height: 1.6;
-      background-color: #ffffff;
-      overflow-x: hidden;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    ul {
-      list-style: none;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --primary: #00d4ff;
+      --primary-dark: #0099cc;
+      --secondary: #7b2ff7;
+      --accent: #ff006e;
+      --dark: #0a0e27;
+      --darker: #050814;
+      --light: #f0f4ff;
+      --text: #e0e6ff;
     }
 
-    /* En-tête / Navigation */
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--darker);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s ease;
+    }
+    .cursor-follower {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1px solid var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.3s ease, width 0.3s, height 0.3s;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Canvas 3D Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+    }
+
+    /* Gradient overlay */
+    .overlay-gradient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(123, 47, 247, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1), transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Header */
     header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      padding: 20px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 80px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
       z-index: 1000;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 14, 39, 0.5);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      transition: all 0.4s ease;
     }
+
+    header.scrolled {
+      padding: 12px 5%;
+      background: rgba(10, 14, 39, 0.85);
+      box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+    }
+
     .logo {
-      font-weight: bold;
-      font-size: 24px;
-      color: #0f6e38;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 2;
     }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -5px; left: 0;
+      width: 30%; height: 2px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      animation: logoPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { width: 30%; opacity: 1; }
+      50% { width: 100%; opacity: 0.6; }
+    }
+
     nav ul {
       display: flex;
-      gap: 32px;
+      gap: 40px;
+      align-items: center;
     }
+
     nav a {
       font-weight: 500;
-      font-size: 16px;
-      color: #333333;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #0f6e38;
-    }
-
-    /* Bannière Hero animée */
-    .hero {
-      background-color: #0f6e38;
-      color: #ffffff;
-      padding: 120px 80px;
+      font-size: 0.95rem;
       position: relative;
-      min-height: 380px;
-      display: flex;
-      align-items: center;
+      transition: color 0.3s;
+      padding: 5px 0;
     }
-    .hero-title {
-      font-size: 48px;
-      font-weight: 800;
-      line-height: 1.2;
-      max-width: 850px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease-in-out;
+
+    nav a::before {
+      content: '';
       position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
     }
-    .hero-title.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .pause-btn {
-      position: absolute;
-      right: 40px;
-      bottom: 30px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.4);
+
+    nav a:hover { color: var(--primary); }
+    nav a:hover::before { width: 100%; }
+
+    .cta-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
       color: white;
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+    }
+
+    .cta-btn:hover::before { left: 100%; }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 14px;
-      user-select: none;
-      transition: background 0.2s;
-    }
-    .pause-btn:hover {
-      background: rgba(0,0,0,0.6);
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Animations au scroll */
-    .reveal {
+    .hero-content {
+      max-width: 700px;
+      z-index: 2;
+      perspective: 1000px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--primary);
+      margin-bottom: 30px;
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+      animation: fadeInUp 1s 0.2s forwards;
     }
 
-    /* Section Intro */
-    .intro-section {
-      padding: 60px 80px;
-      display: flex;
-      justify-content: center;
-    }
-    .intro-card {
-      background-color: #e8f5e9;
-      border-radius: 40px;
-      padding: 50px;
-      max-width: 1000px;
-      text-align: center;
-    }
-    .intro-card p {
-      font-size: 20px;
-      color: #0f6e38;
-      margin-bottom: 15px;
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulseDot 2s infinite;
     }
 
-    /* Grilles et Cartes avec Images */
-    .section-title {
-      font-size: 36px;
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
       font-weight: 800;
-      color: #0f6e38;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 25px;
+      opacity: 0;
+      animation: fadeInUp 1s 0.4s forwards;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 4s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: rgba(224, 230, 255, 0.7);
       margin-bottom: 40px;
+      max-width: 550px;
+      opacity: 0;
+      animation: fadeInUp 1s 0.6s forwards;
     }
-    .container {
-      padding: 60px 80px;
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeInUp 1s 0.8s forwards;
     }
-    .grid-3 {
+
+    .btn-primary {
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50px;
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 212, 255, 0.5);
+    }
+
+    .btn-secondary {
+      padding: 16px 36px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+      cursor: none;
+      font-size: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 212, 255, 0.1);
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: rgba(224, 230, 255, 0.5);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInUp 1s 1.2s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--primary), transparent);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 30%;
+      background: white;
+      animation: scrollDown 2s infinite;
+    }
+
+    @keyframes scrollDown {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(400%); }
+    }
+
+    /* Sections */
+    section {
+      padding: 120px 5%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 80px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      padding: 6px 18px;
+      background: rgba(123, 47, 247, 0.15);
+      border: 1px solid rgba(123, 47, 247, 0.4);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: #b088ff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .section-header p {
+      color: rgba(224, 230, 255, 0.6);
+      font-size: 1.1rem;
+    }
+
+    /* Services Grid */
+    .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
     }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
-    }
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px 32px;
+      position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-    .card-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-    .card-body {
-      padding: 25px;
-    }
-    .card-body h3 {
-      font-size: 20px;
-      color: #0f6e38;
-      margin-bottom: 12px;
-    }
-    .card-body p {
-      color: #555555;
-      font-size: 15px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      transform-style: preserve-3d;
+      cursor: none;
     }
 
-    /* Section Groupe */
-    .group-section {
-      background-color: #f4f6f8;
-      padding: 60px 80px;
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 47, 247, 0.1));
+      opacity: 0;
+      transition: opacity 0.5s;
     }
-    .sub-brand {
-      border-left: 4px solid #0f6e38;
-      padding-left: 20px;
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+      border-radius: 24px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.5s;
+      background-size: 400% 400%;
+      animation: gradientShift 4s ease infinite;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+      border-color: transparent;
+      box-shadow: 0 30px 60px rgba(0, 212, 255, 0.2);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+    .service-card:hover::after { opacity: 1; }
+
+    .service-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(123, 47, 247, 0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
       margin-bottom: 25px;
-    }
-    .sub-brand h3 {
-      font-size: 22px;
-      color: #0f6e38;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.5s;
+      border: 1px solid rgba(0, 212, 255, 0.2);
     }
 
-    /* Formulaire de Contact */
-    .contact-container {
+    .service-card:hover .service-icon {
+      transform: scale(1.1) rotate(-10deg);
+    }
+
+    .service-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .service-card p {
+      color: rgba(224, 230, 255, 0.6);
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 20px;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 2;
+      transition: gap 0.3s;
+    }
+
+    .service-card:hover .service-link { gap: 15px; }
+
+    /* Stats */
+    .stats {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(123, 47, 247, 0.05));
+      border-top: 1px solid rgba(0, 212, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      letter-spacing: -2px;
+    }
+
+    .stat-item p {
+      color: rgba(224, 230, 255, 0.6);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* About */
+    .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      padding: 60px 80px;
+      gap: 80px;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
     }
-    .contact-info h2 {
-      font-size: 42px;
-      color: #0f6e38;
+
+    .about-content h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 25px;
+      letter-spacing: -1px;
+    }
+
+    .about-content p {
+      color: rgba(224, 230, 255, 0.7);
       margin-bottom: 20px;
+      font-size: 1.05rem;
     }
-    .contact-info p {
-      font-size: 20px;
-      color: #0f6e38;
-      font-weight: 600;
+
+    .about-features {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 40px;
     }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-row {
+
+    .about-feature {
       display: flex;
       gap: 20px;
+      align-items: flex-start;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s;
     }
-    .form-row .form-group {
-      flex: 1;
+
+    .about-feature:hover {
+      background: rgba(0, 212, 255, 0.05);
+      border-color: rgba(0, 212, 255, 0.2);
+      transform: translateX(10px);
     }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: #0f6e38;
+
+    .about-feature-icon {
+      min-width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
     }
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      font-size: 15px;
-      outline: none;
-      transition: border 0.3s;
+
+    .about-feature h4 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
     }
-    input:focus {
-      border-color: #0f6e38;
+
+    .about-feature p {
+      font-size: 0.9rem;
+      color: rgba(224, 230, 255, 0.6);
+      margin: 0;
     }
-    .btn-submit {
-      background-color: #0f6e38;
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
+
+    /* Contact */
+    .contact {
+      text-align: center;
     }
-    .btn-submit:hover {
-      background-color: #0b5229;
+
+    .contact-card {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 60px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(123, 47, 247, 0.05));
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .contact-card h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-card p {
+      color: rgba(224, 230, 255, 0.7);
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-card .btn-primary {
+      position: relative;
+      z-index: 2;
     }
 
     /* Footer */
     footer {
-      background-color: #ffffff;
-      border-top: 1px solid #eeeeee;
-      padding: 60px 80px;
+      padding: 60px 5% 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(5, 8, 20, 0.8);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      max-width: 1400px;
+      margin: 0 auto 50px;
     }
-    footer h4 {
-      font-size: 24px;
-      color: #0f6e38;
+
+    .footer-brand p {
+      color: rgba(224, 230, 255, 0.5);
+      margin-top: 20px;
+      font-size: 0.9rem;
+      max-width: 300px;
+    }
+
+    .footer-col h4 {
+      font-size: 1rem;
       margin-bottom: 20px;
+      color: white;
     }
-    footer ul li {
+
+    .footer-col ul li {
       margin-bottom: 12px;
     }
-    footer a:hover {
-      color: #0f6e38;
+
+    .footer-col a {
+      color: rgba(224, 230, 255, 0.5);
+      font-size: 0.9rem;
+      transition: color 0.3s, padding-left 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: var(--primary);
+      padding-left: 5px;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      color: rgba(224, 230, 255, 0.4);
+      font-size: 0.85rem;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 1s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Responsive */
-    @media (max-width: 768px) {
-      header, .hero, .intro-section, .container, .group-section, .contact-container, footer {
-        padding: 30px 20px;
+    @media (max-width: 968px) {
+      nav ul {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0; right: 0;
+        flex-direction: column;
+        background: rgba(10, 14, 39, 0.98);
+        padding: 40px;
+        gap: 25px;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        backdrop-filter: blur(20px);
       }
-      .contact-container {
+
+      nav ul.open { display: flex; }
+
+      .menu-toggle { display: block; }
+
+      .about-grid {
         grid-template-columns: 1fr;
+        gap: 50px;
       }
-      .hero-title {
-        font-size: 30px;
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
       }
+
+      .contact-card { padding: 50px 30px; }
+
+      body { cursor: auto; }
+      .cursor, .cursor-follower { display: none; }
+      .btn-primary, .btn-secondary, .service-card { cursor: pointer; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 80px 5%; }
+      .hero { padding: 100px 5% 60px; }
+      .hero-buttons { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      header { padding: 15px 5%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <header>
-    <div class="logo">S.R.Tech</div>
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- 3D Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay-gradient"></div>
+
+  <!-- Header -->
+  <header id="header">
+    <a href="#" class="logo">SRTech</a>
     <nav>
-      <ul>
-        <li><a href="#histoire">Histoire</a></li>
-        <li><a href="#groupe">Notre groupe</a></li>
+      <ul id="navMenu">
         <li><a href="#services">Services</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#stats">Chiffres</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact" class="cta-btn">Demander une démo</a></li>
       </ul>
     </nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
   </header>
 
-  <!-- Hero Slider -->
+  <!-- Hero -->
   <section class="hero">
-    <h1 class="hero-title active">Sécuriser, Géolocaliser, Solutions IoT pour le transport.</h1>
-    <h1 class="hero-title">La sécurité ne doit jamais être une option.</h1>
-    <div class="pause-btn" id="pauseBtn">❚❚</div>
-  </section>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Solutions IoT nouvelle génération
+      </div>
+      <h1>
+        Sécurisez, <span class="gradient">géolocalisez</span>, maîtrisez votre flotte
+      </h1>
+      <p>
+        SRTech révolutionne le transport avec des solutions IoT intelligentes : 
+        géolocalisation temps réel, sécurité avancée et analyse de données prédictive 
+        pour optimiser chaque trajet.
+      </p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">
+          Démarrer maintenant
+          <span>→</span>
+        </a>
+        <a href="#services" class="btn-secondary">
+          Découvrir nos solutions
+        </a>
+      </div>
+    </div>
 
-  <!-- Intro -->
-  <section class="intro-section reveal" id="histoire">
-    <div class="intro-card">
-      <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
-      <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
     </div>
   </section>
 
-  <!-- Notre Mission -->
-  <section class="container reveal">
-    <h2 class="section-title">Notre mission</h2>
-    <div class="grid-3">
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80" alt="Camion transport">
-        <div class="card-body">
-          <h3>Surveillance en temps réel</h3>
-          <p>Offrir une surveillance en temps réel des véhicules et conteneurs.</p>
-        </div>
+  <!-- Services -->
+  <section id="services">
+    <div class="section-header reveal">
+      <div class="section-tag">Nos Services</div>
+      <h2>Solutions IoT <span class="gradient">complètes</span></h2>
+      <p>Une suite technologique pensée pour les professionnels du transport et de la logistique.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🛰️</div>
+        <h3>Géolocalisation GPS</h3>
+        <p>Suivi en temps réel de vos véhicules avec une précision centimétrique et des alertes intelligentes.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
       </div>
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" alt="Logistique dépôt">
-        <div class="card-body">
-          <h3>Réduction des délais</h3>
-          <p>Réduire les délais d’intervention en cas d’alerte.</p>
-        </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">🔒</div>
+        <h3>Sécurité Avancée</h3>
+        <p>Protection anti-vol, détection d'intrusion et surveillance 24/7 pour votre tranquillité d'esprit.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
       </div>
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Centre de contrôle">
-        <div class="card-body">
-          <h3>Conformité & Traçabilité</h3>
-          <p>Garantir la conformité et la traçabilité à chaque étape du transport.</p>
-        </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">📊</div>
+        <h3>Analytics & IoT</h3>
+        <p>Analyse prédictive, rapports détaillés et tableaux de bord personnalisés pour optimiser vos opérations.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">⚡</div>
+        <h3>Maintenance Prédictive</h3>
+        <p>Anticipez les pannes grâce à nos capteurs intelligents et réduisez vos coûts d'exploitation.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">🌐</div>
+        <h3>Plateforme Cloud</h3>
+        <p>Accédez à vos données depuis n'importe où avec une interface moderne et sécurisée.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">🤖</div>
+        <h3>Intelligence Artificielle</h3>
+        <p>Optimisation des tournées, prédiction des comportements et assistance au conducteur.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
       </div>
     </div>
   </section>
 
-  <!-- Ce qui nous distingue -->
-  <section class="container reveal" style="background-color: #fafafa;">
-    <h2 class="section-title">Ce qui nous distingue</h2>
-    <div class="grid-4">
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=500&q=80" alt="Intervention">
-        <div class="card-body">
-          <h3>Réactivité terrain</h3>
-          <p>Intervention rapide partout en France pour garantir la continuité des opérations.</p>
-        </div>
+  <!-- Stats -->
+  <section class="stats" id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <h3 data-count="15000">0</h3>
+        <p>Véhicules connectés</p>
       </div>
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" alt="Technologie IoT">
-        <div class="card-body">
-          <h3>Technologie éprouvée</h3>
-          <p>Validée sur le terrain par plus de 2 500 camions en activité.</p>
-        </div>
+      <div class="stat-item reveal">
+        <h3 data-count="99">0</h3>
+        <p>% Disponibilité</p>
       </div>
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=500&q=80" alt="Camion route">
-        <div class="card-body">
-          <h3>Adaptabilité</h3>
-          <p>Solutions sur mesure pour transporteurs, logisticiens et gestionnaires de flotte.</p>
-        </div>
+      <div class="stat-item reveal">
+        <h3 data-count="45">0</h3>
+        <p>Pays couverts</p>
       </div>
-      <div class="card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80" alt="Service client">
-        <div class="card-body">
-          <h3>Service client dédié</h3>
-          <p>Un accompagnement au quotidien avec une équipe réactive et à l'écoute.</p>
-        </div>
+      <div class="stat-item reveal">
+        <h3 data-count="24">0</h3>
+        <p>Support / 7j</p>
       </div>
     </div>
   </section>
 
-  <!-- Groupe -->
-  <section class="group-section reveal" id="groupe">
-    <h2 class="section-title">Notre groupe.</h2>
-    <p style="margin-bottom: 30px; font-size: 18px;">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
-    
-    <div class="sub-brand">
-      <h3>S.R.Track - Logiciel et réseau</h3>
-      <p>Systèmes d’exploitation cloud, fabrication d’objets IoT, logiciels métiers et interfaces.</p>
-    </div>
-    
-    <div class="sub-brand">
-      <h3>S.R.+ – Matériel et objets Connectés</h3>
-      <p>Cloud, logiciels et SAV.</p>
+  <!-- About -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-content reveal">
+        <div class="section-tag">À propos</div>
+        <h2>L'innovation au service du <span class="gradient">transport</span></h2>
+        <p>
+          Depuis notre création, SRTech développe des solutions IoT de pointe pour les acteurs 
+          du transport et de la logistique. Notre mission : rendre chaque trajet plus sûr, 
+          plus efficace et plus intelligent.
+        </p>
+        <p>
+          Nous combinons expertise technologique et compréhension profonde des enjeux métier 
+          pour offrir des solutions sur mesure adaptées à chaque flotte.
+        </p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">🎯</div>
+            <div>
+              <h4>Précision maximale</h4>
+              <p>Technologies GPS de dernière génération</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🔧</div>
+            <div>
+              <h4>Support dédié</h4>
+              <p>Équipe d'experts disponible 24/7</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🚀</div>
+            <div>
+              <h4>Déploiement rapide</h4>
+              <p>Installation en moins de 48h</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="display: flex; justify-content: center; align-items: center;">
+        <div id="about-3d" style="width: 100%; height: 500px; position: relative;"></div>
+      </div>
     </div>
   </section>
 
   <!-- Contact -->
-  <section class="contact-container reveal" id="contact">
-    <div class="contact-info">
-      <h2>Contactez-nous.</h2>
-      <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
-      <p style="color: #333; font-weight: normal; margin-top: 10px;">Notre équipe est à votre écoute.</p>
+  <section id="contact" class="contact">
+    <div class="contact-card reveal">
+      <h2>Prêt à transformer votre flotte ?</h2>
+      <p>Demandez une démonstration gratuite et découvrez comment SRTech peut révolutionner vos opérations.</p>
+      <a href="mailto:contact@srtech.com" class="btn-primary">
+        Demander une démo
+        <span>→</span>
+      </a>
     </div>
-    <form action="#" method="post">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="fname">Prénom (obligatoire)</label>
-          <input type="text" id="fname" required>
-        </div>
-        <div class="form-group">
-          <label for="lname">Nom de famille (obligatoire)</label>
-          <input type="text" id="lname" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">E-mail (obligatoire)</label>
-        <input type="email" id="email" required>
-      </div>
-      <button type="submit" class="btn-submit">Envoyer</button>
-    </form>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div>
-      <h4>Navigation</h4>
-      <ul>
-        <li><a href="#">Accueil</a></li>
-        <li><a href="#histoire">Histoire</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">SRTech</div>
+        <p>Sécuriser, géolocaliser et optimiser votre flotte grâce à nos solutions IoT innovantes.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produits</h4>
+        <ul>
+          <li><a href="#">GPS Tracking</a></li>
+          <li><a href="#">Sécurité</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Carrières</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Presse</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Statut</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <h4>Légales</h4>
-      <ul>
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Politique de confidentialité</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Contact</h4>
-      <p><strong>S.R.Tech</strong></p>
-      <p>39 Rue de l’aviation, 94310 Orly</p>
-      <p>01 46 86 48 81</p>
+    <div class="footer-bottom">
+      © 2025 SRTech. Tous droits réservés. Conçu avec passion pour l'innovation.
     </div>
   </footer>
 
-  <!-- Scripts d'animation JS -->
-  <script>
-    // 1. Carrousel Hero
-    const titles = document.querySelectorAll('.hero-title');
-    const pauseBtn = document.getElementById('pauseBtn');
-    let currentIndex = 0;
-    let isPlaying = true;
-    let slideInterval;
-
-    function nextSlide() {
-      titles[currentIndex].classList.remove('active');
-      currentIndex = (currentIndex + 1) % titles.length;
-      titles[currentIndex].classList.add('active');
-    }
-
-    function startSlider() {
-      slideInterval = setInterval(nextSlide, 4000);
-    }
-
-    pauseBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        clearInterval(slideInterval);
-        pauseBtn.textContent = '▶';
-      } else {
-        startSlider();
-        pauseBtn.textContent = '❚❚';
-      }
-      isPlaying = !isPlaying;
-    });
-
-    startSlider();
-
-    // 2. Animation d'apparition au Scroll
-    const reveals = document.querySelectorAll('.reveal');
-
-    function revealOnScroll() {
-      const windowHeight = window.innerHeight;
-      reveals.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        if (elementTop < windowHeight - 100) {
-          element.classList.add('visible');
-        }
-      });
-    }
-
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll(); // Lancement initial
-  </script>
-</body>
-</html>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax
