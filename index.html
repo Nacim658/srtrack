@@ -5,435 +5,1281 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SRTech - Sécuriser, Géolocaliser, Solutions IoT pour le transport</title>
 <style>
-:root{--g:#0f6e38;--n:#35f2a0;--bg:#040d09;--tx:#e8f5ee;--mut:#9bb5a6;--glass:rgba(10,30,20,.55);--bd:rgba(53,242,160,.18)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--tx);background:var(--bg);line-height:1.6;overflow-x:hidden}
-a{text-decoration:none;color:inherit}ul{list-style:none}
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-main,header,footer{position:relative;z-index:2}
-body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 70% 20%,rgba(15,110,56,.25),transparent 60%),radial-gradient(ellipse at 10% 90%,rgba(53,242,160,.08),transparent 50%)}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Loader / progress / glow */
-#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:grid;place-items:center;transition:opacity .8s,visibility .8s}
-#loader.off{opacity:0;visibility:hidden}
-#loader div{font-size:28px;font-weight:800;color:var(--n);letter-spacing:6px;animation:pulse 1.2s infinite}
-@keyframes pulse{50%{opacity:.3;transform:scale(.96)}}
-#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:2000;background:linear-gradient(90deg,var(--g),var(--n));box-shadow:0 0 12px var(--n)}
-.glow{position:fixed;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;z-index:1;pointer-events:none;background:radial-gradient(circle,rgba(53,242,160,.13),transparent 65%);will-change:transform}
+  :root {
+    --primary: #0066ff;
+    --primary-dark: #0044cc;
+    --secondary: #7b2ff7;
+    --accent: #ff3d71;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light-gray: #f1f5f9;
+    --white: #ffffff;
+    --text: #1e293b;
+    --text-light: #475569;
+  }
 
-/* Header */
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 80px;position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(4,13,9,.55);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);transition:transform .4s}
-header.hide{transform:translateY(-100%)}
-.logo{font-weight:800;font-size:24px;letter-spacing:1px}.logo b{color:var(--n)}
-nav ul{display:flex;gap:32px}
-nav a{font-weight:500;position:relative;color:var(--mut);transition:color .3s}
-nav a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--n);transition:width .3s}
-nav a:hover{color:#fff}nav a:hover::after{width:100%}
+  html { scroll-behavior: smooth; }
 
-/* Hero */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:140px 80px 80px;position:relative}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--n);font-weight:600;letter-spacing:3px;font-size:13px;text-transform:uppercase;margin-bottom:24px}
-.eyebrow i{width:9px;height:9px;border-radius:50%;background:var(--n);box-shadow:0 0 0 0 var(--n);animation:ping 1.8s infinite}
-@keyframes ping{to{box-shadow:0 0 0 14px transparent}}
-.hero-titles{display:grid;max-width:760px;perspective:900px}
-.hero-title{grid-area:1/1;font-size:clamp(34px,5.4vw,70px);font-weight:900;line-height:1.08;pointer-events:none}
-.hero-title.active{pointer-events:auto}
-.hero-title .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em}
-.hero-title .w>span{display:inline-block;transform:translateY(110%) rotateX(-70deg);opacity:0;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .6s;transition-delay:var(--d)}
-.hero-title.active .w>span{transform:none;opacity:1}
-.hero-title:not(.active) .w>span{transition-delay:0s;transform:translateY(-110%);}
-.hero-title em{font-style:normal;background:linear-gradient(90deg,var(--n),#8dffd0);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p.lead{max-width:560px;color:var(--mut);font-size:19px;margin:26px 0 38px}
-.btns{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;padding:15px 34px;border-radius:50px;font-weight:700;font-size:16px;border:none;cursor:pointer;transition:transform .2s,box-shadow .3s;will-change:transform}
-.btn-p{background:linear-gradient(135deg,var(--g),#16a35a);color:#fff;box-shadow:0 8px 30px rgba(15,110,56,.5)}
-.btn-p:hover{box-shadow:0 8px 40px rgba(53,242,160,.55)}
-.btn-o{border:1px solid var(--n);color:var(--n);background:transparent}
-.btn-o:hover{background:rgba(53,242,160,.12)}
-#pauseBtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--bd);background:var(--glass);color:var(--n);cursor:pointer;font-size:14px}
-.scroll-hint{position:absolute;bottom:30px;left:80px;color:var(--mut);font-size:12px;letter-spacing:3px;display:flex;align-items:center;gap:12px}
-.scroll-hint span{width:1px;height:46px;background:linear-gradient(var(--n),transparent);animation:drip 2s infinite}
-@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    background: var(--white);
+    overflow-x: hidden;
+  }
 
-/* Marquee */
-.marquee{overflow:hidden;border-block:1px solid var(--bd);background:rgba(4,13,9,.7);padding:18px 0;backdrop-filter:blur(6px)}
-.marquee div{display:flex;gap:60px;width:max-content;animation:mq 28s linear infinite;color:var(--n);font-weight:700;letter-spacing:4px;font-size:14px;text-transform:uppercase}
-@keyframes mq{to{transform:translateX(-50%)}}
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+  img { max-width: 100%; display: block; }
 
-/* Layout */
-.container{padding:100px 80px}
-.section-title{font-size:clamp(28px,3.6vw,46px);font-weight:900;margin-bottom:46px}
-.section-title::after{content:"";display:block;width:70px;height:4px;margin-top:14px;border-radius:4px;background:linear-gradient(90deg,var(--n),transparent)}
-.grid-2,.grid-3,.grid-4{display:grid;gap:28px}
-.grid-2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
-.grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.reveal{opacity:0;transform:translateY(50px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
-.reveal.visible{opacity:1;transform:none}
-.reveal .grid-2>*,.reveal .grid-3>*,.reveal .grid-4>*{opacity:0;transform:translateY(40px) scale(.96);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*.12s + .15s)}
-.reveal.visible .grid-2>*,.reveal.visible .grid-3>*,.reveal.visible .grid-4>*{opacity:1;transform:none}
+  /* ===================== HEADER ===================== */
+  header {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 102, 255, 0.08);
+    transition: all 0.4s ease;
+  }
 
-/* Intro */
-.intro-card{max-width:1000px;margin:0 auto;text-align:center;padding:50px 60px;border-radius:40px;background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(16px)}
-.intro-card p{font-size:21px;color:var(--mut);margin-bottom:14px}.intro-card strong{color:var(--n)}
+  header.scrolled {
+    padding: 12px 5%;
+    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
+  }
 
-/* Cards 3D */
-.tilt{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;border-radius:20px;background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(12px);overflow:hidden;transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .15s ease-out,border-color .3s,box-shadow .3s;will-change:transform}
-.tilt:hover{border-color:var(--n);box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 40px rgba(53,242,160,.12)}
-.tilt::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.14),transparent 45%)}
-.tilt:hover::after{opacity:1}
-.card-img{height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0b3d22,#0f6e38 60%,#35f2a0)}
-.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
-.tilt:hover .card-img img{transform:scale(1.1)}
-.card-body{padding:26px;transform:translateZ(30px)}
-.card-body h3,.sc h3{font-size:21px;color:var(--n);margin-bottom:10px}
-.card-body p,.sc p{color:var(--mut)}
-.sc{padding:30px}
-.sc .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;font-size:22px;background:rgba(53,242,160,.12);border:1px solid var(--bd)}
+  .logo {
+    font-size: 1.7rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
 
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 80px 20px}
-.stat{text-align:center;padding:34px 10px;border-radius:20px;background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(10px)}
-.stat b{display:block;font-size:clamp(38px,5vw,60px);font-weight:900;color:var(--n);line-height:1}
-.stat span{color:var(--mut);font-size:15px}
+  nav ul {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
 
-/* Services band */
-.services-section{background:linear-gradient(180deg,transparent,rgba(15,110,56,.12),transparent)}
-.services-section .grid-2{margin-bottom:28px}
+  nav a {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text);
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s;
+  }
 
-/* Groupe */
-.sub-brand{border-left:4px solid var(--n);padding:6px 0 6px 22px;margin-bottom:26px;transition:transform .3s}
-.sub-brand:hover{transform:translateX(10px)}
-.sub-brand h3{font-size:24px;color:var(--n)}.sub-brand p{color:var(--mut)}
-.group-lead{margin-bottom:34px;font-size:19px;color:var(--mut);max-width:800px}
+  nav a:not(.cta-btn)::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s ease;
+  }
 
-/* Contact */
-.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin:0 80px;padding:60px;border-radius:30px;background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(16px)}
-.contact-info h2{font-size:clamp(32px,4vw,48px);color:var(--n);margin-bottom:20px}
-.contact-info p{color:var(--mut)}
-.form-row{display:flex;gap:20px}.form-group{margin-bottom:20px;flex:1}
-label{display:block;margin-bottom:8px;font-weight:500;color:var(--n);font-size:14px}
-input{width:100%;padding:14px;border:1px solid var(--bd);border-radius:12px;font-size:15px;background:rgba(0,0,0,.35);color:#fff;transition:border-color .3s,box-shadow .3s}
-input:focus{outline:none;border-color:var(--n);box-shadow:0 0 0 4px rgba(53,242,160,.15)}
-#ok{display:none;margin-top:16px;color:var(--n);font-weight:600}
+  nav a:not(.cta-btn):hover { color: var(--primary); }
+  nav a:not(.cta-btn):hover::before { width: 100%; }
 
-/* Footer */
-footer{margin-top:100px;padding:60px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;background:rgba(4,13,9,.9);border-top:1px solid var(--bd)}
-footer h4{font-size:20px;color:var(--n);margin-bottom:18px}
-footer li{margin-bottom:10px}footer a,footer p{color:var(--mut)}footer a:hover{color:var(--n)}
+  .cta-btn {
+    padding: 11px 24px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50px;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+    transition: all 0.3s;
+    display: inline-block;
+  }
 
-@media(max-width:768px){
-header,.hero,.container,.stats,footer{padding-left:20px;padding-right:20px}
-.container{padding-top:70px;padding-bottom:70px}
-nav ul{gap:14px;font-size:14px}.hero{padding-top:120px}.scroll-hint{left:20px}
-.contact-container{grid-template-columns:1fr;margin:0 20px;padding:30px 22px}
-.form-row{flex-direction:column;gap:0}.intro-card{padding:30px 22px}.glow{display:none}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.45);
+  }
+
+  .menu-toggle {
+    display: none;
+    font-size: 1.6rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+  }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    padding: 130px 5% 80px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
+  }
+
+  #bg-canvas {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    background: rgba(0, 102, 255, 0.08);
+    border: 1px solid rgba(0, 102, 255, 0.2);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--primary);
+    margin-bottom: 25px;
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeInUp 0.8s 0.2s forwards;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.6); }
+    50% { box-shadow: 0 0 0 8px rgba(0, 102, 255, 0); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    color: var(--dark);
+    margin-bottom: 22px;
+    opacity: 0;
+    animation: fadeInUp 0.8s 0.4s forwards;
+  }
+
+  .gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 35px;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeInUp 0.8s 0.6s forwards;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeInUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    padding: 15px 32px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50px;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.25);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 102, 255, 0.4);
+  }
+
+  .btn-secondary {
+    padding: 15px 32px;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 50px;
+    font-weight: 600;
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-3px);
+  }
+
+  .hero-image {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInRight 1s 0.6s forwards;
+  }
+
+  .hero-image-wrapper {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.2);
+    transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+    transition: transform 0.6s ease;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero-image-wrapper:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(0); }
+    50% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(-15px); }
+  }
+
+  .hero-image-wrapper img {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .floating-card {
+    position: absolute;
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: 0 15px 40px rgba(0, 102, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 3;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .floating-card.card-1 { top: 30px; left: -30px; animation-delay: 0.5s; }
+  .floating-card.card-2 { bottom: 40px; right: -30px; animation-delay: 1.2s; }
+
+  .floating-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  .floating-card-text strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--dark);
+  }
+
+  .floating-card-text span {
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ===================== SECTIONS ===================== */
+  section {
+    padding: 100px 5%;
+    position: relative;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 70px;
+  }
+
+  .section-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(0, 102, 255, 0.08);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--dark);
+    margin-bottom: 18px;
+    line-height: 1.2;
+  }
+
+  .section-header p {
+    color: var(--text-light);
+    font-size: 1.05rem;
+  }
+
+  /* ===================== SERVICES ===================== */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .service-card {
+    background: white;
+    border: 1px solid #e9eef7;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  }
+
+  .service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 102, 255, 0.15);
+    border-color: rgba(0, 102, 255, 0.3);
+  }
+
+  .service-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .service-card:hover .service-image img {
+    transform: scale(1.1);
+  }
+
+  .service-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0, 102, 255, 0.4));
+  }
+
+  .service-body {
+    padding: 28px;
+  }
+
+  .service-icon {
+    width: 55px; height: 55px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(123, 47, 247, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+    transition: transform 0.4s;
+  }
+
+  .service-card:hover .service-icon {
+    transform: rotate(-8deg) scale(1.1);
+  }
+
+  .service-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--dark);
+  }
+
+  .service-body p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: gap 0.3s;
+  }
+
+  .service-card:hover .service-link { gap: 12px; }
+
+  /* ===================== STATS ===================== */
+  .stats {
+    background: linear-gradient(135deg, #f0f5ff 0%, #faf5ff 100%);
+    border-top: 1px solid rgba(0, 102, 255, 0.08);
+    border-bottom: 1px solid rgba(0, 102, 255, 0.08);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stat-item h3 {
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    letter-spacing: -2px;
+  }
+
+  .stat-item p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  /* ===================== ABOUT ===================== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .about-image {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.15);
+  }
+
+  .about-image img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .about-image:hover img {
+    transform: scale(1.05);
+  }
+
+  .about-badge {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background: white;
+    padding: 18px 24px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .about-badge-icon {
+    width: 50px; height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+  }
+
+  .about-badge-text strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--dark);
+  }
+
+  .about-badge-text span {
+    font-size: 0.8rem;
+    color: var(--gray);
+  }
+
+  .about-content h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    letter-spacing: -1px;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .about-content > p {
+    color: var(--text-light);
+    margin-bottom: 18px;
+    font-size: 1.02rem;
+  }
+
+  .about-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .about-feature {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px;
+    background: #f8faff;
+    border-radius: 14px;
+    border: 1px solid #e9eef7;
+    transition: all 0.3s;
+  }
+
+  .about-feature:hover {
+    background: white;
+    border-color: var(--primary);
+    transform: translateX(8px);
+    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.1);
+  }
+
+  .about-feature-icon {
+    min-width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  .about-feature h4 {
+    font-size: 1rem;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+
+  .about-feature p {
+    font-size: 0.87rem;
+    color: var(--text-light);
+    margin: 0;
+  }
+
+  /* ===================== CTA / CONTACT ===================== */
+  .contact {
+    background: linear-gradient(135deg, #0066ff 0%, #7b2ff7 100%);
+    color: white;
+    border-radius: 32px;
+    margin: 0 5% 100px;
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+    animation: rotate 25s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .contact-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .contact h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 18px;
+    letter-spacing: -1px;
+  }
+
+  .contact p {
+    font-size: 1.1rem;
+    margin-bottom: 35px;
+    opacity: 0.9;
+  }
+
+  .contact .btn-primary {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .contact .btn-primary:hover {
+    background: #f0f5ff;
+    transform: translateY(-3px) scale(1.03);
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    padding: 70px 5% 30px;
+    background: #f8faff;
+    border-top: 1px solid #e9eef7;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 50px;
+    max-width: 1300px;
+    margin: 0 auto 50px;
+  }
+
+  .footer-brand .logo {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+
+  .footer-brand p {
+    color: var(--text-light);
+    font-size: 0.92rem;
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-size: 1rem;
+    margin-bottom: 18px;
+    color: var(--dark);
+    font-weight: 700;
+  }
+
+  .footer-col ul li { margin-bottom: 10px; }
+
+  .footer-col a {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    transition: color 0.3s, padding-left 0.3s;
+  }
+
+  .footer-col a:hover {
+    color: var(--primary);
+    padding-left: 4px;
+  }
+
+  .footer-bottom {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 28px;
+    border-top: 1px solid #e9eef7;
+    text-align: center;
+    color: var(--gray);
+    font-size: 0.85rem;
+  }
+
+  /* ===================== REVEAL ===================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 968px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 120px 5% 60px;
+      text-align: center;
+    }
+    #bg-canvas {
+      width: 100%;
+      opacity: 0.3;
+    }
+    .hero-content { margin: 0 auto; }
+    .hero-buttons { justify-content: center; }
+    .hero-image { display: none; }
+
+    nav ul {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      flex-direction: column;
+      background: white;
+      padding: 30px;
+      gap: 20px;
+      border-bottom: 1px solid #e9eef7;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    nav ul.open { display: flex; }
+    .menu-toggle { display: block; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-image img { height: 350px; }
+
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+
+    .contact { padding: 60px 30px; margin: 0 5% 60px; }
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 70px 5%; }
+    .hero-buttons { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .floating-card { display: none; }
+  }
 </style>
 </head>
 <body>
-<div id="loader"><div>S.R.TECH</div></div>
-<div id="bar"></div><div class="glow" id="glow"></div>
-<canvas id="bg"></canvas>
 
-<header id="hd">
-  <a href="#" class="logo">S.R.<b>Tech</b></a>
-  <nav><ul>
-    <li><a href="#histoire">Histoire</a></li>
-    <li><a href="#groupe">Notre groupe</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul></nav>
+<!-- ===================== HEADER ===================== -->
+<header id="header">
+  <a href="#" class="logo">SRTech</a>
+  <nav>
+    <ul id="navMenu">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#stats">Chiffres</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="cta-btn">Demander une démo</a></li>
+    </ul>
+  </nav>
+  <button class="menu-toggle" id="menuToggle">☰</button>
 </header>
 
-<main>
+<!-- ===================== HERO ===================== -->
 <section class="hero">
-  <div class="eyebrow"><i></i>Transport · IoT · Sécurité</div>
-  <div class="hero-titles">
-    <h1 class="hero-title active">Sécuriser, Géolocaliser, <em>Solutions IoT</em> pour le transport.</h1>
-    <h1 class="hero-title">La sécurité ne doit <em>jamais</em> être une option.</h1>
-  </div>
-  <p class="lead">Surveillance en temps réel de vos véhicules et conteneurs, partout, 24h/24.</p>
-  <div class="btns">
-    <a href="#services" class="btn btn-p mag">Découvrir nos services</a>
-    <a href="#contact" class="btn btn-o mag">Nous contacter</a>
-    <button id="pauseBtn" aria-label="Pause">❚❚</button>
-  </div>
-  <div class="scroll-hint"><span></span>SCROLL</div>
-</section>
+  <canvas id="bg-canvas"></canvas>
 
-<div class="marquee"><div id="mq">
-  <i>Géolocalisation</i><i>Sécurisation 24/7</i><i>IoT</i><i>Télésurveillance</i><i>Supply chain</i><i>RGPD</i><i>Hébergement France</i><i>Conteneurs</i>
-</div></div>
-
-<section class="container reveal" id="histoire">
-  <div class="intro-card">
-    <p>Depuis plus de <strong>15 ans</strong>, SRTech dispose d’une large gamme d’<strong>équipements sécuritaires</strong> répondant ainsi aux cahiers des charges les plus poussés.</p>
-    <p>Son service R&D associé aux nouvelles technologies, lui permet d’être leader de sa profession.</p>
-  </div>
-</section>
-
-<div class="stats reveal">
-  <div class="stat"><b data-count="15" data-suf="+">0</b><span>années d'expertise</span></div>
-  <div class="stat"><b data-count="2500" data-suf="+">0</b><span>camions équipés</span></div>
-  <div class="stat"><b data-count="24" data-suf="/7">0</b><span>surveillance</span></div>
-  <div class="stat"><b data-count="100" data-suf="%">0</b><span>données hébergées en France</span></div>
-</div>
-
-<section class="container reveal">
-  <h2 class="section-title">Sécuriser votre supply chain</h2>
-  <div class="grid-2">
-    <div class="tilt" style="--i:0">
-      <div class="card-img"><img src="images/truck.jpg" alt="Sécurisation transport routier" onerror="this.style.display='none'"></div>
-      <div class="card-body"><h3>Sécurisation</h3><p>Nous offrons un suivi continu pour protéger vos flux logistiques et véhicules routiers contre le vol et les intrusions.</p></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Solutions IoT nouvelle génération
     </div>
-    <div class="tilt" style="--i:1">
-      <div class="card-img"><img src="images/containers.jpg" alt="Géolocalisation conteneurs" onerror="this.style.display='none'"></div>
-      <div class="card-body"><h3>Géolocalisation</h3><p>En suivant en direct les conteneurs et marchandises à chaque étape du trajet maritime ou terrestre.</p></div>
+    <h1>
+      Sécurisez, <span class="gradient">géolocalisez</span>, maîtrisez votre flotte
+    </h1>
+    <p>
+      SRTech révolutionne le transport avec des solutions IoT intelligentes :
+      géolocalisation temps réel, sécurité avancée et analyse prédictive
+      pour optimiser chaque trajet.
+    </p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn-primary">Démarrer maintenant →</a>
+      <a href="#services" class="btn-secondary">Découvrir nos solutions</a>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <div class="hero-image-wrapper">
+      <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=80" alt="Camion transport">
+      <div class="floating-card card-1">
+        <div class="floating-card-icon">📍</div>
+        <div class="floating-card-text">
+          <strong>GPS Actif</strong>
+          <span>Temps réel</span>
+        </div>
+      </div>
+      <div class="floating-card card-2">
+        <div class="floating-card-icon">🔒</div>
+        <div class="floating-card-text">
+          <strong>100% Sécurisé</strong>
+          <span>24/7</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="container services-section reveal" id="services">
-  <h2 class="section-title">Nos Services</h2>
-  <div class="grid-2">
-    <div class="tilt sc" style="--i:0"><div class="ico">🛡️</div><h3>Sécurisation 24H/24</h3><p><strong>Surveillance humaine en temps réel :</strong> Nos partenaires de télésurveillance traitent en direct les alertes (ouverture de porte, intrusion, déviation). Les opérateurs agissent immédiatement selon vos consignes.</p></div>
-    <div class="tilt sc" style="--i:1"><div class="ico">📍</div><h3>Géolocalisation en temps réel</h3><p><strong>Suivi de flotte complet :</strong> Suivez la position exacte de vos véhicules et conteneurs via notre plateforme web/mobile. Vue cartographique dynamique et historique des trajets disponibles 24h/24.</p></div>
+<!-- ===================== SERVICES ===================== -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-tag">Nos Services</div>
+    <h2>Solutions IoT <span class="gradient">complètes</span></h2>
+    <p>Une suite technologique pensée pour les professionnels du transport et de la logistique.</p>
   </div>
-  <div class="grid-3">
-    <div class="tilt sc" style="--i:2"><div class="ico">👁️</div><h3>Surveillance 24/7</h3><p>Traitement direct des alertes véhicule et conteneur par des opérateurs qualifiés.</p></div>
-    <div class="tilt sc" style="--i:3"><div class="ico">⚙️</div><h3>Accompagnement sur mesure</h3><p>Personnalisation des paramètres, seuils d'alerte, zones de sécurité et tableaux de bord.</p></div>
-    <div class="tilt sc" style="--i:4"><div class="ico">🇫🇷</div><h3>Infrastructure française</h3><p>Hébergement des données en France dans le strict respect du RGPD et des normes de cybersécurité.</p></div>
-  </div>
-</section>
 
-<section class="container reveal">
-  <h2 class="section-title">Notre mission</h2>
-  <div class="grid-3">
-    <div class="tilt" style="--i:0"><div class="card-img"><img src="images/truck.jpg" alt="Camion" onerror="this.style.display='none'"></div><div class="card-body"><h3>Offrir une surveillance en temps réel</h3><p>Suivi permanent des véhicules et conteneurs.</p></div></div>
-    <div class="tilt" style="--i:1"><div class="card-img"><img src="images/security.jpg" alt="Centre de contrôle" onerror="this.style.display='none'"></div><div class="card-body"><h3>Réduire les délais</h3><p>Intervention immédiate en cas d'alerte détectée.</p></div></div>
-    <div class="tilt" style="--i:2"><div class="card-img"><img src="images/containers.jpg" alt="Traçabilité" onerror="this.style.display='none'"></div><div class="card-body"><h3>Garantir la conformité</h3><p>Traçabilité complète à chaque étape du transport.</p></div></div>
-  </div>
-</section>
-
-<section class="container reveal">
-  <h2 class="section-title">Ce qui nous distingue</h2>
-  <div class="grid-4">
-    <div class="tilt sc" style="--i:0"><h3>Réactivité terrain</h3><p>Interventions rapides partout en France pour assurer la continuité opérationnelle.</p></div>
-    <div class="tilt sc" style="--i:1"><h3>Technologie éprouvée</h3><p>Validée sur le terrain avec plus de 2 500 camions équipés en activité.</p></div>
-    <div class="tilt sc" style="--i:2"><h3>Adaptabilité</h3><p>Solutions configurées spécifiquement pour transporteurs et logisticiens.</p></div>
-    <div class="tilt sc" style="--i:3"><h3>Service client dédié</h3><p>Équipe support réactive et joignable directement sans intermédiaire.</p></div>
-  </div>
-</section>
-
-<section class="container reveal" id="groupe">
-  <h2 class="section-title">Notre groupe.</h2>
-  <p class="group-lead">Ensemble, nous maîtrisons vos projets de A à Z, en proposant des solutions connectées sur mesure, de la conception à la mise en service.</p>
-  <div class="sub-brand"><h3>S.R.Track - Logiciel et réseau</h3><p>Systèmes d’exploitation cloud, fabrication d’objets IoT, logiciels métiers et interfaces.</p></div>
-  <div class="sub-brand"><h3>S.R.+ – Matériel et objets Connectés</h3><p>Cloud, logiciels et SAV.</p></div>
-</section>
-
-<section class="contact-container reveal" id="contact">
-  <div class="contact-info">
-    <h2>Contactez-nous.</h2>
-    <p>Vous avez une question, un projet ou besoin d’assistance ?</p>
-    <p style="margin-top:10px">Notre équipe est à votre écoute.</p>
-  </div>
-  <form id="form" action="#" method="post">
-    <div class="form-row">
-      <div class="form-group"><label for="fname">Prénom (obligatoire)</label><input type="text" id="fname" required></div>
-      <div class="form-group"><label for="lname">Nom de famille (obligatoire)</label><input type="text" id="lname" required></div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&q=80" alt="GPS">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">🛰️</div>
+        <h3>Géolocalisation GPS</h3>
+        <p>Suivi en temps réel de vos véhicules avec une précision centimétrique et des alertes intelligentes.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
     </div>
-    <div class="form-group"><label for="email">E-mail (obligatoire)</label><input type="email" id="email" required></div>
-    <button type="submit" class="btn btn-p mag">Envoyer</button>
-    <div id="ok">✔ Merci ! Nous revenons vers vous rapidement.</div>
-  </form>
-</section>
-</main>
 
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80" alt="Sécurité">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">🔒</div>
+        <h3>Sécurité Avancée</h3>
+        <p>Protection anti-vol, détection d'intrusion et surveillance 24/7 pour votre tranquillité d'esprit.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Analytics">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">📊</div>
+        <h3>Analytics & IoT</h3>
+        <p>Analyse prédictive, rapports détaillés et tableaux de bord personnalisés pour optimiser vos opérations.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" alt="Maintenance">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">⚡</div>
+        <h3>Maintenance Prédictive</h3>
+        <p>Anticipez les pannes grâce à nos capteurs intelligents et réduisez vos coûts d'exploitation.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80" alt="Cloud">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">🌐</div>
+        <h3>Plateforme Cloud</h3>
+        <p>Accédez à vos données depuis n'importe où avec une interface moderne et sécurisée.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-image">
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80" alt="IA">
+      </div>
+      <div class="service-body">
+        <div class="service-icon">🤖</div>
+        <h3>Intelligence Artificielle</h3>
+        <p>Optimisation des tournées, prédiction des comportements et assistance au conducteur.</p>
+        <a href="#" class="service-link">En savoir plus →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="stats" id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <h3 data-count="15000">0</h3>
+      <p>Véhicules connectés</p>
+    </div>
+    <div class="stat-item reveal">
+      <h3 data-count="99">0</h3>
+      <p>% Disponibilité</p>
+    </div>
+    <div class="stat-item reveal">
+      <h3 data-count="45">0</h3>
+      <p>Pays couverts</p>
+    </div>
+    <div class="stat-item reveal">
+      <h3 data-count="24">0</h3>
+      <p>Support / 7j</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-image reveal">
+      <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80" alt="Équipe SRTech">
+      <div class="about-badge">
+        <div class="about-badge-icon">🏆</div>
+        <div class="about-badge-text">
+          <strong>+10 ans</strong>
+          <span>d'expertise</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-content reveal">
+      <div class="section-tag">À propos</div>
+      <h2>L'innovation au service du <span class="gradient">transport</span></h2>
+      <p>
+        Depuis notre création, SRTech développe des solutions IoT de pointe pour les acteurs
+        du transport et de la logistique. Notre mission : rendre chaque trajet plus sûr,
+        plus efficace et plus intelligent.
+      </p>
+
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="about-feature-icon">🎯</div>
+          <div>
+            <h4>Précision maximale</h4>
+            <p>Technologies GPS de dernière génération</p>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">🔧</div>
+          <div>
+            <h4>Support dédié</h4>
+            <p>Équipe d'experts disponible 24/7</p>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">🚀</div>
+          <div>
+            <h4>Déploiement rapide</h4>
+            <p>Installation en moins de 48h</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" style="padding: 0;">
+  <div class="contact reveal">
+    <div class="contact-content">
+      <h2>Prêt à transformer votre flotte ?</h2>
+      <p>Demandez une démonstration gratuite et découvrez comment SRTech peut révolutionner vos opérations.</p>
+      <a href="mailto:contact@srtech.com" class="btn-primary">Demander une démo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
 <footer>
-  <div><h4>Navigation</h4><ul><li><a href="#">Accueil</a></li><li><a href="#histoire">Histoire</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
-  <div><h4>Légales</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Politique de confidentialité</a></li></ul></div>
-  <div><h4>Contact</h4><p><strong>S.R.Tech</strong></p><p>39 Rue de l’aviation, 94310 Orly</p><p>01 46 86 48 81</p></div>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">SRTech</div>
+      <p>Sécuriser, géolocaliser et optimiser votre flotte grâce à nos solutions IoT innovantes.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Produits</h4>
+      <ul>
+        <li><a href="#">GPS Tracking</a></li>
+        <li><a href="#">Sécurité</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">API</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Entreprise</h4>
+      <ul>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Carrières</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Presse</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Statut</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 SRTech. Tous droits réservés. Conçu avec passion pour l'innovation.
+  </div>
 </footer>
 
+<!-- ===================== THREE.JS ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ========== UI ========== */
-(()=>{
-  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-  const touch=matchMedia('(hover:none)').matches;
+/* ========== 3D BACKGROUND (Hero) ========== */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
 
-  // Loader
-  addEventListener('load',()=>setTimeout(()=>$('#loader').classList.add('off'),500));
-  setTimeout(()=>$('#loader').classList.add('off'),3500);
+  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+  camera.position.z = 6;
 
-  // Marquee : duplication pour boucle infinie
-  $('#mq').innerHTML+=$('#mq').innerHTML;
-  $$('#mq i').forEach(i=>i.style.fontStyle='normal');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Titres : découpe en mots
-  const titles=$$('.hero-title');
-  titles.forEach(t=>{
-    let k=0;
-    const walk=n=>[...n.childNodes].forEach(c=>{
-      if(c.nodeType===3){
-        const f=document.createDocumentFragment();
-        c.textContent.split(/(\s+)/).forEach(p=>{
-          if(!p.trim()){f.append(p);return}
-          const w=document.createElement('span');w.className='w';
-          w.innerHTML='<span style="--d:'+(k++*.07)+'s">'+p+'</span>';f.append(w);
-        });
-        c.replaceWith(f);
-      }else walk(c);
-    });
-    walk(t);
+  // Particules / réseau de points
+  const particlesGeo = new THREE.BufferGeometry();
+  const count = 600;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 14;
+  }
+  particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  const particlesMat = new THREE.PointsMaterial({
+    color: 0x0066ff,
+    size: 0.06,
+    transparent: true,
+    opacity: 0.7,
+    sizeAttenuation: true
   });
-  let cur=0,playing=true,timer;
-  const next=()=>{titles[cur].classList.remove('active');cur=(cur+1)%titles.length;titles[cur].classList.add('active')};
-  const start=()=>timer=setInterval(next,5000);
-  $('#pauseBtn').onclick=e=>{playing?clearInterval(timer):start();e.target.textContent=playing?'▶':'❚❚';playing=!playing};
-  start();
 
-  // Reveal
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);
-    e.target.querySelectorAll('[data-count]').forEach(count);if(e.target.dataset.count)count(e.target)}}),{threshold:.15});
-  $$('.reveal').forEach(el=>io.observe(el));
+  const particles = new THREE.Points(particlesGeo, particlesMat);
+  scene.add(particles);
 
-  // Compteurs
-  function count(el){
-    const to=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now(),d=1800;
-    (function f(t){const p=Math.min((t-t0)/d,1),e=1-Math.pow(1-p,4);
-      el.textContent=Math.round(to*e).toLocaleString('fr-FR')+suf;if(p<1)requestAnimationFrame(f)})(t0);
+  // Sphère filaire (globe)
+  const sphereGeo = new THREE.IcosahedronGeometry(2.2, 2);
+  const sphereMat = new THREE.MeshBasicMaterial({
+    color: 0x7b2ff7,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.18
+  });
+  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+  scene.add(sphere);
+
+  // Sphère interne
+  const innerSphereGeo = new THREE.SphereGeometry(1.6, 32, 32);
+  const innerSphereMat = new THREE.MeshBasicMaterial({
+    color: 0x0066ff,
+    transparent: true,
+    opacity: 0.06
+  });
+  const innerSphere = new THREE.Mesh(innerSphereGeo, innerSphereMat);
+  scene.add(innerSphere);
+
+  // Anneaux orbitaux
+  const ringGeo = new THREE.TorusGeometry(3, 0.02, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x0066ff, transparent: true, opacity: 0.3 });
+  const ring1 = new THREE.Mesh(ringGeo, ringMat);
+  ring1.rotation.x = Math.PI / 2.5;
+  scene.add(ring1);
+
+  const ring2 = new THREE.Mesh(ringGeo, ringMat.clone());
+  ring2.material.color.set(0x7b2ff7);
+  ring2.rotation.x = -Math.PI / 3;
+  ring2.rotation.y = Math.PI / 4;
+  ring2.scale.set(1.15, 1.15, 1.15);
+  scene.add(ring2);
+
+  // Petits satellites
+  const satellites = [];
+  const colors = [0x0066ff, 0x7b2ff7, 0xff3d71];
+  for (let i = 0; i < 8; i++) {
+    const satGeo = new THREE.SphereGeometry(0.08, 12, 12);
+    const satMat = new THREE.MeshBasicMaterial({ color: colors[i % 3] });
+    const sat = new THREE.Mesh(satGeo, satMat);
+    sat.userData = {
+      angle: (i / 8) * Math.PI * 2,
+      radius: 2.8 + Math.random() * 1.2,
+      speed: 0.003 + Math.random() * 0.004,
+      yOffset: (Math.random() - 0.5) * 2
+    };
+    scene.add(sat);
+    satellites.push(sat);
   }
 
-  // Tilt 3D
-  $$('.tilt').forEach(c=>{
-    c.addEventListener('mousemove',e=>{
-      const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
-      c.style.setProperty('--ry',((x-.5)*14)+'deg');c.style.setProperty('--rx',((.5-y)*14)+'deg');
-      c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');
+  // Souris (parallaxe uniquement, pas de curseur custom)
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // Animation
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+
+    particles.rotation.y += 0.001;
+    particles.rotation.x += 0.0005;
+
+    sphere.rotation.y += 0.003;
+    sphere.rotation.x += 0.001;
+
+    innerSphere.rotation.y -= 0.002;
+
+    ring1.rotation.z += 0.005;
+    ring2.rotation.z -= 0.004;
+
+    satellites.forEach(sat => {
+      sat.userData.angle += sat.userData.speed;
+      const { angle, radius, yOffset } = sat.userData;
+      sat.position.x = Math.cos(angle) * radius;
+      sat.position.z = Math.sin(angle) * radius;
+      sat.position.y = yOffset + Math.sin(t + angle) * 0.5;
     });
-    c.addEventListener('mouseleave',()=>{c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')});
+
+    camera.position.x += (mouseX * 0.8 - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY * 0.8 - camera.position.y) * 0.05;
+    camera.lookAt(scene.position);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   });
-
-  // Boutons magnétiques
-  if(!touch)$$('.mag').forEach(b=>{
-    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
-      b.style.transform='translate('+(e.clientX-r.left-r.width/2)*.25+'px,'+(e.clientY-r.top-r.height/2)*.35+'px)'});
-    b.addEventListener('mouseleave',()=>b.style.transform='');
-  });
-
-  // Lueur curseur
-  const glow=$('#glow');let gx=0,gy=0,tx=0,ty=0;
-  if(!touch){addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
-    (function g(){gx+=(tx-gx)*.1;gy+=(ty-gy)*.1;glow.style.transform='translate('+gx+'px,'+gy+'px)';requestAnimationFrame(g)})()}
-
-  // Barre de progression + header
-  let ly=0;
-  addEventListener('scroll',()=>{
-    const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
-    $('#bar').style.width=(y/h*100)+'%';
-    $('#hd').classList.toggle('hide',y>ly&&y>200);ly=y;
-  },{passive:true});
-
-  // Formulaire (démo : pas de backend branché)
-  $('#form').addEventListener('submit',e=>{e.preventDefault();$('#ok').style.display='block';e.target.reset()});
 })();
 
-/* ========== SCÈNE 3D ========== */
-(()=>{
-  function load(urls,cb){
-    if(window.THREE)return cb();
-    if(!urls.length)return;
-    const s=document.createElement('script');s.src=urls.shift();
-    s.onload=cb;s.onerror=()=>load(urls,cb);document.head.appendChild(s);
-  }
-  load(['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js'],()=>{
-    try{init()}catch(e){console.warn('3D indisponible',e);document.getElementById('bg').style.display='none'}
+/* ========== HEADER SCROLL ========== */
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ========== MOBILE MENU ========== */
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('navMenu').classList.toggle('open');
+});
+
+document.querySelectorAll('#navMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('navMenu').classList.remove('open'));
+});
+
+/* ========== REVEAL ON SCROLL ========== */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('active'), i * 80);
+      observer.unobserve(entry.target);
+    }
   });
+}, { threshold: 0.12 });
 
-  function init(){
-    const mobile=innerWidth<768,still=matchMedia('(prefers-reduced-motion:reduce)').matches;
-    const canvas=document.getElementById('bg');
-    const ren=new THREE.WebGLRenderer({canvas,antialias:!mobile,alpha:true});
-    ren.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
-    const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(50,1,.1,100);cam.position.z=7.5;
-    const globe=new THREE.Group();scene.add(globe);
-    const R=2.2,NEON=0x35f2a0;
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    const ll=(lat,lon,r=R)=>{const p=(90-lat)*Math.PI/180,t=(lon+180)*Math.PI/180;
-      return new THREE.Vector3(-r*Math.sin(p)*Math.cos(t),r*Math.cos(p),r*Math.sin(p)*Math.sin(t))};
+/* ========== COUNTERS ========== */
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = +el.dataset.count;
+      let current = 0;
+      const step = target / 60;
+      const update = () => {
+        current += step;
+        if (current < target) {
+          el.textContent = Math.floor(current).toLocaleString('fr-FR');
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target.toLocaleString('fr-FR') + (target === 99 || target === 24 ? '' : '+');
+        }
+      };
+      update();
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
 
-    // Noyau + points (spirale de Fibonacci)
-    globe.add(new THREE.Mesh(new THREE.SphereGeometry(R*.985,48,48),new THREE.MeshBasicMaterial({color:0x03120a,transparent:true,opacity:.92})));
-    const N=mobile?1600:3600,pos=new Float32Array(N*3);
-    for(let i=0;i<N;i++){const y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),a=i*2.399963;
-      pos.set([R*r*Math.cos(a),R*y,R*r*Math.sin(a)],i*3)}
-    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));
-    globe.add(new THREE.Points(g,new THREE.PointsMaterial({color:NEON,size:.022,transparent:true,opacity:.7})));
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
 
-    // Halo atmosphérique
-    const atmo=new THREE.Mesh(new THREE.SphereGeometry(R*1.18,48,48),new THREE.ShaderMaterial({
-      vertexShader:'varying vec3 n;void main(){n=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader:'varying vec3 n;void main(){float i=pow(.62-dot(n,vec3(0.,0.,1.)),2.);gl_FragColor=vec4(.2,.95,.63,1.)*i;}',
-      blending:THREE.AdditiveBlending,side:THREE.BackSide,transparent:true,depthWrite:false}));
-    scene.add(atmo);
+/* ========== 3D TILT ON CARDS ========== */
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-8px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
 
-    // Hubs + arcs + paquets
-    const hubs=[[48.73,2.37],[40.7,-74],[35.7,139.7],[-23.5,-46.6],[30,31.2],[1.3,103.8],[51.5,0],[25.2,55.3],[36.7,3],[-33.9,18.4],[55.7,37.6],[19.4,-99.1]];
-    const hubMat=new THREE.MeshBasicMaterial({color:0xffffff});
-    const pts=hubs.map(h=>ll(h[0],h[1]));
-    pts.forEach((p,i)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(i?.035:.07,12,12),i?hubMat:new THREE.MeshBasicMaterial({color:NEON}));m.position.copy(p);globe.add(m)});
-
-    const curves=[];
-    const arc=(a,b)=>{const d=a.distanceTo(b),mid=a.clone().add(b).multiplyScalar(.5).normalize().multiplyScalar(R+d*.32);
-      const c=new THREE.QuadraticBezierCurve3(a,mid,b);curves.push(c);
-      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(c.getPoints(60)),new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:.35})))};
-    for(let i=1;i<pts.length;i++)arc(pts[0],pts[i]);
-    for(let i=0;i<8;i++){const a=1+Math.floor(Math.random()*11),b=1+Math.floor(Math.random()*11);if(a!==b)arc(pts[a],pts[b])}
-
-    const packets=curves.map(c=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.04,8,8),new THREE.MeshBasicMaterial({color:0xaaffdd}));
-      globe.add(m);return{m,c,t:Math.random(),s:.002+Math.random()*.003}});
-
-    // Anneaux pulsants sur Orly
-    const rings=[0,.5].map(o=>{const r=new THREE.Mesh(new THREE.RingGeometry(.08,.1,48),new THREE.MeshBasicMaterial({color:NEON,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
-      r.position.copy(pts[0]);r.lookAt(pts[0].clone().multiplyScalar(2));globe.add(r);return{r,o}});
-
-    // Champ d'étoiles
-    const SN=mobile?400:1100,sp=new Float32Array(SN*3);
-    for(let i=0;i<SN*3;i++)sp[i]=(Math.random()-.5)*40;
-    const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
-    const stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0x8dffd0,size:.03,transparent:true,opacity:.5}));scene.add(stars);
-
-    // Interaction
-    let mx=0,my=0,sc=0,scT=0,gx=0;
-    addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
-    addEventListener('scroll',()=>{scT=scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)},{passive:true});
-    const resize=()=>{ren.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()};
-    addEventListener('resize',resize);resize();
-
-    const clock=new THREE.Clock();
-    (function loop(){
-      requestAnimationFrame(loop);
-      const t=clock.getElapsedTime(),k=still?0:1;
-      sc+=(scT-sc)*.06;
-      const mob=innerWidth<768;
-      const tx=mob?0:Math.cos(sc*Math.PI*2.5)*2.7,ty=mob?1.6:Math.sin(sc*Math.PI*3)*.5;
-      gx+=(tx-gx)*.05;
-      globe.position.set(gx,ty,0);atmo.position.copy(globe.position);
-      const s=(mob?.65:1)*(1+.18*Math.sin(sc*Math.PI*5));globe.scale.setScalar(s);atmo.scale.setScalar(s);
-      globe.rotation.y=t*.12*k+sc*7;globe.rotation.x=.35+sc*.6;
-      stars.rotation.y=t*.01*k+sc*.5;stars.rotation.x=sc*.3;
-      cam.position.x+=(mx*.8-cam.position.x)*.04;cam.position.y+=(-my*.5-cam.position.y)*.04;
-      cam.position.z=7.5-Math.sin(sc*Math.PI)*1.2;cam.lookAt(0,0,0);
-      packets.forEach(p=>{p.t=(p.t+p.s*k)%1;p.m.position.copy(p.c.getPoint(p.t))});
-      rings.forEach(({r,o})=>{const p=((t*.5*k+o)%1);r.scale.setScalar(1+p*7);r.material.opacity=.8*(1-p)});
-      ren.render(scene,cam);
-    })();
+/* ========== PARALLAX HERO IMAGE ========== */
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const heroImg = document.querySelector('.hero-image-wrapper');
+  if (heroImg && scrolled < window.innerHeight) {
+    heroImg.style.transform = `perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(${scrolled * 0.15}px)`;
   }
-})();
+});
 </script>
 </body>
 </html>
